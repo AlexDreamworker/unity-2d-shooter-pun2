@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2166695581456004272}
   - component: {fileID: 5398050099207915344}
   - component: {fileID: 53888722372371794}
-  - component: {fileID: 7910185614715511623}
+  - component: {fileID: -2075394197687178685}
   - component: {fileID: 7196110835801377969}
   m_Layer: 11
   m_Name: Automat Projectile
@@ -123,7 +123,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &7910185614715511623
+--- !u!114 &-2075394197687178685
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

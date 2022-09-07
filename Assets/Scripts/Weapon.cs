@@ -8,9 +8,9 @@ namespace ShooterPun2D
 		[SerializeField] private Transform _shootPoint;
 		[SerializeField] private float _projectileSpeed = 1200f;
 
-		//[SerializeField] private float _fireRate = 8f;
+		[SerializeField] private float _fireRate = 8f;
 
-		//private float _readyForNextShoot;
+		public float FireRate => _fireRate;
 
 		public void Shoot() 
 		{
