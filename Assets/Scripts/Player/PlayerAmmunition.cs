@@ -4,58 +4,67 @@ namespace ShooterPun2D
 {
 	public class PlayerAmmunition : MonoBehaviour
 	{
-		[SerializeField] private int _currentPistolAmmo;
-		[SerializeField] private int _currentShotgunAmmo;
-		[SerializeField] private int _currentAutomatAmmo;
-		[SerializeField] private int _currentRocketAmmo;
-		[SerializeField] private int _currentBfgAmmo;
+		[SerializeField] private int _pistolAmmo;
+		[SerializeField] private int _shotgunAmmo;
+		[SerializeField] private int _automatAmmo;
+		[SerializeField] private int _rocketAmmo;
+		[SerializeField] private int _bfgAmmo;
 
 		private int _maxAmmoCount = 999;
 
 		public int PistolAmmo
 		{
-			get => _currentPistolAmmo;
+			get => _pistolAmmo;
 			set
 			{
-				_currentPistolAmmo = Mathf.Clamp(value, 0, _maxAmmoCount);
+				_pistolAmmo = Mathf.Clamp(value, 0, _maxAmmoCount);
 			}
 		}
 
 		public int ShotgunAmmo
 		{
-			get => _currentShotgunAmmo;
+			get => _shotgunAmmo;
 			set
 			{
-				_currentShotgunAmmo = Mathf.Clamp(value, 0, _maxAmmoCount);
+				_shotgunAmmo = Mathf.Clamp(value, 0, _maxAmmoCount);
 			}
 		}
 		
 		public int AutomatAmmo
 		{
-			get => _currentAutomatAmmo;
+			get => _automatAmmo;
 			set
 			{
-				_currentAutomatAmmo = Mathf.Clamp(value, 0, _maxAmmoCount);
+				_automatAmmo = Mathf.Clamp(value, 0, _maxAmmoCount);
 			}
 		}
 
 		public int RocketAmmo
 		{
-			get => _currentRocketAmmo;
+			get => _rocketAmmo;
 			set
 			{
-				_currentRocketAmmo = Mathf.Clamp(value, 0, _maxAmmoCount);
+				_rocketAmmo = Mathf.Clamp(value, 0, _maxAmmoCount);
 			}
 		}
 
 		public int BfgAmmo
 		{
-			get => _currentBfgAmmo;
+			get => _bfgAmmo;
 			set
 			{
-				_currentBfgAmmo = Mathf.Clamp(value, 0, _maxAmmoCount);
+				_bfgAmmo = Mathf.Clamp(value, 0, _maxAmmoCount);
 			}
-		}				
+		}			
 	}
+
+	// public enum Weapons
+	// {
+	// 	pistol,
+	// 	shotgun,
+	// 	automat,
+	// 	rocket,
+	// 	bfg
+	// }
 }
 

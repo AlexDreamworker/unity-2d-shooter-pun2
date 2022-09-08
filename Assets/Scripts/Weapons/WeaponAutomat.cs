@@ -8,14 +8,14 @@ namespace ShooterPun2D
         
         public override void Shoot()
         {
-			_automatAmmo = _ammunition.PistolAmmo;
+			_automatAmmo = _ammunition.AutomatAmmo;
 
 			if (_automatAmmo <= 0)
 				return;
 
             base.Shoot();
 			_automatAmmo -= 1;
-			_ammunition.PistolAmmo = _automatAmmo;
+			_ammunition.AutomatAmmo = _automatAmmo;
         }
     }
 }
