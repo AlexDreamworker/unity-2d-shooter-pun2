@@ -34,10 +34,10 @@ namespace ShooterPun2D
 				_playerWeapon.TryFire();
 			
 			if (Input.GetKeyDown(KeyCode.E)) 
-				_playerWeapon.SetNextWeapon();
+				_playerWeapon.NextWeapon();
 
 			if (Input.GetKeyDown(KeyCode.Q)) 
-				_playerWeapon.SetPreviousWeapon();							
+				_playerWeapon.PreviousWeapon();							
 		}		
 	}
 }

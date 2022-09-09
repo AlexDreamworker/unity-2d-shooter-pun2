@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace ShooterPun2D
@@ -75,29 +76,47 @@ namespace ShooterPun2D
 			_weapons[_currentWeaponIndex].AmmoCount = _currentAmmoCount;			
 		}
 
-		public void SetNextWeapon() //* CALL
+		public void NextWeapon() //* CALL
 		{
 			if (_currentWeaponIndex < _weapons.Length - 1) 
 			{
-				UpdateWeaponGraphics(true);
+				TrySwitchWeapon(true);
 			}
 		}
 
-		public void SetPreviousWeapon() //* CALL
+		public void PreviousWeapon() //* CALL
 		{
 			if (_currentWeaponIndex > 0) 
 			{
-				UpdateWeaponGraphics(false);
+				TrySwitchWeapon(false);
 			}
 		}
 
-		private void UpdateWeaponGraphics(bool isIncrease)
+		private void TrySwitchWeapon(bool isIncrease)
 		{
-			_weaponsGraphics[_currentWeaponIndex].SetActive(false);
-			var index = isIncrease ? _currentWeaponIndex++ : _currentWeaponIndex--;
-			_timeToShoot = Time.time;
-			_weaponsGraphics[_currentWeaponIndex].SetActive(true);
-			_currentWeaponGraphics = _weaponsGraphics[_currentWeaponIndex];
+			if (isIncrease)
+			{
+				foreach (var weapon in _weapons)
+				{			
+					if ((int)weapon.WeaponType > _currentWeaponIndex && weapon.IsActive)
+					{
+						_currentWeaponIndex = (int)weapon.WeaponType;
+						return;
+					}
+				}
+			}
+			else 
+			{
+				foreach (var weapon in _weapons.Reverse())
+				{			
+					if ((int)weapon.WeaponType < _currentWeaponIndex && weapon.IsActive)
+					{
+						_currentWeaponIndex = (int)weapon.WeaponType;
+						return;
+					}
+				}
+			}
+			
 		}
 	}
 }
