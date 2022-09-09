@@ -22,7 +22,12 @@ namespace ShooterPun2D
 		public GameObject ProjectilePrefab => _projectilePrefab;
 		public float ProjectileSpeed => _projectileSpeed;
 		public float FireRate => _fireRate;
-		public bool IsActive => _isActive;
+
+		public bool IsActive
+		{
+			get => _isActive;
+			set => _isActive = value;
+		}
 
 		public int AmmoCount 
 		{

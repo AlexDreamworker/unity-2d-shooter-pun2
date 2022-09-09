@@ -1,6 +1,5 @@
-using System;
-using System.Linq;
 using UnityEngine;
+using System.Linq;
 
 namespace ShooterPun2D
 {
@@ -10,25 +9,30 @@ namespace ShooterPun2D
 		[SerializeField] private int _currentWeaponIndex;
 		[SerializeField] private Weapon[] _weapons;
 
-		private int _currentAmmoCount;
-		private float _timeToShoot;
-
-		private int _weaponsCount;
+		private Weapon _currentWeapon;
 		private GameObject[] _weaponsGraphics;
 		private GameObject _currentWeaponGraphics;
+		private int _weaponsCount;
+		private float _timeToShoot;
 
 		public Weapon[] Weapons => _weapons;
 		public GameObject WeaponHolder => _weaponHolder;
 
 		private void Start()
 		{
-			InitializeWeapons();
+			_weaponsCount = _weapons.Length;
+			InitializeWeaponsGraphic();
 			SetDefaultWeaponOnStart();
 		}
 
-		private void InitializeWeapons()
+		private void Update()
 		{
-			_weaponsCount = _weapons.Length;
+			_currentWeapon = _weapons[_currentWeaponIndex];
+			CheckAmmunition();
+		}
+
+		private void InitializeWeaponsGraphic()
+		{
 			_weaponsGraphics = new GameObject[_weaponsCount];
 
 			for (int i = 0; i < _weaponsCount; i++) 
@@ -45,45 +49,54 @@ namespace ShooterPun2D
 			_currentWeaponIndex = 0;			
 		}
 
+		//TODO: refact
+		public void CheckAmmunition()
+		{
+			if (_currentWeapon.AmmoCount == 0)
+			{
+				NextWeapon();
+			}
+		}
+
 		public void TryFire() //* CALL
 		{
-			var weapon = _weapons[_currentWeaponIndex];
-
 			if (Time.time > _timeToShoot) 
 			{
-				_timeToShoot = Time.time + 1 / weapon.FireRate;
+				_timeToShoot = Time.time + 1 / _currentWeapon.FireRate;
 				Shoot();
 			}
 		}	
 
 		private void Shoot() 
 		{
-			_currentAmmoCount = _weapons[_currentWeaponIndex].AmmoCount;
+			var currentAmmoCount = _currentWeapon.AmmoCount;
 
-			if (_weapons[_currentWeaponIndex].AmmoCount <= 0)
+			if (_currentWeapon.AmmoCount <= 0)
 				return;
 
 			GameObject projectile = Instantiate(
-				_weapons[_currentWeaponIndex].ProjectilePrefab, 
-				_weapons[_currentWeaponIndex].ShootPoint.position, 
-				_weapons[_currentWeaponIndex].ShootPoint.rotation
+				_currentWeapon.ProjectilePrefab, 
+				_currentWeapon.ShootPoint.position, 
+				_currentWeapon.ShootPoint.rotation
 				);
 
 			var projectileRigidbody = projectile.GetComponent<Rigidbody2D>();
-			projectileRigidbody.AddForce(projectile.transform.right * _weapons[_currentWeaponIndex].ProjectileSpeed);
+			projectileRigidbody.AddForce(projectile.transform.right * _currentWeapon.ProjectileSpeed);
 
-			_currentAmmoCount -= 1;
-			_weapons[_currentWeaponIndex].AmmoCount = _currentAmmoCount;			
+			currentAmmoCount -= 1;
+			_currentWeapon.AmmoCount = currentAmmoCount;			
 		}
 
+		//TODO: refact
 		public void NextWeapon() //* CALL
 		{
-			if (_currentWeaponIndex < _weapons.Length - 1) 
+			if (_currentWeaponIndex < _weaponsCount - 1) 
 			{
 				TrySwitchWeapon(true);
 			}
 		}
 
+		//TODO: refact
 		public void PreviousWeapon() //* CALL
 		{
 			if (_currentWeaponIndex > 0) 
@@ -92,15 +105,19 @@ namespace ShooterPun2D
 			}
 		}
 
+		//TODO: refact
 		private void TrySwitchWeapon(bool isIncrease)
 		{
+			var oldWeaponIndex = _currentWeaponIndex;
+
 			if (isIncrease)
 			{
 				foreach (var weapon in _weapons)
 				{			
-					if ((int)weapon.WeaponType > _currentWeaponIndex && weapon.IsActive)
+					if ((int)weapon.WeaponType > _currentWeaponIndex && weapon.IsActive && weapon.AmmoCount != 0)
 					{
 						_currentWeaponIndex = (int)weapon.WeaponType;
+						UpdateWeaponGraphics(oldWeaponIndex, _currentWeaponIndex);
 						return;
 					}
 				}
@@ -109,14 +126,21 @@ namespace ShooterPun2D
 			{
 				foreach (var weapon in _weapons.Reverse())
 				{			
-					if ((int)weapon.WeaponType < _currentWeaponIndex && weapon.IsActive)
+					if ((int)weapon.WeaponType < _currentWeaponIndex && weapon.IsActive && weapon.AmmoCount != 0)
 					{
 						_currentWeaponIndex = (int)weapon.WeaponType;
+						UpdateWeaponGraphics(oldWeaponIndex, _currentWeaponIndex);
 						return;
 					}
 				}
-			}
-			
+			}			
+		}
+
+		private void UpdateWeaponGraphics(int oldIndex, int newIndex)
+		{
+			_weaponsGraphics[oldIndex].SetActive(false);
+			_weaponsGraphics[newIndex].SetActive(true);
+			_currentWeaponGraphics = _weaponsGraphics[newIndex];
 		}
 	}
 }
