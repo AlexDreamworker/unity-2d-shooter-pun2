@@ -13,6 +13,8 @@ namespace ShooterPun2D
 		private SpriteRenderer _sprite;
 		private Collider2D _collider;
 
+		private readonly string RespawnRoutine = "Respawn";
+
 		private void Awake()
 		{
 			_sprite = GetComponent<SpriteRenderer>();
@@ -21,7 +23,7 @@ namespace ShooterPun2D
 
 		protected virtual void OnTriggerEnter2D(Collider2D other)
 		{
-			StartCoroutine("Respawn");
+			StartCoroutine(RespawnRoutine);
 		}
 
 		private IEnumerator Respawn() 

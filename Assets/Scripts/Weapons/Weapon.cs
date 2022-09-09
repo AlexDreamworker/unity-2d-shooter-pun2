@@ -1,23 +1,36 @@
+using System;
 using UnityEngine;
 
 namespace ShooterPun2D
 {
-	public class Weapon : MonoBehaviour
+	[Serializable]
+	public class Weapon
 	{
-		[SerializeField] protected PlayerAmmunition _ammunition;
-		[SerializeField] private GameObject _projectile;
+		[SerializeField] private string _name;
+		[SerializeField] private WeaponType _weaponType;
 		[SerializeField] private Transform _shootPoint;
+		[SerializeField] private GameObject _projectilePrefab;
 		[SerializeField] private float _projectileSpeed;
-
 		[SerializeField] private float _fireRate;
+		[SerializeField] private bool _isActive;
+		[SerializeField] private int _ammoCount;
 
+		private int _maxAmmoCount = 666;
+
+		public WeaponType WeaponType => _weaponType;
+		public Transform ShootPoint => _shootPoint;
+		public GameObject ProjectilePrefab => _projectilePrefab;
+		public float ProjectileSpeed => _projectileSpeed;
 		public float FireRate => _fireRate;
 
-		public virtual void Shoot() 
+		public int AmmoCount 
 		{
-			GameObject projectile = Instantiate(_projectile, _shootPoint.position, _shootPoint.rotation);
-			projectile.GetComponent<Rigidbody2D>().AddForce(projectile.transform.right * _projectileSpeed);
-		}		
+			get => _ammoCount;
+			set
+			{
+				_ammoCount = Mathf.Clamp(value, 0, _maxAmmoCount);
+			}
+		}
 	}
 }
 

@@ -294,7 +294,6 @@ GameObject:
   m_Component:
   - component: {fileID: 233221815}
   - component: {fileID: 233221814}
-  - component: {fileID: 233221816}
   m_Layer: 0
   m_Name: Automat
   m_TagString: Untagged
@@ -368,23 +367,6 @@ Transform:
   m_Father: {fileID: 63308959}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &233221816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 233221813}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb366686628722e4193d9ca21ba1304b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ammunition: {fileID: 327101357}
-  _projectile: {fileID: 4156429250014731464, guid: 910478e4fb5275244a653bea85d83508, type: 3}
-  _shootPoint: {fileID: 1751893331}
-  _projectileSpeed: 2000
-  _fireRate: 8
 --- !u!1 &258524871
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,9 +569,10 @@ GameObject:
   - component: {fileID: 327101352}
   - component: {fileID: 327101353}
   - component: {fileID: 327101354}
+  - component: {fileID: 327101359}
   - component: {fileID: 327101355}
   - component: {fileID: 327101356}
-  - component: {fileID: 327101357}
+  - component: {fileID: 327101358}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -622,7 +605,7 @@ CapsuleCollider2D:
   m_GameObject: {fileID: 327101351}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 04d4309f4ffdbca43a7563d13748eb24, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -645,7 +628,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 04d4309f4ffdbca43a7563d13748eb24, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -664,7 +647,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 8
   _jumpForce: 500
-  _weaponHolder: {fileID: 63308958}
   _bodyGraphics: {fileID: 1695369636}
 --- !u!114 &327101356
 MonoBehaviour:
@@ -679,7 +661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentHealth: 100
---- !u!114 &327101357
+--- !u!114 &327101358
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -688,14 +670,66 @@ MonoBehaviour:
   m_GameObject: {fileID: 327101351}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fd77bb72e40554fb6df78c0d5701ee, type: 3}
+  m_Script: {fileID: 11500000, guid: 90dbf2bc2a8a8a24fb690321843b7d0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pistolAmmo: 10
-  _shotgunAmmo: 5
-  _automatAmmo: 30
-  _rocketAmmo: 8
-  _bfgAmmo: 15
+  _weaponHolder: {fileID: 63308958}
+  _currentWeaponIndex: 0
+  _weapons:
+  - _name: Pistol
+    _weaponType: 0
+    _shootPoint: {fileID: 827954121}
+    _projectilePrefab: {fileID: 5539119684310361864, guid: d69566840660b2f4498222023bcd0054, type: 3}
+    _projectileSpeed: 1500
+    _fireRate: 2
+    _isActive: 0
+    _ammoCount: 10
+  - _name: Shotgun
+    _weaponType: 1
+    _shootPoint: {fileID: 104245537}
+    _projectilePrefab: {fileID: 245526812307692859, guid: ff9483b76296aad4ba6ac2d7a32dcc76, type: 3}
+    _projectileSpeed: 3000
+    _fireRate: 1
+    _isActive: 0
+    _ammoCount: 10
+  - _name: Automat
+    _weaponType: 2
+    _shootPoint: {fileID: 1751893331}
+    _projectilePrefab: {fileID: 4156429250014731464, guid: 910478e4fb5275244a653bea85d83508, type: 3}
+    _projectileSpeed: 2000
+    _fireRate: 8
+    _isActive: 0
+    _ammoCount: 10
+  - _name: Rocket
+    _weaponType: 3
+    _shootPoint: {fileID: 712446560}
+    _projectilePrefab: {fileID: 4289660374496105849, guid: 505580bb8568a72449b0a8e4f89ba27f, type: 3}
+    _projectileSpeed: 1000
+    _fireRate: 1
+    _isActive: 0
+    _ammoCount: 10
+  - _name: Bfg
+    _weaponType: 4
+    _shootPoint: {fileID: 1522798384}
+    _projectilePrefab: {fileID: 1056497366720201242, guid: a552d5836bdfb0e43b0297bb050e9143, type: 3}
+    _projectileSpeed: 1200
+    _fireRate: 8
+    _isActive: 0
+    _ammoCount: 10
+--- !u!114 &327101359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 327101351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebd37b9debf0f354b8ba43cc84d14458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerMovement: {fileID: 327101355}
+  _playerWeapon: {fileID: 327101358}
 --- !u!1 &409432039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1162,7 +1196,6 @@ GameObject:
   m_Component:
   - component: {fileID: 555087218}
   - component: {fileID: 555087217}
-  - component: {fileID: 555087219}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
@@ -1236,23 +1269,6 @@ Transform:
   m_Father: {fileID: 63308959}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &555087219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555087216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cdf7182a36f6ad47ba8d695df6c0519, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ammunition: {fileID: 327101357}
-  _projectile: {fileID: 5539119684310361864, guid: d69566840660b2f4498222023bcd0054, type: 3}
-  _shootPoint: {fileID: 827954121}
-  _projectileSpeed: 1500
-  _fireRate: 2
 --- !u!1 &565103765
 GameObject:
   m_ObjectHideFlags: 0
@@ -1263,7 +1279,6 @@ GameObject:
   m_Component:
   - component: {fileID: 565103767}
   - component: {fileID: 565103766}
-  - component: {fileID: 565103768}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Untagged
@@ -1337,23 +1352,6 @@ Transform:
   m_Father: {fileID: 63308959}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &565103768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 565103765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 006741ab182d6904ca6eb9595e766b1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ammunition: {fileID: 327101357}
-  _projectile: {fileID: 4289660374496105849, guid: 505580bb8568a72449b0a8e4f89ba27f, type: 3}
-  _shootPoint: {fileID: 712446560}
-  _projectileSpeed: 1000
-  _fireRate: 1
 --- !u!1 &645530968
 GameObject:
   m_ObjectHideFlags: 0
@@ -2697,7 +2695,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1765808805}
   - component: {fileID: 1765808804}
-  - component: {fileID: 1765808806}
   m_Layer: 0
   m_Name: Shotgun
   m_TagString: Untagged
@@ -2771,23 +2768,6 @@ Transform:
   m_Father: {fileID: 63308959}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1765808806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765808803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c30fcb7ba0974a49970c90ac5cc42e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ammunition: {fileID: 327101357}
-  _projectile: {fileID: 245526812307692859, guid: ff9483b76296aad4ba6ac2d7a32dcc76, type: 3}
-  _shootPoint: {fileID: 104245537}
-  _projectileSpeed: 3000
-  _fireRate: 1
 --- !u!1 &1787091813
 GameObject:
   m_ObjectHideFlags: 0
@@ -2828,7 +2808,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1790954231}
   - component: {fileID: 1790954230}
-  - component: {fileID: 1790954232}
   m_Layer: 0
   m_Name: Bfg
   m_TagString: Untagged
@@ -2902,23 +2881,6 @@ Transform:
   m_Father: {fileID: 63308959}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1790954232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1790954229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28931139c3bdf8149b9f7a319c48834e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ammunition: {fileID: 327101357}
-  _projectile: {fileID: 1056497366720201242, guid: a552d5836bdfb0e43b0297bb050e9143, type: 3}
-  _shootPoint: {fileID: 1522798384}
-  _projectileSpeed: 1200
-  _fireRate: 4
 --- !u!1 &1869440781
 GameObject:
   m_ObjectHideFlags: 0

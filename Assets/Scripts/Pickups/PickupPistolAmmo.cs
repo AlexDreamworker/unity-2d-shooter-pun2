@@ -6,10 +6,10 @@ namespace ShooterPun2D
 	{
 		protected override void OnTriggerEnter2D(Collider2D other)
 		{
-			PlayerAmmunition ammunition = other.gameObject.GetComponent<PlayerAmmunition>();
-			if (ammunition) 
+			PlayerWeapon weapon = other.gameObject.GetComponent<PlayerWeapon>();
+			if (weapon) 
 			{
-				ammunition.PistolAmmo += _amount;
+				weapon.Weapons[0].AmmoCount += _amount;
 				base.OnTriggerEnter2D(other);
 			}
 		}
