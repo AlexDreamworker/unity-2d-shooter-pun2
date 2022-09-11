@@ -21,6 +21,9 @@ namespace ShooterPun2D
 
 		private Dictionary<Weapon, bool> _weaponsMap = new Dictionary<Weapon, bool>();
 
+		private Vector2 _direction;
+		private bool _isStartFire;
+
 		private void Start()
 		{
 			_weaponsCount = _weapons.Length;
@@ -32,8 +35,29 @@ namespace ShooterPun2D
 		private void Update()
 		{
 			_currentWeapon = _weapons[_currentWeaponIndex];
+			_weaponHolder.transform.right = _direction;
 			CheckAmmunition();
+			
+			if (_isStartFire)
+			{
+				TryFire();
+			}
 		}
+
+		public void SetDirection(Vector2 direction)
+		{
+			_direction = direction;
+		}
+
+		public void Fire(bool fireState)
+		{
+			_isStartFire = fireState;
+		}
+
+		// private void FaceMouse() 
+		// {
+		// 	_playerWeapon.WeaponHolder.transform.right = _aimDirection;
+		// }			
 
 		private void InitializeWeaponsGraphic()
 		{
