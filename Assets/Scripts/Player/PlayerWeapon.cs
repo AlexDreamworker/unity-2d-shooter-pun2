@@ -7,35 +7,39 @@ namespace ShooterPun2D
 	public class PlayerWeapon : MonoBehaviour
 	{
 		[SerializeField] private GameObject _weaponHolder;
-		[SerializeField] private int _currentWeaponIndex;
 		[SerializeField] private Weapon[] _weapons;
 
-		private Weapon _currentWeapon;
+		public Weapon _currentWeapon;
 		private GameObject[] _weaponsGraphics;
 		private GameObject _currentWeaponGraphics;
 		private int _weaponsCount;
 		private float _timeToShoot;
 
+		private Vector2 _direction;
+		private bool _isStartFire;
+		private Dictionary<Weapon, bool> _weaponsMap = new Dictionary<Weapon, bool>();
+
 		public Weapon[] Weapons => _weapons;
 		public GameObject WeaponHolder => _weaponHolder;
 
-		private Dictionary<Weapon, bool> _weaponsMap = new Dictionary<Weapon, bool>();
-
-		private Vector2 _direction;
-		private bool _isStartFire;
+		public bool IsStartFire
+		{
+			get => _isStartFire;
+			set => _isStartFire = value;
+		}
 
 		private void Start()
 		{
 			_weaponsCount = _weapons.Length;
 			InitializeWeaponsGraphic();
-			SetDefaultWeaponOnStart();			
-			UpdateWeaponsActivity();
+			SetWeapon(0);	
 		}
 
 		private void Update()
 		{
-			_currentWeapon = _weapons[_currentWeaponIndex];
 			_weaponHolder.transform.right = _direction;
+
+			UpdateWeaponsActivity();
 			CheckAmmunition();
 			
 			if (_isStartFire)
@@ -49,14 +53,9 @@ namespace ShooterPun2D
 			_direction = direction;
 		}
 
-		public void Fire(bool fireState)
-		{
-			_isStartFire = fireState;
-		}
-
-		// private void FaceMouse() 
+		// public void Fire(bool fireState)
 		// {
-		// 	_playerWeapon.WeaponHolder.transform.right = _aimDirection;
+		// 	_isStartFire = fireState;
 		// }			
 
 		private void InitializeWeaponsGraphic()
@@ -66,15 +65,7 @@ namespace ShooterPun2D
 			for (int i = 0; i < _weaponsCount; i++) 
 			{
 				_weaponsGraphics[i] = _weaponHolder.transform.GetChild(i).gameObject;
-				_weaponsGraphics[i].SetActive(false);
 			}			
-		}
-
-		private void SetDefaultWeaponOnStart()
-		{
-			_weaponsGraphics[0].SetActive(true);
-			_currentWeaponGraphics = _weaponsGraphics[0];
-			_currentWeaponIndex = 0;			
 		}
 
 		private void UpdateWeaponsActivity()
@@ -90,7 +81,7 @@ namespace ShooterPun2D
 			}
 		}
 
-		public void TryFire() //* CALL
+		public void TryFire()
 		{
 			if (Time.time > _timeToShoot) 
 			{
@@ -119,14 +110,19 @@ namespace ShooterPun2D
 			_currentWeapon.AmmoCount = currentAmmoCount;			
 		}
 
-		public void SetWeapon(int index)
+		public void SetWeapon(int index) //* CALL
 		{
-			UpdateWeaponGraphics(_currentWeaponIndex, index);
-			_currentWeaponIndex = index;
-		}	
+			_currentWeapon = _weapons[index];
 
-		//?-----------------------------------------------------------------------------------------------
-		//TODO: refact
+			for (int i = 0; i < _weaponsCount; i++) 
+			{
+				_weaponsGraphics[i].SetActive(false);
+			}
+
+			_currentWeaponGraphics = _weaponsGraphics[index];
+			_currentWeaponGraphics.SetActive(true);
+		}
+
 		public void CheckAmmunition()
 		{
 			if (_currentWeapon.AmmoCount == 0)
@@ -135,86 +131,30 @@ namespace ShooterPun2D
 			}
 		}
 
-		//TODO: refact
 		public void NextWeapon() //* CALL
 		{
-			if (_currentWeaponIndex < _weaponsCount - 1) 
+			foreach (var weapon in _weaponsMap) 
 			{
-				TrySwitchWeapon(true);
-			}
-
-			// else if (_currentWeaponIndex == _weaponsCount - 1)
-			// {
-			// 	SetWeapon(0);
-			// }
-		}
-
-		//TODO: refact
-		public void PreviousWeapon() //* CALL
-		{
-			if (_currentWeaponIndex > 0) 
-			{
-				TrySwitchWeapon(false);
-			}
-
-			// else if (_currentWeaponIndex == 0)
-			// {
-
-			// }
-		}
-
-		//TODO: refact
-		private void TrySwitchWeapon(bool isIncrease)
-		{
-			var oldWeaponIndex = _currentWeaponIndex;
-
-			if (isIncrease)
-			{
-				foreach (var weapon in _weapons)
-				{			
-					if ((int)weapon.WeaponType > _currentWeaponIndex && weapon.IsActive && weapon.AmmoCount != 0)
-					{
-						SetWeapon((int)weapon.WeaponType);
-						UpdateWeaponGraphics(oldWeaponIndex, _currentWeaponIndex);
-						return;
-					}
+				if (weapon.Key.Id > _currentWeapon.Id && weapon.Key.AmmoCount != 0) 
+				{
+					SetWeapon(weapon.Key.Id);
+					return;
 				}
 			}
-			else 
-			{
-				foreach (var weapon in _weapons.Reverse())
-				{			
-					if ((int)weapon.WeaponType < _currentWeaponIndex && weapon.IsActive && weapon.AmmoCount != 0)
-					{
-						SetWeapon((int)weapon.WeaponType);
-						UpdateWeaponGraphics(oldWeaponIndex, _currentWeaponIndex);
-						return;
-					}
-				}
-			}			
+			SetWeapon(_weaponsMap.Keys.First().Id);
 		}
 
-		// private void SetLastActiveWeapon()
-		// {
-		// 	var lastActive = _weaponsMap.Keys.Last();
-			
-		// }
-
-		// private Weapon GetWeaponActivity(Weapon weapon)
-		// {
-		// 	var result = weapon.IsActive ? weapon : null;
-		// 	return result;
-		// }
-		//?-----------------------------------------------------------------------------------------------
-
-		private void UpdateWeaponGraphics(int oldIndex, int newIndex) //! (int index)
-		{
-			_weaponsGraphics[oldIndex].SetActive(false);
-			_weaponsGraphics[newIndex].SetActive(true);
-			_currentWeaponGraphics = _weaponsGraphics[newIndex];
-			//! for () 
-			//!		all weapons -> false
-			//!	weapon (index) -> true
+		public void PreviousWeapon() //* CALL 
+		{	
+			foreach (var weapon in _weaponsMap.Reverse()) //! where is bug?
+			{
+				if (weapon.Key.Id < _currentWeapon.Id && weapon.Key.AmmoCount != 0)
+				{
+					SetWeapon(weapon.Key.Id);
+					return;
+				}
+			}
+			SetWeapon(_weaponsMap.Keys.Last().Id);
 		}
 	}
 }

@@ -796,7 +796,7 @@ MonoBehaviour:
   _currentWeaponIndex: 0
   _weapons:
   - _name: Pistol
-    _weaponType: 0
+    _type: 0
     _shootPoint: {fileID: 827954121}
     _projectilePrefab: {fileID: 5539119684310361864, guid: d69566840660b2f4498222023bcd0054, type: 3}
     _projectileSpeed: 1500
@@ -804,7 +804,7 @@ MonoBehaviour:
     _isActive: 1
     _ammoCount: 666
   - _name: Shotgun
-    _weaponType: 1
+    _type: 1
     _shootPoint: {fileID: 104245537}
     _projectilePrefab: {fileID: 245526812307692859, guid: ff9483b76296aad4ba6ac2d7a32dcc76, type: 3}
     _projectileSpeed: 3000
@@ -812,15 +812,15 @@ MonoBehaviour:
     _isActive: 1
     _ammoCount: 10
   - _name: Automat
-    _weaponType: 2
+    _type: 2
     _shootPoint: {fileID: 1751893331}
     _projectilePrefab: {fileID: 4156429250014731464, guid: 910478e4fb5275244a653bea85d83508, type: 3}
     _projectileSpeed: 2000
     _fireRate: 8
-    _isActive: 1
+    _isActive: 0
     _ammoCount: 10
   - _name: Rocket
-    _weaponType: 3
+    _type: 3
     _shootPoint: {fileID: 712446560}
     _projectilePrefab: {fileID: 4289660374496105849, guid: 505580bb8568a72449b0a8e4f89ba27f, type: 3}
     _projectileSpeed: 1000
@@ -828,12 +828,12 @@ MonoBehaviour:
     _isActive: 0
     _ammoCount: 10
   - _name: Bfg
-    _weaponType: 4
+    _type: 4
     _shootPoint: {fileID: 1522798384}
     _projectilePrefab: {fileID: 1056497366720201242, guid: a552d5836bdfb0e43b0297bb050e9143, type: 3}
     _projectileSpeed: 1200
     _fireRate: 8
-    _isActive: 1
+    _isActive: 0
     _ammoCount: 10
 --- !u!114 &327101359
 MonoBehaviour:
