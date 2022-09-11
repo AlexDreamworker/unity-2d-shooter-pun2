@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 namespace ShooterPun2D
 {
@@ -12,6 +13,7 @@ namespace ShooterPun2D
 
 		private SpriteRenderer _sprite;
 		private Collider2D _collider;
+		private Vector3 _originalScale;
 
 		private readonly string RespawnRoutine = "Respawn";
 
@@ -19,11 +21,18 @@ namespace ShooterPun2D
 		{
 			_sprite = GetComponent<SpriteRenderer>();
 			_collider = GetComponent<Collider2D>();	
+			_originalScale = transform.localScale;
 		}
 
 		protected virtual void OnTriggerEnter2D(Collider2D other)
 		{
 			StartCoroutine(RespawnRoutine);
+		}
+
+		private void ScaleAnimation()
+		{
+			transform.localScale = Vector3.zero;
+			transform.DOScale(_originalScale, 1f);
 		}
 
 		private IEnumerator Respawn() 
@@ -33,6 +42,7 @@ namespace ShooterPun2D
 			yield return new WaitForSeconds(_timeToRespawn);
 			_sprite.enabled = true;
 			_collider.enabled = true;
+			ScaleAnimation();
 		}
 	}
 }

@@ -13,6 +13,7 @@ namespace ShooterPun2D
 			{
 				weapon.Weapons[(int)_weaponType].IsActive = true;
 				weapon.Weapons[(int)_weaponType].AmmoCount += _amount;
+				weapon.SetWeapon((int)_weaponType);
 				base.OnTriggerEnter2D(other);
 			}
 		}

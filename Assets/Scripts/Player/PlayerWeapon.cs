@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ShooterPun2D
 {
@@ -18,11 +19,14 @@ namespace ShooterPun2D
 		public Weapon[] Weapons => _weapons;
 		public GameObject WeaponHolder => _weaponHolder;
 
+		private Dictionary<Weapon, bool> _weaponsMap = new Dictionary<Weapon, bool>();
+
 		private void Start()
 		{
 			_weaponsCount = _weapons.Length;
 			InitializeWeaponsGraphic();
-			SetDefaultWeaponOnStart();
+			SetDefaultWeaponOnStart();			
+			UpdateWeaponsActivity();
 		}
 
 		private void Update()
@@ -49,12 +53,16 @@ namespace ShooterPun2D
 			_currentWeaponIndex = 0;			
 		}
 
-		//TODO: refact
-		public void CheckAmmunition()
+		private void UpdateWeaponsActivity()
 		{
-			if (_currentWeapon.AmmoCount == 0)
+			_weaponsMap.Clear();
+
+			foreach (var weapon in _weapons)
 			{
-				NextWeapon();
+				if (weapon.IsActive)
+				{
+					_weaponsMap.Add(weapon, weapon.IsActive);
+				}
 			}
 		}
 
@@ -87,6 +95,22 @@ namespace ShooterPun2D
 			_currentWeapon.AmmoCount = currentAmmoCount;			
 		}
 
+		public void SetWeapon(int index)
+		{
+			UpdateWeaponGraphics(_currentWeaponIndex, index);
+			_currentWeaponIndex = index;
+		}	
+
+		//?-----------------------------------------------------------------------------------------------
+		//TODO: refact
+		public void CheckAmmunition()
+		{
+			if (_currentWeapon.AmmoCount == 0)
+			{
+				NextWeapon();
+			}
+		}
+
 		//TODO: refact
 		public void NextWeapon() //* CALL
 		{
@@ -94,6 +118,11 @@ namespace ShooterPun2D
 			{
 				TrySwitchWeapon(true);
 			}
+
+			// else if (_currentWeaponIndex == _weaponsCount - 1)
+			// {
+			// 	SetWeapon(0);
+			// }
 		}
 
 		//TODO: refact
@@ -103,6 +132,11 @@ namespace ShooterPun2D
 			{
 				TrySwitchWeapon(false);
 			}
+
+			// else if (_currentWeaponIndex == 0)
+			// {
+
+			// }
 		}
 
 		//TODO: refact
@@ -116,7 +150,7 @@ namespace ShooterPun2D
 				{			
 					if ((int)weapon.WeaponType > _currentWeaponIndex && weapon.IsActive && weapon.AmmoCount != 0)
 					{
-						_currentWeaponIndex = (int)weapon.WeaponType;
+						SetWeapon((int)weapon.WeaponType);
 						UpdateWeaponGraphics(oldWeaponIndex, _currentWeaponIndex);
 						return;
 					}
@@ -128,7 +162,7 @@ namespace ShooterPun2D
 				{			
 					if ((int)weapon.WeaponType < _currentWeaponIndex && weapon.IsActive && weapon.AmmoCount != 0)
 					{
-						_currentWeaponIndex = (int)weapon.WeaponType;
+						SetWeapon((int)weapon.WeaponType);
 						UpdateWeaponGraphics(oldWeaponIndex, _currentWeaponIndex);
 						return;
 					}
@@ -136,11 +170,27 @@ namespace ShooterPun2D
 			}			
 		}
 
-		private void UpdateWeaponGraphics(int oldIndex, int newIndex)
+		// private void SetLastActiveWeapon()
+		// {
+		// 	var lastActive = _weaponsMap.Keys.Last();
+			
+		// }
+
+		// private Weapon GetWeaponActivity(Weapon weapon)
+		// {
+		// 	var result = weapon.IsActive ? weapon : null;
+		// 	return result;
+		// }
+		//?-----------------------------------------------------------------------------------------------
+
+		private void UpdateWeaponGraphics(int oldIndex, int newIndex) //! (int index)
 		{
 			_weaponsGraphics[oldIndex].SetActive(false);
 			_weaponsGraphics[newIndex].SetActive(true);
 			_currentWeaponGraphics = _weaponsGraphics[newIndex];
+			//! for () 
+			//!		all weapons -> false
+			//!	weapon (index) -> true
 		}
 	}
 }
