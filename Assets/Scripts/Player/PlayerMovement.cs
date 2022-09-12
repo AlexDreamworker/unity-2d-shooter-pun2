@@ -6,42 +6,34 @@ namespace ShooterPun2D
 	[RequireComponent(typeof(Collider2D))]
 	public class PlayerMovement : MonoBehaviour
 	{
-		[SerializeField] private float _speed = 8f;
-		[SerializeField] private float _jumpForce = 500f;
 		[SerializeField] private Transform _bodyGraphics;
+		[SerializeField] private LayerCheckComponent _groundCheck;
+		[SerializeField] private float _speed = 8f;
+		[SerializeField] private float _jumpSpeed = 500f;
 
 		private Rigidbody2D _rigidbody;
 		private Collider2D _collider;
 		private PhysicsMaterial2D _playerMaterial;
 
-		//private PlayerWeapon _playerWeapon;
-
-		//controller
 		private float _xVelocity;
 		private float _yVelocity;
-		//private Vector2 _aimDirection;	
-
 		private Vector2 _direction;
+		private bool _isGrounded;
+		private bool _isJumping;
 
 		private void Awake()
 		{
 			_rigidbody = GetComponent<Rigidbody2D>();
 			_collider = GetComponent<Collider2D>();
-
-			//_playerWeapon = GetComponent<PlayerWeapon>();
 		}
 
 		private void Update()
 		{
-			//FaceMouse();
-
-			//_xVelocity = GetComponent<PlayerInputReader>().XVelocity;
-			//_aimDirection = GetComponent<PlayerInputReader>().AimDirection;
+			_isGrounded = IsGrounded();
 		}
 
 		private void FixedUpdate()
 		{			
-			//_rigidbody.velocity = new Vector2(_xVelocity * _speed, _rigidbody.velocity.y);
 			UpdateMovement();
 			UpdateSpriteDirection();
 		}
@@ -51,34 +43,66 @@ namespace ShooterPun2D
 			_direction = direction;
 		}
 
-		private void UpdateMovement()
+		private void UpdateMovement() 
 		{
-			_xVelocity = _direction.x * _speed;
-			_rigidbody.velocity = new Vector2(_xVelocity, _rigidbody.velocity.y);
+			var xVelocity = _direction.x * _speed;
+			var yVelocity = CalculateYVelocity();
+
+			_rigidbody.velocity = new Vector2(xVelocity, yVelocity);
 		}
 
-		private void UpdateSpriteDirection()
+		private float CalculateYVelocity()
 		{
-			if (_xVelocity > 0)
+			var yVelocity = _rigidbody.velocity.y;
+			var isJumpPressing = _direction.y > 0;
+			
+			if (_isGrounded) 
+			{
+				_isJumping = false;
+			}
+
+			if (isJumpPressing) 
+			{
+				_isJumping = true;
+				yVelocity = CalculateJumpVelocity(yVelocity);
+			}
+			else if (_rigidbody.velocity.y > 0 && _isJumping) 
+			{
+				yVelocity *= 0.5f;
+			}
+
+			return yVelocity;
+		}
+
+		private float CalculateJumpVelocity(float yVelocity) 
+		{
+			var isFalling = _rigidbody.velocity.y <= 0.001f;
+			if (!isFalling) return yVelocity;
+
+			if (_isGrounded)
+			{
+				yVelocity += _jumpSpeed;
+			}
+
+			return yVelocity;
+		}
+
+		private void UpdateSpriteDirection() 
+		{
+			if (_direction.x > 0) 
 			{
 				_bodyGraphics.transform.localScale = new Vector3(1, 1, 1);
 			}
-			else
+			else if (_direction.x < 0) 
 			{
 				_bodyGraphics.transform.localScale = new Vector3(-1, 1, 1);
 			}
 		}
 
-		// private void FaceMouse() 
-		// {
-		// 	_playerWeapon.WeaponHolder.transform.right = _aimDirection;
-		// }		
-
-		public void Jump() //* CALL
+		private bool IsGrounded() 
 		{
-			_rigidbody.AddForce(new Vector2(_rigidbody.velocity.x, _direction.y * _jumpForce));
-			//_rigidbody.AddForce(transform.up * _jumpForce);
-		}				
+			return _groundCheck.IsTouchingLayer;
+		}			
 	}
 }
 

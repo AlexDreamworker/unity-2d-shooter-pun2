@@ -8,19 +8,19 @@ namespace ShooterPun2D
 	{
 		[SerializeField] private GameObject _weaponHolder;
 		[SerializeField] private Weapon[] _weapons;
+		[SerializeField] private Weapon _currentWeapon;
 
-		public Weapon _currentWeapon;
 		private GameObject[] _weaponsGraphics;
 		private GameObject _currentWeaponGraphics;
-		private int _weaponsCount;
-		private float _timeToShoot;
 
 		private Vector2 _direction;
+		private float _timeToShoot;
 		private bool _isStartFire;
+
 		private Dictionary<Weapon, bool> _weaponsMap = new Dictionary<Weapon, bool>();
 
-		public Weapon[] Weapons => _weapons;
 		public GameObject WeaponHolder => _weaponHolder;
+		public Weapon[] Weapons => _weapons;
 
 		public bool IsStartFire
 		{
@@ -30,17 +30,15 @@ namespace ShooterPun2D
 
 		private void Start()
 		{
-			_weaponsCount = _weapons.Length;
 			InitializeWeaponsGraphic();
-			SetWeapon(0);	
+			UpdateWeaponsMap();	
+			SetWeapon(0);
 		}
 
 		private void Update()
 		{
-			_weaponHolder.transform.right = _direction;
-
-			UpdateWeaponsActivity();
-			CheckAmmunition();
+			UpdateAim();
+			UpdateWeaponsMap(); // Test Function were
 			
 			if (_isStartFire)
 			{
@@ -53,22 +51,22 @@ namespace ShooterPun2D
 			_direction = direction;
 		}
 
-		// public void Fire(bool fireState)
-		// {
-		// 	_isStartFire = fireState;
-		// }			
+		public void UpdateAim()	
+		{
+			_weaponHolder.transform.right = _direction;
+		}
 
 		private void InitializeWeaponsGraphic()
 		{
-			_weaponsGraphics = new GameObject[_weaponsCount];
+			_weaponsGraphics = new GameObject[_weapons.Length];
 
-			for (int i = 0; i < _weaponsCount; i++) 
+			for (int i = 0; i < _weapons.Length; i++) 
 			{
 				_weaponsGraphics[i] = _weaponHolder.transform.GetChild(i).gameObject;
-			}			
+			}	
 		}
 
-		private void UpdateWeaponsActivity()
+		public void UpdateWeaponsMap() //* CALL
 		{
 			_weaponsMap.Clear();
 
@@ -83,6 +81,8 @@ namespace ShooterPun2D
 
 		public void TryFire()
 		{
+			CheckAmmunition();
+			
 			if (Time.time > _timeToShoot) 
 			{
 				_timeToShoot = Time.time + 1 / _currentWeapon.FireRate;
@@ -114,9 +114,9 @@ namespace ShooterPun2D
 		{
 			_currentWeapon = _weapons[index];
 
-			for (int i = 0; i < _weaponsCount; i++) 
+			foreach (var item in _weaponsGraphics)
 			{
-				_weaponsGraphics[i].SetActive(false);
+				item.SetActive(false);
 			}
 
 			_currentWeaponGraphics = _weaponsGraphics[index];
@@ -140,7 +140,8 @@ namespace ShooterPun2D
 					SetWeapon(weapon.Key.Id);
 					return;
 				}
-			}
+			}	
+
 			SetWeapon(_weaponsMap.Keys.First().Id);
 		}
 
@@ -154,6 +155,7 @@ namespace ShooterPun2D
 					return;
 				}
 			}
+
 			SetWeapon(_weaponsMap.Keys.Last().Id);
 		}
 	}

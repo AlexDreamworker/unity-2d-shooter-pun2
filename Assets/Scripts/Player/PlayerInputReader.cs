@@ -22,13 +22,15 @@ namespace ShooterPun2D
 
 			//* if UNITY EDITOR or STANDALONE WIN
 			//* and add to NewInputSystem -> Aim -> Position[Mouse]
-			var mouseDirection = Camera.main.ScreenToWorldPoint((Vector3)direction) - transform.position;
-			var directionInput = Vector2Int.RoundToInt(mouseDirection);
+			var mousePosition = Camera.main.ScreenToWorldPoint((Vector3)direction) - transform.position;
+			var roundDirection = Vector2Int.RoundToInt(mousePosition);
 
 			//*if ANDROID
 			//var directionInput = Vector2Int.RoundToInt(direction);
 
-			var test = new Vector2(Mathf.Clamp(directionInput.x, -1, 1), Mathf.Clamp(directionInput.y, -1, 1));
+			var xClamp = Mathf.Clamp(roundDirection.x, -1, 1);
+			var yClamp = Mathf.Clamp(roundDirection.y, -1, 1);
+			var test = new Vector2(xClamp, yClamp);
 
 			_playerWeapon.SetDirection(test);
 		}

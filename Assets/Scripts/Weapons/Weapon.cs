@@ -17,12 +17,14 @@ namespace ShooterPun2D
 
 		private int _maxAmmoCount = 666;
 		private int _id;
+		//private bool _isEmpty;
 
 		public WeaponType Type => _type;
 		public Transform ShootPoint => _shootPoint;
 		public GameObject ProjectilePrefab => _projectilePrefab;
 		public float ProjectileSpeed => _projectileSpeed;
 		public float FireRate => _fireRate;
+		//public bool IsEmpty => _isEmpty;
 
 		public int Id 
 		{
@@ -41,6 +43,10 @@ namespace ShooterPun2D
 			set
 			{
 				_ammoCount = Mathf.Clamp(value, 0, _maxAmmoCount);
+				// if (value == 0)
+				// {
+				// 	_isEmpty = true;
+				// }
 			}
 		}
 	}
