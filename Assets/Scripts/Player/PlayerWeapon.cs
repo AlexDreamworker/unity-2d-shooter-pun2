@@ -1,11 +1,14 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace ShooterPun2D
 {
 	public class PlayerWeapon : MonoBehaviour
 	{
+		public event Action<int, Color> OnAmmoChanged;
+
 		[SerializeField] private GameObject _weaponHolder;
 		[SerializeField] private Weapon[] _weapons;
 		[SerializeField] private Weapon _currentWeapon;
@@ -38,7 +41,7 @@ namespace ShooterPun2D
 		private void Update()
 		{
 			UpdateAim();
-			UpdateWeaponsMap(); // Test Function were
+			UpdateWeaponsMap(); //? Test Function were
 			
 			if (_isStartFire)
 			{
@@ -107,7 +110,9 @@ namespace ShooterPun2D
 			projectileRigidbody.AddForce(projectile.transform.right * _currentWeapon.ProjectileSpeed);
 
 			currentAmmoCount -= 1;
-			_currentWeapon.AmmoCount = currentAmmoCount;			
+			_currentWeapon.AmmoCount = currentAmmoCount;
+
+			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);			
 		}
 
 		public void SetWeapon(int index) //* CALL
@@ -121,6 +126,8 @@ namespace ShooterPun2D
 
 			_currentWeaponGraphics = _weaponsGraphics[index];
 			_currentWeaponGraphics.SetActive(true);
+
+			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
 		}
 
 		public void CheckAmmunition()
