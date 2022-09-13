@@ -19,7 +19,7 @@ namespace ShooterPun2D
 			{
 				if (_menus[i].MenuName == menuName) 
 				{
-					OpenMenu(_menus[i]);
+					_menus[i].Open();
 				}
 				else if (_menus[i].IsOpen)
 				{
@@ -28,7 +28,7 @@ namespace ShooterPun2D
 			}
 		}
 
-		public void OpenMenu(Menu menu)
+		public void OpenMenu(Menu menu) //* CALL
 		{
 			for (var i = 0; i < _menus.Length; i++)
 			{
