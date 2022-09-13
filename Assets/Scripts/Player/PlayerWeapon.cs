@@ -8,6 +8,7 @@ namespace ShooterPun2D
 	public class PlayerWeapon : MonoBehaviour
 	{
 		public event Action<int, Color> OnAmmoChanged;
+		public event Action<int> OnWeaponChanged;
 
 		[SerializeField] private GameObject _weaponHolder;
 		[SerializeField] private Weapon[] _weapons;
@@ -127,6 +128,7 @@ namespace ShooterPun2D
 			_currentWeaponGraphics = _weaponsGraphics[index];
 			_currentWeaponGraphics.SetActive(true);
 
+			OnWeaponChanged?.Invoke(_currentWeapon.Id);
 			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
 		}
 
@@ -136,6 +138,19 @@ namespace ShooterPun2D
 			{
 				NextWeapon();
 			}
+		}
+
+		public void SetAmmunition(int index, int value) //*CALL
+		{
+			_weapons[index].AmmoCount += value;
+			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
+		}
+
+		public void SetWeaponActivity(int index) //*CALL
+		{
+			_weapons[index].IsActive = true;
+			UpdateWeaponsMap();
+			SetWeapon(index);
 		}
 
 		public void NextWeapon() //* CALL

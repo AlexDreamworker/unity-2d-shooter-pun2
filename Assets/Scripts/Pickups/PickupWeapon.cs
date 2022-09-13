@@ -11,10 +11,8 @@ namespace ShooterPun2D
 			PlayerWeapon weapon = other.gameObject.GetComponent<PlayerWeapon>();
 			if (weapon) 
 			{
-				weapon.Weapons[(int)_weaponType].IsActive = true;
-				weapon.Weapons[(int)_weaponType].AmmoCount += _amount;
-				weapon.UpdateWeaponsMap();
-				weapon.SetWeapon((int)_weaponType);
+				weapon.SetAmmunition((int)_weaponType, _amount);
+				weapon.SetWeaponActivity((int)_weaponType);
 				base.OnTriggerEnter2D(other);
 			}
 		}
