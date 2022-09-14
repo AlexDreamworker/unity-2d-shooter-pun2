@@ -563,6 +563,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1758396666455357984}
+  - component: {fileID: 1386919307}
   m_Layer: 0
   m_Name: Body Graphics
   m_TagString: Untagged
@@ -588,6 +589,22 @@ Transform:
   m_Father: {fileID: 1758396667159058476}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1386919307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758396666455357991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1 &1758396666467628350
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,6 +901,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1758396666517387635}
   - component: {fileID: 1758396666517387634}
+  - component: {fileID: 1872902719}
   m_Layer: 0
   m_Name: Bfg
   m_TagString: Untagged
@@ -957,6 +975,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1872902719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758396666517387633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1 &1758396666517399847
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,6 +1001,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1758396666517399841}
   - component: {fileID: 1758396666517399840}
+  - component: {fileID: 1872902722}
   m_Layer: 0
   m_Name: Shotgun
   m_TagString: Untagged
@@ -1040,6 +1075,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1872902722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758396666517399847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1 &1758396666537047766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1796,6 +1847,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1758396666895283995}
+  - component: {fileID: 1386919306}
   m_Layer: 0
   m_Name: Weapon Holder
   m_TagString: Untagged
@@ -1822,6 +1874,22 @@ Transform:
   m_Father: {fileID: 1758396667159058476}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1386919306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758396666895283994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1 &1758396666917116101
 GameObject:
   m_ObjectHideFlags: 0
@@ -2303,6 +2371,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1758396667132288307}
   - component: {fileID: 1758396667132288306}
+  - component: {fileID: 1872902721}
   m_Layer: 0
   m_Name: Automat
   m_TagString: Untagged
@@ -2376,6 +2445,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1872902721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758396667132288305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1 &1758396667159058467
 GameObject:
   m_ObjectHideFlags: 0
@@ -2583,6 +2668,7 @@ MonoBehaviour:
   _playerMovement: {fileID: 1758396667159058479}
   _playerWeapon: {fileID: 1758396667159058474}
   _camera: {fileID: 8712975875049432505}
+  _hudCanvas: {fileID: 1758396667174904240}
 --- !u!114 &1758396667159058479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2701,6 +2787,13 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4917820957566058962}
+  - {fileID: 1386919307}
+  - {fileID: 1386919306}
+  - {fileID: 1872902723}
+  - {fileID: 1872902722}
+  - {fileID: 1872902721}
+  - {fileID: 1872902720}
+  - {fileID: 1872902719}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -3113,6 +3206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1758396667462534902}
   - component: {fileID: 1758396667462534901}
+  - component: {fileID: 1872902723}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
@@ -3186,6 +3280,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1872902723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758396667462534900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1 &1758396667472576273
 GameObject:
   m_ObjectHideFlags: 0
@@ -3196,6 +3306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1758396667472576275}
   - component: {fileID: 1758396667472576274}
+  - component: {fileID: 1872902720}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Untagged
@@ -3269,6 +3380,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1872902720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758396667472576273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1 &1758396667511060188
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ namespace ShooterPun2D
 		[SerializeField] private PlayerMovement _playerMovement;
 		[SerializeField] private PlayerWeapon _playerWeapon;
 		[SerializeField] private Camera _camera;
+		[SerializeField] private GameObject _hudCanvas;
 
 		private PhotonView _photonView;
 
@@ -24,6 +25,7 @@ namespace ShooterPun2D
 			if (!_photonView.IsMine)
 			{
 				Destroy(_camera.gameObject);
+				_hudCanvas.SetActive(false);
 			}
 		}
 

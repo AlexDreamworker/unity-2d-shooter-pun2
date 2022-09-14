@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 
 namespace ShooterPun2D
 {
-	[RequireComponent(typeof(Rigidbody2D))]
-	[RequireComponent(typeof(Collider2D))]
+	//[RequireComponent(typeof(Rigidbody2D))]
+	//[RequireComponent(typeof(Collider2D))]
 	public class PlayerMovement : MonoBehaviour
 	{
 		[SerializeField] private Transform _bodyGraphics;
@@ -29,6 +29,12 @@ namespace ShooterPun2D
 			_rigidbody = GetComponent<Rigidbody2D>();
 			_collider = GetComponent<Collider2D>();
 			_photonView = GetComponent<PhotonView>();
+		}
+
+		private void Start()
+		{
+			if (!_photonView.IsMine)
+				Destroy(_rigidbody);
 		}
 
 		private void Update()
