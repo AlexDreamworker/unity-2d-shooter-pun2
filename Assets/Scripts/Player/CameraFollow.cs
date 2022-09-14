@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 namespace ShooterPun2D
@@ -8,8 +9,18 @@ namespace ShooterPun2D
 		[SerializeField] private Vector3 _offset = new Vector3(0, 0, -10f);
 		[Range(1, 10)] [SerializeField] private float _smoothFactor = 3f;
 
+		private PhotonView _photonView;
+
+		private void Awake()
+		{
+			_photonView = _target.GetComponent<PhotonView>();
+		}
+
 		private void FixedUpdate()
 		{
+			if (!_photonView.IsMine)
+				return;
+
 			Follow();
 		}
 

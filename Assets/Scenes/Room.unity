@@ -718,13 +718,26 @@ GameObject:
   m_Component:
   - component: {fileID: 291793264}
   - component: {fileID: 291793263}
+  - component: {fileID: 291793262}
   m_Layer: 0
   m_Name: RoomCamera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &291793262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291793261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18a528a0e96bb1c4085036b24ca50ca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!20 &291793263
 Camera:
   m_ObjectHideFlags: 0
@@ -1581,7 +1594,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &690228873
 MonoBehaviour:
   m_ObjectHideFlags: 0

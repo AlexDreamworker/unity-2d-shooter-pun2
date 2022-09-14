@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.InputSystem;
 
 namespace ShooterPun2D
 {

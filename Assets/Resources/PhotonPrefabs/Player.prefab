@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3200967924053955874}
   - component: {fileID: 8712975875049432505}
-  - component: {fileID: 7783583633195277940}
   m_Layer: 10
   m_Name: Camera
   m_TagString: Untagged
@@ -75,21 +74,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &7783583633195277940
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 400245695236400050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4112e249def8ffb4ea2c8d7d70e86924, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _target: {fileID: 1758396667159058476}
-  _offset: {x: 0, y: 0, z: -10}
-  _smoothFactor: 3
 --- !u!1 &1758396666058826310
 GameObject:
   m_ObjectHideFlags: 0
@@ -2409,6 +2393,7 @@ GameObject:
   - component: {fileID: 1758396667159058472}
   - component: {fileID: 1758396667159058474}
   - component: {fileID: 7715262921764565110}
+  - component: {fileID: 4917820957566058962}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -2714,10 +2699,27 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 4917820957566058962}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &4917820957566058962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758396667159058467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1 &1758396667168659656
 GameObject:
   m_ObjectHideFlags: 0

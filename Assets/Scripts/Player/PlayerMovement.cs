@@ -1,4 +1,6 @@
+using Photon.Pun;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace ShooterPun2D
 {
@@ -14,6 +16,7 @@ namespace ShooterPun2D
 		private Rigidbody2D _rigidbody;
 		private Collider2D _collider;
 		private PhysicsMaterial2D _playerMaterial;
+		private PhotonView _photonView;
 
 		private float _xVelocity;
 		private float _yVelocity;
@@ -25,15 +28,22 @@ namespace ShooterPun2D
 		{
 			_rigidbody = GetComponent<Rigidbody2D>();
 			_collider = GetComponent<Collider2D>();
+			_photonView = GetComponent<PhotonView>();
 		}
 
 		private void Update()
 		{
+			if (!_photonView.IsMine)
+				return;
+
 			_isGrounded = IsGrounded();
 		}
 
 		private void FixedUpdate()
-		{			
+		{
+			if (!_photonView.IsMine)
+				return;
+
 			UpdateMovement();
 			UpdateSpriteDirection();
 		}

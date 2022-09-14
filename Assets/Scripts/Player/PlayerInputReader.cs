@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,14 +12,36 @@ namespace ShooterPun2D
 		[SerializeField] private PlayerWeapon _playerWeapon;
 		[SerializeField] private Camera _camera;
 
+		private PhotonView _photonView;
+
+		private void Awake()
+		{
+			_photonView = GetComponent<PhotonView>();
+		}
+
+		private void Start()
+		{
+			if (!_photonView.IsMine)
+			{
+				Destroy(_camera.gameObject);
+			}
+		}
+
 		public void OnMovement(InputAction.CallbackContext context)
 		{
+			if (!_photonView.IsMine)
+				return;
+
 			var direction = context.ReadValue<Vector2>().normalized;
+
 			_playerMovement.SetDirection(direction);
 		}
 
 		public void OnAim(InputAction.CallbackContext context)
 		{
+			if (!_photonView.IsMine)
+				return;
+
 			var direction = context.ReadValue<Vector2>();
 
 			//* IF UNITY EDITOR or STANDALONE WIN
@@ -38,17 +61,26 @@ namespace ShooterPun2D
 
 		public void OnShoot(InputAction.CallbackContext context)
 		{
+			if (!_photonView.IsMine) 
+				return;
+
 			var temp = context.performed ? _playerWeapon.IsStartFire = true : _playerWeapon.IsStartFire = false;
 		}
 
 		public void OnSwitchWeaponX(InputAction.CallbackContext context)
 		{
+			if (!_photonView.IsMine)
+				return; 
+
 			if (context.started) 
 				_playerWeapon.NextWeapon();			
 		}
 
 		public void OnSwitchWeaponY(InputAction.CallbackContext context)
 		{
+			if (!_photonView.IsMine)
+				return; 
+
 			if (context.started) 
 				_playerWeapon.PreviousWeapon();
 		}	
