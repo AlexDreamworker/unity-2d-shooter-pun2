@@ -51,6 +51,11 @@ namespace ShooterPun2D
 			if (string.IsNullOrEmpty(_roomNameField.text))
 				return;
 
+			RoomOptions options = new RoomOptions();
+			options.BroadcastPropsChangeToAll = true;
+			//options.PublishUserId = true; //? Check this and other options!
+			//options.MaxPlayers = 4; //?
+			
 			PhotonNetwork.CreateRoom(_roomNameField.text);
 			MenuManager.Instance.OpenMenu("loading");
 		}

@@ -1,12 +1,14 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI; //! Added TMPro!
 
 namespace ShooterPun2D
 {
 	public class HealthWidget : MonoBehaviour
 	{
 		[SerializeField] private PlayerHealth _target;
-		[SerializeField] private Text _render;
+		[SerializeField] private TMP_Text _render;
+
+		private Color color;
 
 		private void OnEnable()
 		{
@@ -24,6 +26,17 @@ namespace ShooterPun2D
 				return;
 			
 			_render.text = value.ToString();
+
+			var result = value / 100f;
+
+			if (result > 0.7f)
+			{
+				_render.color = new Color(1 - result, result, 0);
+			}
+			else
+			{
+				_render.color = new Color(1, result, 0);
+			}
 		}
 	}
 }

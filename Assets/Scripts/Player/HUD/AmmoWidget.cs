@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,7 @@ namespace ShooterPun2D
 	public class AmmoWidget : MonoBehaviour
 	{
 		[SerializeField] private PlayerWeapon _target;
-		[SerializeField] private Text _render;
+		[SerializeField] private TMP_Text _render;
 		[SerializeField] private Image _iconRender;
 
 		private void OnEnable()

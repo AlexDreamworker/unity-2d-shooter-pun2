@@ -23,7 +23,18 @@ namespace ShooterPun2D
 			if (_target == null)
 				return;
 			
-			_render.fillAmount = value / 100f;
+			var result = value / 100f;
+
+			_render.fillAmount = result;
+
+			if (result > 0.7f)
+			{
+				_render.color = new Color(1 - result, result, 0);
+			}
+			else
+			{
+				_render.color = new Color(1, result, 0);
+			}
 		}
 	}
 }

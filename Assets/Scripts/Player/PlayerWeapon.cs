@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Photon.Pun;
+using ExitGames.Client.Photon;
+using Photon.Realtime;
 
 namespace ShooterPun2D
 {
-	public class PlayerWeapon : MonoBehaviour
+	public class PlayerWeapon : MonoBehaviourPunCallbacks
 	{
 		public event Action<int, Color> OnAmmoChanged;
 		public event Action<int> OnWeaponChanged;
@@ -23,6 +26,10 @@ namespace ShooterPun2D
 
 		private Dictionary<Weapon, bool> _weaponsMap = new Dictionary<Weapon, bool>();
 
+		private PhotonView _photonView;
+
+		private ExitGames.Client.Photon.Hashtable _weaponIndexProperties = new ExitGames.Client.Photon.Hashtable(); //?
+
 		public GameObject WeaponHolder => _weaponHolder;
 		public Weapon[] Weapons => _weapons;
 
@@ -32,11 +39,23 @@ namespace ShooterPun2D
 			set => _isStartFire = value;
 		}
 
+		private void Awake()
+		{
+			_photonView = GetComponent<PhotonView>();
+		}
+
 		private void Start()
 		{
 			InitializeWeaponsGraphic();
-			UpdateWeaponsMap();	
-			SetWeapon(0);
+			UpdateWeaponsMap();
+
+			if (_photonView.IsMine)
+			{
+				_currentWeapon = _weapons[0];
+				_weaponIndexProperties["weaponIndex"] = _currentWeapon.Id;
+			}
+
+			SetWeapon(_currentWeapon.Id);
 		}
 
 		private void Update()
@@ -130,6 +149,25 @@ namespace ShooterPun2D
 
 			OnWeaponChanged?.Invoke(_currentWeapon.Id);
 			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
+
+			if (_photonView.IsMine) 
+			{
+				//?Hashtable hash = new Hashtable();
+				//?hash.Add("weaponIndex", index);
+				//?PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
+				_weaponIndexProperties["weaponIndex"] = index;
+				PhotonNetwork.SetPlayerCustomProperties(_weaponIndexProperties);
+			}
+		}
+
+		public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps) 
+		{
+			if (!_photonView.IsMine && targetPlayer == _photonView.Owner)
+			{
+				if (changedProps.ContainsKey("weaponIndex"))
+					SetWeapon((int)changedProps["weaponIndex"]);
+			}
 		}
 
 		public void CheckAmmunition()
