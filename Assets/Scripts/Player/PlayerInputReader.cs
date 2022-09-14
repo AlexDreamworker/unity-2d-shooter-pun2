@@ -9,6 +9,7 @@ namespace ShooterPun2D
 	{
 		[SerializeField] private PlayerMovement _playerMovement;
 		[SerializeField] private PlayerWeapon _playerWeapon;
+		[SerializeField] private Camera _camera;
 
 		public void OnMovement(InputAction.CallbackContext context)
 		{
@@ -20,13 +21,13 @@ namespace ShooterPun2D
 		{
 			var direction = context.ReadValue<Vector2>();
 
-			//* if UNITY EDITOR or STANDALONE WIN
-			//* and add to NewInputSystem -> Aim -> Position[Mouse]
-			var mousePosition = Camera.main.ScreenToWorldPoint((Vector3)direction) - transform.position;
+			//* IF UNITY EDITOR or STANDALONE WIN
+			//* AND ADD TO NewInputSystem -> Aim -> Position[Mouse]
+			var mousePosition = _camera.ScreenToWorldPoint((Vector3)direction) - transform.position;
 			var roundDirection = Vector2Int.RoundToInt(mousePosition);
 
-			//*if ANDROID
-			//var directionInput = Vector2Int.RoundToInt(direction);
+			//*IF ANDROID
+			//* var directionInput = Vector2Int.RoundToInt(direction);
 
 			var xClamp = Mathf.Clamp(roundDirection.x, -1, 1);
 			var yClamp = Mathf.Clamp(roundDirection.y, -1, 1);
