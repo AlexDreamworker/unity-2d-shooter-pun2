@@ -13,6 +13,8 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private SpriteRenderer _renderer;
 		private bool _isRed;
 
+		[SerializeField] private Animator _bodyLegsAnim;
+
 		private void Start()
 		{
 			_photonView = GetComponent<PhotonView>();
@@ -51,14 +53,21 @@ namespace ShooterPun2D.pt2
 		}
 
 		private void FixedUpdate()
-		{
-			if (!_photonView.IsMine) 
-				return;
+		{			
+			UpdateMovement();	
+		}
 
+		private void UpdateMovement() 
+		{
 			var xVelocity = _direction.x * _speed;
 			var yVelocity = _direction.y * _speed;
 
-			_rigidbody.velocity = new Vector2(xVelocity, yVelocity);
+			if (_photonView.IsMine) 
+			{
+				_rigidbody.velocity = new Vector2(xVelocity, yVelocity);
+			}
+			
+			_bodyLegsAnim.SetBool("is-running", _direction.x != 0);
 		}
 
 		private void UpdateSpriteDirection() 
