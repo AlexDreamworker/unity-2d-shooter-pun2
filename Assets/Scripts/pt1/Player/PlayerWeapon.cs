@@ -8,7 +8,7 @@ using Photon.Realtime;
 
 namespace ShooterPun2D
 {
-	public class PlayerWeapon : MonoBehaviourPunCallbacks
+	public class PlayerWeapon : MonoBehaviourPunCallbacks//, IPunObservable
 	{
 		public event Action<int, Color> OnAmmoChanged;
 		public event Action<int> OnWeaponChanged;
@@ -17,8 +17,8 @@ namespace ShooterPun2D
 		[SerializeField] private Weapon[] _weapons;
 		[SerializeField] private Weapon _currentWeapon;
 
-		private GameObject[] _weaponsGraphics;
-		private GameObject _currentWeaponGraphics;
+		public GameObject[] _weaponsGraphics;
+		public GameObject _currentWeaponGraphics;
 
 		private Vector2 _direction;
 		private float _timeToShoot;
@@ -28,7 +28,7 @@ namespace ShooterPun2D
 
 		private PhotonView _photonView;
 
-		private ExitGames.Client.Photon.Hashtable _weaponIndexProperties = new ExitGames.Client.Photon.Hashtable(); //?
+		//private ExitGames.Client.Photon.Hashtable _weaponIndexProperties = new ExitGames.Client.Photon.Hashtable(); //?
 
 		public GameObject WeaponHolder => _weaponHolder;
 		public Weapon[] Weapons => _weapons;
@@ -48,14 +48,13 @@ namespace ShooterPun2D
 		{
 			InitializeWeaponsGraphic();
 			UpdateWeaponsMap();
+			SetWeapon(0);
 
-			if (_photonView.IsMine)
-			{
-				_currentWeapon = _weapons[0];
-				_weaponIndexProperties["weaponIndex"] = _currentWeapon.Id;
-			}
-
-			SetWeapon(_currentWeapon.Id);
+			//if (_photonView.IsMine)
+			//{
+				//_currentWeapon = _weapons[0];
+				//_weaponIndexProperties["weaponIndex"] = _currentWeapon.Id;
+			//}
 		}
 
 		private void Update()
@@ -150,25 +149,25 @@ namespace ShooterPun2D
 			OnWeaponChanged?.Invoke(_currentWeapon.Id);
 			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
 
-			if (_photonView.IsMine) 
-			{
+			//if (_photonView.IsMine) 
+			//{
 				//?Hashtable hash = new Hashtable();
 				//?hash.Add("weaponIndex", index);
 				//?PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
-				_weaponIndexProperties["weaponIndex"] = index;
-				PhotonNetwork.SetPlayerCustomProperties(_weaponIndexProperties);
-			}
+				//_weaponIndexProperties["weaponIndex"] = index;
+				//PhotonNetwork.SetPlayerCustomProperties(_weaponIndexProperties);
+			//}
 		}
 
-		public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps) 
-		{
-			if (!_photonView.IsMine && targetPlayer == _photonView.Owner)
-			{
-				if (changedProps.ContainsKey("weaponIndex"))
-					SetWeapon((int)changedProps["weaponIndex"]);
-			}
-		}
+		// public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps) 
+		// {
+		// 	if (!_photonView.IsMine && targetPlayer == _photonView.Owner)
+		// 	{
+		// 		if (changedProps.ContainsKey("weaponIndex"))
+		// 			SetWeapon((int)changedProps["weaponIndex"]);
+		// 	}
+		// }
 
 		public void CheckAmmunition()
 		{
@@ -218,6 +217,18 @@ namespace ShooterPun2D
 
 			SetWeapon(_weaponsMap.Keys.Last().Id);
 		}
-	}
+
+        // public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        // {
+        //     if (stream.IsWriting) 
+		// 	{
+		// 		stream.SendNext(_weaponHolder.transform.rotation);
+		// 	}
+		// 	else 
+		// 	{
+		// 		_weaponHolder.transform.rotation = (Quaternion)stream.ReceiveNext();
+		// 	}
+        // }
+    }
 }
 
