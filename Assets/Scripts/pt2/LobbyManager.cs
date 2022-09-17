@@ -21,7 +21,9 @@ namespace ShooterPun2D.pt2
 
 			PhotonNetwork.AutomaticallySyncScene = true;
 			PhotonNetwork.GameVersion = "1.0";
-			PhotonNetwork.ConnectUsingSettings();
+
+			if (!PhotonNetwork.IsConnected)
+				PhotonNetwork.ConnectUsingSettings();
 		}
 
 		public override void OnConnectedToMaster() 

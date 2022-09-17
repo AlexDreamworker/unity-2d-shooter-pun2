@@ -6,14 +6,19 @@ namespace ShooterPun2D.pt2
 {
 	public class PlayerControls : MonoBehaviour, IPunObservable
 	{
+		[SerializeField] private Animator _bodyLegsAnim;
+		[SerializeField] private Animator _bodyTorsoAnim;
+		[SerializeField] private SpriteRenderer _renderer;
+		[SerializeField] private Camera _camera;
 		[SerializeField] private float _speed = 8f;
+		
 		private PhotonView _photonView;
 		private Rigidbody2D _rigidbody;
-		private Vector2 _direction;
-		[SerializeField] private SpriteRenderer _renderer;
-		private bool _isRed;
+		
+		private Vector2 _moveDirection;
+		private Vector2 _aimDirection;
 
-		[SerializeField] private Animator _bodyLegsAnim;
+		private bool _isRed;
 
 		private void Start()
 		{
@@ -21,7 +26,10 @@ namespace ShooterPun2D.pt2
 			_rigidbody = GetComponent<Rigidbody2D>();	
 
 			if (!_photonView.IsMine) 
+			{
 				Destroy(_rigidbody);
+				Destroy(_camera);
+			}
 		}
 
 		//!----PLAYER---INPUT------------------------------------------------------------------------
@@ -30,7 +38,21 @@ namespace ShooterPun2D.pt2
 			if (!_photonView.IsMine) 
 				return;
 
-			_direction = context.ReadValue<Vector2>();
+			_moveDirection = context.ReadValue<Vector2>();
+		}
+
+		public void OnAim(InputAction.CallbackContext context) 
+		{
+			if (!_photonView.IsMine)
+				return;
+			
+			//if (context.performed)
+			//{
+				var dir = context.ReadValue<Vector2>();
+				var roundDir = Vector2Int.RoundToInt(dir);
+
+				_aimDirection = roundDir;
+			//}
 		}
 
 		public void OnShoot(InputAction.CallbackContext context) 
@@ -50,31 +72,46 @@ namespace ShooterPun2D.pt2
 		{
 			UpdateSpriteDirection();
 			Shoot();
+
+			Debug.Log(_aimDirection);
 		}
 
 		private void FixedUpdate()
 		{			
-			UpdateMovement();	
+			UpdateMovement();
+			UpdateAim();	
 		}
 
 		private void UpdateMovement() 
 		{
-			var xVelocity = _direction.x * _speed;
-			var yVelocity = _direction.y * _speed;
+			var xVelocity = _moveDirection.x * _speed;
+			var yVelocity = _moveDirection.y * _speed;
 
 			if (_photonView.IsMine) 
 			{
 				_rigidbody.velocity = new Vector2(xVelocity, yVelocity);
 			}
-			
-			_bodyLegsAnim.SetBool("is-running", _direction.x != 0);
+
+			_bodyLegsAnim.SetBool("is-running", _moveDirection.x != 0);
+		}
+
+		private void UpdateAim() 
+		{
+			var xVelocity = _aimDirection.x;
+			var yVelocity = _aimDirection.y;
+
+			if (xVelocity != 0 || yVelocity != 0) 
+			{
+				_bodyTorsoAnim.SetFloat("x", xVelocity);
+				_bodyTorsoAnim.SetFloat("y", yVelocity);
+			}			
 		}
 
 		private void UpdateSpriteDirection() 
 		{
-			if (_direction.x > 0) 
+			if (_moveDirection.x > 0) 
 				_renderer.transform.localScale = new Vector3(1, 1, 1);
-			else if (_direction.x < 0) 
+			else if (_moveDirection.x < 0) 
 				_renderer.transform.localScale = new Vector3(-1, 1, 1);
 		}
 
@@ -91,12 +128,14 @@ namespace ShooterPun2D.pt2
 			if (stream.IsWriting)
 			{
 				stream.SendNext(_isRed);
-				stream.SendNext(_direction);
+				stream.SendNext(_moveDirection);
+				stream.SendNext(_aimDirection);
 			}
 			else 
 			{
 				_isRed = (bool)stream.ReceiveNext();
-				_direction = (Vector2)stream.ReceiveNext();
+				_moveDirection = (Vector2)stream.ReceiveNext();
+				_aimDirection = (Vector2)stream.ReceiveNext();
 			}
         }
     }

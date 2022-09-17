@@ -201,7 +201,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 340921433}
   m_OnClick:
     m_PersistentCalls:
@@ -502,7 +502,6 @@ GameObject:
   m_Component:
   - component: {fileID: 459323351}
   - component: {fileID: 459323350}
-  - component: {fileID: 459323349}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -510,14 +509,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &459323349
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 459323348}
-  m_Enabled: 1
 --- !u!20 &459323350
 Camera:
   m_ObjectHideFlags: 0
@@ -653,7 +644,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 519095673}
   m_OnClick:
     m_PersistentCalls:
