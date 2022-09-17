@@ -1,3 +1,4 @@
+using System.Collections;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,9 +9,19 @@ namespace ShooterPun2D.pt2
 	{
 		[SerializeField] private Animator _bodyLegsAnim;
 		[SerializeField] private Animator _bodyTorsoAnim;
-		[SerializeField] private SpriteRenderer _renderer;
+		[SerializeField] private SpriteRenderer _rendererLegs;
+		[SerializeField] private SpriteRenderer _rendererTorso;
+		[SerializeField] private GameObject _inputCanvas;
+		[SerializeField] private Transform _shootPoint;
+		[SerializeField] private GameObject _pistolProjectile;
+		[SerializeField] private float _bulletForce = 1000f;
 		[SerializeField] private Camera _camera;
 		[SerializeField] private float _speed = 8f;
+		[SerializeField] private float _fireRate;
+		private float _shootCooldown;
+
+		[Space]
+		[SerializeField] private int _health = 100;
 		
 		private PhotonView _photonView;
 		private Rigidbody2D _rigidbody;
@@ -18,17 +29,21 @@ namespace ShooterPun2D.pt2
 		private Vector2 _moveDirection;
 		private Vector2 _aimDirection;
 
-		private bool _isRed;
+		private bool _isYellow;
 
 		private void Start()
 		{
 			_photonView = GetComponent<PhotonView>();
-			_rigidbody = GetComponent<Rigidbody2D>();	
+			_rigidbody = GetComponent<Rigidbody2D>();
+
+			_bodyTorsoAnim.SetFloat("x", 1);
+			_bodyTorsoAnim.SetFloat("y", 0);	
 
 			if (!_photonView.IsMine) 
 			{
 				Destroy(_rigidbody);
 				Destroy(_camera);
+				Destroy(_inputCanvas);
 			}
 		}
 
@@ -61,19 +76,21 @@ namespace ShooterPun2D.pt2
 				return;
 
 			if (context.started)
-				_isRed = true;
+			{
+				_isYellow = true;
+				//?Shoot();
+			}
 
 			if (context.canceled)
-				_isRed = false;
+				_isYellow = false;
 		}
 		//!----PLAYER---INPUT------------------------------------------------------------------------
 
 		private void Update()
 		{
 			UpdateSpriteDirection();
-			Shoot();
-
-			Debug.Log(_aimDirection);
+			//?SetYellowColor();
+			TryFire();
 		}
 
 		private void FixedUpdate()
@@ -110,34 +127,68 @@ namespace ShooterPun2D.pt2
 		private void UpdateSpriteDirection() 
 		{
 			if (_moveDirection.x > 0) 
-				_renderer.transform.localScale = new Vector3(1, 1, 1);
+				_rendererLegs.transform.localScale = new Vector3(1, 1, 1);
 			else if (_moveDirection.x < 0) 
-				_renderer.transform.localScale = new Vector3(-1, 1, 1);
+				_rendererLegs.transform.localScale = new Vector3(-1, 1, 1);
+		}
+
+		private void SetYellowColor() 
+		{
+			if (_isYellow) 
+			{
+				_rendererLegs.color = Color.yellow;
+				_rendererTorso.color = Color.yellow;
+			}
+			else
+			{
+				_rendererLegs.color = Color.white;
+				_rendererTorso.color = Color.white;
+			} 
+		}
+
+		private void TryFire() 
+		{
+			if (Time.time > _shootCooldown) 
+			{
+				_shootCooldown = Time.time + 1 / _fireRate;
+				Shoot();
+			}
 		}
 
 		private void Shoot() 
 		{
-			if (_isRed) 
-				_renderer.color = Color.red;
-			else 
-				_renderer.color = Color.white;
+			if (_aimDirection.x == 0 && _aimDirection.y == 0)
+				return;
+
+			if (_aimDirection.x != 0 || _aimDirection.y != 0)
+			{
+				Vector2 bulletSpawnPoint = new Vector2(_shootPoint.position.x, _shootPoint.position.y);
+				GameObject bullet = PhotonNetwork.Instantiate(_pistolProjectile.name, bulletSpawnPoint, Quaternion.identity);
+				bullet.GetComponent<Rigidbody2D>().AddForce(_aimDirection * _bulletForce);
+			}
 		}
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
 			if (stream.IsWriting)
 			{
-				stream.SendNext(_isRed);
+				stream.SendNext(_isYellow);
 				stream.SendNext(_moveDirection);
 				stream.SendNext(_aimDirection);
 			}
 			else 
 			{
-				_isRed = (bool)stream.ReceiveNext();
+				_isYellow = (bool)stream.ReceiveNext();
 				_moveDirection = (Vector2)stream.ReceiveNext();
 				_aimDirection = (Vector2)stream.ReceiveNext();
 			}
         }
+
+		[PunRPC]
+		private void TakeDamage(int value) 
+		{
+			_health -= value;
+		}
     }
 }
 
