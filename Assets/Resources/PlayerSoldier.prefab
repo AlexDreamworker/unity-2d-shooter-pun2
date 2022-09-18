@@ -546,9 +546,12 @@ GameObject:
   - component: {fileID: 7255570592376068303}
   - component: {fileID: 291534959840254754}
   - component: {fileID: 8695026299494981086}
-  - component: {fileID: 3900094687936693277}
   - component: {fileID: 3552838779387740408}
   - component: {fileID: 6386690363636727087}
+  - component: {fileID: 918210607612159655}
+  - component: {fileID: 3702632298299029078}
+  - component: {fileID: 5183032315513407570}
+  - component: {fileID: 3880659836824918887}
   m_Layer: 10
   m_Name: PlayerSoldier
   m_TagString: Player
@@ -638,8 +641,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3900094687936693277}
-        m_TargetAssemblyTypeName: ShooterPun2D.PlayerControls, Assembly-CSharp
+      - m_Target: {fileID: 918210607612159655}
+        m_TargetAssemblyTypeName: ShooterPun2D.pt2.PlayerInputReader, Assembly-CSharp
         m_MethodName: OnMovement
         m_Mode: 0
         m_Arguments:
@@ -654,8 +657,8 @@ MonoBehaviour:
     m_ActionName: Player/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3900094687936693277}
-        m_TargetAssemblyTypeName: ShooterPun2D.pt2.PlayerControls, Assembly-CSharp
+      - m_Target: {fileID: 918210607612159655}
+        m_TargetAssemblyTypeName: ShooterPun2D.pt2.PlayerInputReader, Assembly-CSharp
         m_MethodName: OnAim
         m_Mode: 0
         m_Arguments:
@@ -669,19 +672,7 @@ MonoBehaviour:
     m_ActionId: 48720ece-c7c2-4a2d-b141-29d0156aaab1
     m_ActionName: Player/Aim[/Mouse/position]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3900094687936693277}
-        m_TargetAssemblyTypeName: ShooterPun2D.PlayerControls, Assembly-CSharp
-        m_MethodName: OnShoot
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 825903bc-3567-4ddc-b91a-71cb213cc74a
     m_ActionName: Player/Shoot[/Mouse/leftButton]
   - m_PersistentCalls:
@@ -701,30 +692,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &3900094687936693277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8274303792058633020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1b17558711d444d9734107e102e544, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bodyLegsAnim: {fileID: 8354898452502936042}
-  _bodyTorsoAnim: {fileID: 8789880311600375253}
-  _rendererLegs: {fileID: 8274303792368562267}
-  _rendererTorso: {fileID: 7643823679839842989}
-  _inputCanvas: {fileID: 3405360086771949678}
-  _shootPoint: {fileID: 8842060703909536906}
-  _pistolProjectile: {fileID: 2074109522506022324, guid: d41be21143abc314188105abb82abe8b, type: 3}
-  _bulletForce: 2000
-  _camera: {fileID: 2193537630811120293}
-  _speed: 15
-  _fireRate: 5
-  _health: 100
 --- !u!114 &3552838779387740408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -744,8 +711,9 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 3900094687936693277}
   - {fileID: 6386690363636727087}
+  - {fileID: 3702632298299029078}
+  - {fileID: 5183032315513407570}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -765,6 +733,65 @@ MonoBehaviour:
   m_SynchronizeRotation: 0
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &918210607612159655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8274303792058633020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af18fbbacdad50418440ade51318c23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 2193537630811120293}
+  _inputCanvas: {fileID: 3405360086771949678}
+--- !u!114 &3702632298299029078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8274303792058633020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2514b7241e4dfa84c998be333e291f87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bodyLegsAnim: {fileID: 8354898452502936042}
+  _rendererLegs: {fileID: 8274303792368562267}
+  _speed: 15
+--- !u!114 &5183032315513407570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8274303792058633020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fb04ea71f7c0cb4cb3de78e10e9dd8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bodyTorsoAnim: {fileID: 8789880311600375253}
+  _shootPoint: {fileID: 8842060703909536906}
+  _pistolProjectile: {fileID: 2074109522506022324, guid: d41be21143abc314188105abb82abe8b, type: 3}
+  _bulletForce: 100
+  _fireRate: 3
+--- !u!114 &3880659836824918887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8274303792058633020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 375be4e445c9a32469a91199e9f86d07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 100
 --- !u!1 &8274303792368562269
 GameObject:
   m_ObjectHideFlags: 0
