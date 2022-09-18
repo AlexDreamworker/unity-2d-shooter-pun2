@@ -32,6 +32,8 @@ namespace ShooterPun2D.pt2
         	_currentHealth -= value;
 			OnHealthChanged?.Invoke(_currentHealth);
         }
+
+
     }
 }
 

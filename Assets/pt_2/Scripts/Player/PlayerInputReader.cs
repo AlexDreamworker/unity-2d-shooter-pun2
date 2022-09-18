@@ -30,10 +30,7 @@ namespace ShooterPun2D.pt2
 				Destroy(_inputCanvas);
 			}
 
-			//if (_photonView.IsMine) 
-			//{
-				_nickNameText.text = _photonView.Owner.NickName; //todo: refactoring!
-			//}
+			_nickNameText.text = _photonView.Owner.NickName; //todo: refactoring!
 		}
 
 		public void OnMovement(InputAction.CallbackContext context) 

@@ -7,25 +7,16 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private int _damage = 1;
 		private Rigidbody2D _rigidbody;
 
-		private void Start()
+		private void Awake()
 		{
 			_rigidbody = GetComponent<Rigidbody2D>();
 		}
 
-		// private void OnCollisionEnter2D(Collision2D other)
-		// {
-		// 	PlayerHealth health = other.gameObject.GetComponent<PlayerHealth>();
-		// 	if (health != null)
-		// 	{
-		// 		health.TakeDamage(_damage);
-		// 		Destroy(this.gameObject);
-		// 	}
-
-		// 	else if (other.gameObject.CompareTag("Ground")) 
-		// 	{
-		// 		Destroy(this.gameObject);
-		// 	}
-		// }
+		public void SetVelocity(Vector2 direction, float force) 
+		{
+			_rigidbody.velocity = direction * force;
+			Debug.Log("<Color=Red>Velocity:</Color> " + _rigidbody.velocity);
+		}
 
 		private void OnTriggerEnter2D(Collider2D other)
 		{
