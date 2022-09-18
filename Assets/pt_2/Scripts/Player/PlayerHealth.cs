@@ -1,3 +1,4 @@
+using System;
 using Photon.Pun;
 using UnityEngine;
 
@@ -5,7 +6,9 @@ namespace ShooterPun2D.pt2
 {
 	public class PlayerHealth : MonoBehaviour
 	{
-		[SerializeField] private int _health = 100;
+		public event Action<int> OnHealthChanged;
+		[SerializeField] private int _currentHealth = 100;
+		private int _maxHealth;
 		private PhotonView _photonView;
 
 		private void Awake()
@@ -13,17 +16,22 @@ namespace ShooterPun2D.pt2
 			_photonView = GetComponent<PhotonView>();
 		}
 
-		public void TakeDamage(int value) 
+		private void Start()
 		{
-			//if (!_photonView.IsMine)
-				_photonView.RPC("Damage", RpcTarget.All, value);
+			OnHealthChanged?.Invoke(_currentHealth);
 		}
 
-		[PunRPC]
-		private void Damage(int value) 
+		public void TakeDamage(int value) 
 		{
-			_health -= value;
+			_photonView.RPC("Damage", RpcTarget.All, value);
 		}
-	}
+
+        [PunRPC]
+        private void Damage(int value) 
+        {
+        	_currentHealth -= value;
+			OnHealthChanged?.Invoke(_currentHealth);
+        }
+    }
 }
 

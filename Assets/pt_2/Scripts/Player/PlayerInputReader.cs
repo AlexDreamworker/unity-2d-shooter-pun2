@@ -1,4 +1,5 @@
 using Photon.Pun;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,11 +7,13 @@ namespace ShooterPun2D.pt2
 {
 	public class PlayerInputReader : MonoBehaviour
 	{
-		[SerializeField] private Camera _camera;
-		[SerializeField] private GameObject _inputCanvas;
+		[SerializeField] private Camera _camera; //todo: refactoring!
+		[SerializeField] private GameObject _inputCanvas; //todo: refactoring!
 		private PlayerMovement _playerMovement;
 		private PlayerWeapon _playerWeapon;
 		private PhotonView _photonView;
+
+		[SerializeField] private TMP_Text _nickNameText; //todo: refactoring!
 
 		private void Awake()
 		{
@@ -26,6 +29,11 @@ namespace ShooterPun2D.pt2
 				Destroy(_camera);
 				Destroy(_inputCanvas);
 			}
+
+			//if (_photonView.IsMine) 
+			//{
+				_nickNameText.text = _photonView.Owner.NickName; //todo: refactoring!
+			//}
 		}
 
 		public void OnMovement(InputAction.CallbackContext context) 

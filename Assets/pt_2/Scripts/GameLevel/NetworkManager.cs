@@ -17,7 +17,7 @@ namespace ShooterPun2D.pt2
 			PhotonNetwork.Instantiate(_playerPrefab.name, randomPosition, Quaternion.identity);
 
 			//Регистрация кастомного типа данных с сериализацией / десериализацией
-			PhotonPeer.RegisterType(typeof(Vector2Int), 242, SerializeVector2Int, DeserializeVector2Int);
+			//?PhotonPeer.RegisterType(typeof(Vector2Int), 242, SerializeVector2Int, DeserializeVector2Int);
 		}
 
 		public void Leave() 
@@ -43,26 +43,26 @@ namespace ShooterPun2D.pt2
 		}	
 
 		//?----CUSTOM---TYPE---SERIALIZE-/-DESERIALIZE------------------------------------------------------
-		public static object DeserializeVector2Int(byte[] data) 
-		{
-			Vector2Int result = new Vector2Int();
+		// public static object DeserializeVector2Int(byte[] data) 
+		// {
+		// 	Vector2Int result = new Vector2Int();
 
-			result.x = BitConverter.ToInt32(data, 0);
-			result.y = BitConverter.ToInt32(data, 4);
+		// 	result.x = BitConverter.ToInt32(data, 0);
+		// 	result.y = BitConverter.ToInt32(data, 4);
 			
-			return result;
-		}	
+		// 	return result;
+		// }	
 
-		public static byte[] SerializeVector2Int(object obj) 
-		{
-			Vector2Int vector = (Vector2Int)obj;
-			byte[] result = new byte[8];
+		// public static byte[] SerializeVector2Int(object obj) 
+		// {
+		// 	Vector2Int vector = (Vector2Int)obj;
+		// 	byte[] result = new byte[8];
 
-			BitConverter.GetBytes(vector.x).CopyTo(result, 0);
-			BitConverter.GetBytes(vector.y).CopyTo(result, 4);
+		// 	BitConverter.GetBytes(vector.x).CopyTo(result, 0);
+		// 	BitConverter.GetBytes(vector.y).CopyTo(result, 4);
 
-			return result;
-		}
+		// 	return result;
+		// }
 		//?----CUSTOM---TYPE---SERIALIZE-/-DESERIALIZE------------------------------------------------------
 	}
 }

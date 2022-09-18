@@ -11,13 +11,17 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private Button _createButton;
 		[SerializeField] private Button _joinButton;
 
+		[SerializeField] private TMP_InputField _nickNameInputField;
+
 		private void Start()
 		{
 			_createButton.interactable = false;
 			_joinButton.interactable = false;
 			
-			PhotonNetwork.NickName = "Player " + Random.Range(1000, 9999);
-			Log("Player's name is set to " + PhotonNetwork.NickName);
+			string nickName = PlayerPrefs.GetString("NickName", "Player " + Random.Range(1000, 9999));
+			_nickNameInputField.text = nickName;
+			PhotonNetwork.NickName = nickName;
+			Log("Player's name is set to " + nickName);
 
 			PhotonNetwork.AutomaticallySyncScene = true;
 			PhotonNetwork.GameVersion = "1.0";
@@ -35,11 +39,15 @@ namespace ShooterPun2D.pt2
 
 		public void CreateRoom() 
 		{
+			PhotonNetwork.NickName = _nickNameInputField.text;
+			PlayerPrefs.SetString("NickName", _nickNameInputField.text);
 			PhotonNetwork.CreateRoom(null, new Photon.Realtime.RoomOptions { MaxPlayers = 3});
 		}
 
 		public void JoinRoom() 
 		{
+			PhotonNetwork.NickName = _nickNameInputField.text;
+			PlayerPrefs.SetString("NickName", _nickNameInputField.text);
 			PhotonNetwork.JoinRandomRoom();
 		}
 
