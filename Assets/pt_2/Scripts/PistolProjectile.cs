@@ -15,7 +15,7 @@ namespace ShooterPun2D.pt2
 		public void SetVelocity(Vector2 direction, float force) 
 		{
 			_rigidbody.velocity = direction * force;
-			Debug.Log("<Color=Red>Velocity:</Color> " + _rigidbody.velocity);
+			//Debug.Log("<Color=Red>Velocity:</Color> " + _rigidbody.velocity);
 		}
 
 		private void OnTriggerEnter2D(Collider2D other)

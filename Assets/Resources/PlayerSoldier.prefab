@@ -853,6 +853,70 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MovementRange: 150
   m_ControlPath: <Gamepad>/leftStick
+--- !u!1 &6439941381320346875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7101803368974071931}
+  - component: {fileID: 4678432900639279275}
+  - component: {fileID: 4188752699333125231}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7101803368974071931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6439941381320346875}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8274303792058633019}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &4678432900639279275
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6439941381320346875}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -1}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!114 &4188752699333125231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6439941381320346875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6198c40848b1fb48854dd1825840c14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  IsTouchingLayer: 0
 --- !u!1 &6970503175318716966
 GameObject:
   m_ObjectHideFlags: 0
@@ -1073,6 +1137,7 @@ Transform:
   - {fileID: 5500267637056369343}
   - {fileID: 7169608053459889303}
   - {fileID: 7389081683710027407}
+  - {fileID: 7101803368974071931}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1107,7 +1172,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 10
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -1263,7 +1328,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bodyLegsAnim: {fileID: 8354898452502936042}
   _rendererLegs: {fileID: 8274303792368562267}
+  _groundCheck: {fileID: 4188752699333125231}
   _speed: 15
+  _jumpSpeed: 15
 --- !u!114 &5183032315513407570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1415,6 +1482,15 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: is-running
+  - Type: 4
+    SynchronizeType: 0
+    Name: is-ground
+  - Type: 1
+    SynchronizeType: 0
+    Name: vertical-velocity
+  - Type: 9
+    SynchronizeType: 0
+    Name: hit
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
