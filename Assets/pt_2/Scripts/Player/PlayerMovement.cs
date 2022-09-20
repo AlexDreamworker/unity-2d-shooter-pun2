@@ -33,7 +33,6 @@ namespace ShooterPun2D.pt2
 
 		private void Update()
 		{
-			
 			_isGrounded = IsGrounded();
 		}
 
@@ -44,14 +43,14 @@ namespace ShooterPun2D.pt2
 		}
 
 		private void UpdateMovement() 
-		{
+		{	
+			if (!_photonView.IsMine) 
+				return;
+
 			var xVelocity = _direction.x * _speed;
 			var yVelocity = CalculateYVelocity();
 
-			if (_photonView.IsMine) 
-			{
-				_rigidbody.velocity = new Vector2(xVelocity, yVelocity);
-			}
+			_rigidbody.velocity = new Vector2(xVelocity, yVelocity);
 
 			_bodyLegsAnim.SetBool("is-running", _direction.x != 0);
 			_bodyLegsAnim.SetBool("is-ground", _isGrounded);
