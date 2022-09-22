@@ -52,6 +52,24 @@ namespace ShooterPun2D.pt2
 
 			_playerWeapon.SetDirection(roundDirection);
 		}
+
+		public void OnNextWeapon(InputAction.CallbackContext context) 
+		{
+			if (!_photonView.IsMine)
+				return;
+			
+			if (context.started) 
+				_playerWeapon.NextWeapon();
+		}
+
+		public void OnPreviousWeapon(InputAction.CallbackContext context)
+		{
+			if (!_photonView.IsMine)
+				return;
+
+			if (context.started) 
+				_playerWeapon.PreviousWeapon();
+		}
 	}
 }
 

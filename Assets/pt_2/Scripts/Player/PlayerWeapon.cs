@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using UnityEngine;
 
@@ -5,8 +8,18 @@ namespace ShooterPun2D.pt2
 {
 	public class PlayerWeapon : MonoBehaviour, IPunObservable
 	{
+		//?public event Action<int, Color> OnAmmoChanged;
+		//?public event Action<int> OnWeaponChanged;
+		[SerializeField] private Weapon[] _weapons;
+		[SerializeField] private Weapon _currentWeapon;
+
+		public Weapon[] Weapons => _weapons;
+
+		private int _currentAmmoCount;
+		
 		[SerializeField] private Animator _bodyTorsoAnim;
 		[SerializeField] private Transform _shootPoint;
+		//[SerializeField] private Color _shootPointColor;
 		[SerializeField] private GameObject _pistolProjectile;
 		[SerializeField] private float _bulletForce = 1000f;
 		[SerializeField] private float _fireRate;
@@ -17,12 +30,15 @@ namespace ShooterPun2D.pt2
 		private void Awake()
 		{
 			_photonView = GetComponent<PhotonView>();
+			//_shootPointColor = GetComponent<SpriteRenderer>().color;
 		}
 
 		private void Start()
 		{
 			_bodyTorsoAnim.SetFloat("x", 1);
 			_bodyTorsoAnim.SetFloat("y", 0);
+
+			SetWeapon(0);
 		}
 
 		private void Update()
@@ -55,6 +71,13 @@ namespace ShooterPun2D.pt2
 
 		private void TryFire() 
 		{
+			CheckAmmunition();
+
+			_currentAmmoCount = _currentWeapon.AmmoCount;
+
+			// if (_currentWeapon.AmmoCount <= 0)
+			// 	return;
+
 			if (Time.time > _shootCooldown) 
 			{
 				_photonView.RPC("RpcShoot", RpcTarget.All, _direction, _bulletForce);
@@ -65,12 +88,12 @@ namespace ShooterPun2D.pt2
 		[PunRPC]
 		private void RpcShoot(Vector2 dir, float force) 
 		{
-			//Vector2 bulletSpawnPoint = new Vector2(_shootPoint.position.x, _shootPoint.position.y);
-			GameObject bullet = Instantiate(_pistolProjectile, _shootPoint.position, Quaternion.identity);
-			//bullet.GetComponent<Rigidbody2D>().AddForce(_direction * _bulletForce);
-
-			//bullet.GetComponent<Rigidbody2D>().velocity = _direction * _bulletForce;
+			GameObject bullet = Instantiate(_currentWeapon.ProjectilePrefab, _shootPoint.position, Quaternion.identity);
 			bullet.GetComponent<PistolProjectile>().SetVelocity(dir, force);
+
+			_currentAmmoCount -= 1;
+			_currentWeapon.AmmoCount = _currentAmmoCount;
+			//OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
 		}	
 
 		public void SetDirection(Vector2 direction) 
@@ -89,6 +112,65 @@ namespace ShooterPun2D.pt2
 				_direction = (Vector2)stream.ReceiveNext();
 			}
         }
+
+		//!-------W-E-A-P-O-N-S----L-O-G-I-C------------------------------------
+
+		public void SetWeapon(int index) //* CALL
+		{
+			_currentWeapon = _weapons[index];
+
+			//?OnWeaponChanged?.Invoke(_currentWeapon.Id);
+			//?OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
+		}
+		
+		public void CheckAmmunition()
+		{
+			if (_currentWeapon.AmmoCount == 0)
+			{
+				NextWeapon();
+			}
+		}
+
+		// public void SetAmmunition(int index, int value) //*CALL
+		// {
+		// 	_weapons[index].AmmoCount += value;
+		// 	OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
+		// }
+
+		// public void SetWeaponActivity(int index) //*CALL
+		// {
+		// 	_weapons[index].IsActive = true;
+		// 	UpdateWeaponsMap();
+		// 	SetWeapon(index);
+		// }
+
+		public void NextWeapon() //* CALL
+		{
+			foreach (var weapon in _weapons.Where(w => w.IsActive)) 
+			{
+				if (weapon.Id > _currentWeapon.Id && weapon.AmmoCount != 0) 
+				{
+					SetWeapon(weapon.Id);
+					return;
+				}
+			}	
+
+			//?SetWeapon(_weaponsMap.Keys.First().Id);
+		}
+
+		public void PreviousWeapon() //* CALL 
+		{	
+			foreach (var weapon in _weapons.Where(w => w.IsActive).Reverse()) //! where is bug?
+			{
+				if (weapon.Id < _currentWeapon.Id && weapon.AmmoCount != 0)
+				{
+					SetWeapon(weapon.Id);
+					return;
+				}
+			}
+
+			//?SetWeapon(_weaponsMap.Keys.Last().Id);
+		}
     }
 }
 

@@ -8,6 +8,7 @@ namespace ShooterPun2D.pt2
 	{
 		public event Action<int> OnHealthChanged;
 		public event Action OnPlayerDead;
+		//public event Action OnPlayerAlive;
 
 		[SerializeField] private int _currentHealth = 100;
 		private int _maxHealth = 100;
@@ -36,6 +37,10 @@ namespace ShooterPun2D.pt2
 				{
 					OnPlayerDead?.Invoke();
 				}
+				//if (_currentHealth == _maxHealth) 
+				//{
+					//OnPlayerAlive?.Invoke();
+				//}
 			}
 		}
 
@@ -70,7 +75,10 @@ namespace ShooterPun2D.pt2
 
 		public void TakeDamage(int value) 
 		{
-			_photonView.RPC("Damage", RpcTarget.All, value);
+			if (_photonView.IsMine)
+			{
+				_photonView.RPC("Damage", RpcTarget.All, value);
+			}
 		}
 
         [PunRPC]
