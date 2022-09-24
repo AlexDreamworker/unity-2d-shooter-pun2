@@ -11,7 +11,7 @@ namespace ShooterPun2D.pt2
 		public event Action<int, Color> OnAmmoChanged;
 		public event Action<int> OnWeaponChanged;
 		[SerializeField] private Weapon[] _weapons;
-		[SerializeField] private Weapon _currentWeapon;
+		private Weapon _currentWeapon;
 
 		public Weapon[] Weapons => _weapons;
 
@@ -20,6 +20,7 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private Animator _bodyTorsoAnim;
 		[SerializeField] private Transform _shootPoint;
 		[SerializeField] private SpriteRenderer _shootPointColor;
+		[SerializeField] private GameObject _aimPoint;
 		//[SerializeField] private GameObject _pistolProjectile;
 		[SerializeField] private float _bulletForce = 1000f;
 		[SerializeField] private float _fireRate;
@@ -38,6 +39,11 @@ namespace ShooterPun2D.pt2
 			_bodyTorsoAnim.SetFloat("y", 0);
 
 			SetWeapon(0);
+
+			if (!_photonView.IsMine) 
+			{
+				_aimPoint.SetActive(false);
+			}
 		}
 
 		private void Update()
