@@ -2,7 +2,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 
-namespace ShooterPun2D.pt1
+namespace ShooterPun2D.pt2
 {
 	public class RoomListItem : MonoBehaviour
 	{

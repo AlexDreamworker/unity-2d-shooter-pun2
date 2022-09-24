@@ -3,7 +3,7 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.InputSystem;
 
-namespace ShooterPun2D.pt1
+namespace ShooterPun2D.pt2
 {
 	public class PlayerManager : MonoBehaviour
 	{

@@ -7,7 +7,6 @@ namespace ShooterPun2D.pt2
 	public class PauseMenu : MonoBehaviourPunCallbacks
 	{
 		[SerializeField] private GameObject _menuHolder;
-
 		private bool _isOpen = false;
 
 		private void Start()

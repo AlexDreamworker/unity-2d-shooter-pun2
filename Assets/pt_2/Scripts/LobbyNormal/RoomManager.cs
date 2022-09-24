@@ -3,7 +3,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace ShooterPun2D.pt1
+namespace ShooterPun2D.pt2
 {
 	public class RoomManager : MonoBehaviourPunCallbacks
 	{
