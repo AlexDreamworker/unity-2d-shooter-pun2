@@ -11,7 +11,7 @@ namespace ShooterPun2D.pt2
 			PlayerWeapon weapon = other.gameObject.GetComponent<PlayerWeapon>();
 			if (weapon) 
 			{
-				//?weapon.SetAmmunition((int)_weaponType, _amount);
+				weapon.SetAmmunition((int)_weaponType, _amount);
 				base.OnTriggerEnter2D(other);
 			}
 		}

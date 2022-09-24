@@ -8,8 +8,8 @@ namespace ShooterPun2D.pt2
 {
 	public class PlayerWeapon : MonoBehaviour, IPunObservable
 	{
-		//?public event Action<int, Color> OnAmmoChanged;
-		//?public event Action<int> OnWeaponChanged;
+		public event Action<int, Color> OnAmmoChanged;
+		public event Action<int> OnWeaponChanged;
 		[SerializeField] private Weapon[] _weapons;
 		[SerializeField] private Weapon _currentWeapon;
 
@@ -19,8 +19,8 @@ namespace ShooterPun2D.pt2
 		
 		[SerializeField] private Animator _bodyTorsoAnim;
 		[SerializeField] private Transform _shootPoint;
-		//[SerializeField] private Color _shootPointColor;
-		[SerializeField] private GameObject _pistolProjectile;
+		[SerializeField] private SpriteRenderer _shootPointColor;
+		//[SerializeField] private GameObject _pistolProjectile;
 		[SerializeField] private float _bulletForce = 1000f;
 		[SerializeField] private float _fireRate;
 		private float _shootCooldown;
@@ -30,7 +30,6 @@ namespace ShooterPun2D.pt2
 		private void Awake()
 		{
 			_photonView = GetComponent<PhotonView>();
-			//_shootPointColor = GetComponent<SpriteRenderer>().color;
 		}
 
 		private void Start()
@@ -93,7 +92,7 @@ namespace ShooterPun2D.pt2
 
 			_currentAmmoCount -= 1;
 			_currentWeapon.AmmoCount = _currentAmmoCount;
-			//OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
+			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
 		}	
 
 		public void SetDirection(Vector2 direction) 
@@ -118,9 +117,10 @@ namespace ShooterPun2D.pt2
 		public void SetWeapon(int index) //* CALL
 		{
 			_currentWeapon = _weapons[index];
+			_shootPointColor.color = _currentWeapon.Color;
 
-			//?OnWeaponChanged?.Invoke(_currentWeapon.Id);
-			//?OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
+			OnWeaponChanged?.Invoke(_currentWeapon.Id);
+			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
 		}
 		
 		public void CheckAmmunition()
@@ -131,18 +131,17 @@ namespace ShooterPun2D.pt2
 			}
 		}
 
-		// public void SetAmmunition(int index, int value) //*CALL
-		// {
-		// 	_weapons[index].AmmoCount += value;
-		// 	OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
-		// }
+		public void SetAmmunition(int index, int value) //*CALL
+		{
+			_weapons[index].AmmoCount += value;
+			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
+		}
 
-		// public void SetWeaponActivity(int index) //*CALL
-		// {
-		// 	_weapons[index].IsActive = true;
-		// 	UpdateWeaponsMap();
-		// 	SetWeapon(index);
-		// }
+		public void SetWeaponActivity(int index) //*CALL
+		{
+			_weapons[index].IsActive = true;
+			SetWeapon(index);
+		}
 
 		public void NextWeapon() //* CALL
 		{
@@ -154,8 +153,8 @@ namespace ShooterPun2D.pt2
 					return;
 				}
 			}	
-
-			//?SetWeapon(_weaponsMap.Keys.First().Id);
+			var firstActiveId = _weapons.Where(w => w.IsActive).First().Id;
+			SetWeapon(firstActiveId);
 		}
 
 		public void PreviousWeapon() //* CALL 
@@ -168,8 +167,8 @@ namespace ShooterPun2D.pt2
 					return;
 				}
 			}
-
-			//?SetWeapon(_weaponsMap.Keys.Last().Id);
+			var lastActiveId = _weapons.Where(w => w.IsActive).Last().Id;
+			SetWeapon(lastActiveId);
 		}
     }
 }

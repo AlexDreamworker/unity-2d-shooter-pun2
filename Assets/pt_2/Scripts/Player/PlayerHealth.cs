@@ -73,7 +73,7 @@ namespace ShooterPun2D.pt2
 			OnHealthChanged?.Invoke(Health);
 		}
 
-		public void TakeDamage(int value) 
+		public void TakeDamage(int value) //* CALL
 		{
 			if (_photonView.IsMine)
 			{
@@ -84,7 +84,7 @@ namespace ShooterPun2D.pt2
         [PunRPC]
         private void Damage(int value) 
         {
-        	Health -= value;
+        	Health += value;
 			OnHealthChanged?.Invoke(Health);
         }
 

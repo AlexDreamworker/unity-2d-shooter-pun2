@@ -13,12 +13,12 @@ namespace ShooterPun2D.pt2
 
 		private void OnEnable()
 		{
-			//_target.OnWeaponChanged += UpdateItems;
+			_target.OnWeaponChanged += UpdateItems;
 		}
 
 		private void OnDisable()
 		{
-			//_target.OnWeaponChanged -= UpdateItems;
+			_target.OnWeaponChanged -= UpdateItems;
 		}
 
 		private void Update()
