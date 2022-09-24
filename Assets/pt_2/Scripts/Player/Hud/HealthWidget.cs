@@ -7,6 +7,7 @@ namespace ShooterPun2D.pt2
 	{
 		[SerializeField] private PlayerHealth _target;
 		[SerializeField] private TMP_Text _render;
+		[SerializeField] private TMP_Text _textBg;
 
 		//private Color color;
 
@@ -26,6 +27,7 @@ namespace ShooterPun2D.pt2
 				return;
 			
 			_render.text = value.ToString();
+			_textBg.text = value.ToString(); //todo: refactoring design
 
 			var result = value / 100f;
 

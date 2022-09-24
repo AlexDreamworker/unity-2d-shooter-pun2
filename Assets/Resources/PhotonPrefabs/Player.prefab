@@ -2926,6 +2926,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
   _render: {fileID: 1758396666467628344}
+  _textBg: {fileID: 0}
   _iconRender: {fileID: 1758396666058826304}
 --- !u!1 &1758396667174904240
 GameObject:

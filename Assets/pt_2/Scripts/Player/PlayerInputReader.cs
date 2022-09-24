@@ -9,6 +9,7 @@ namespace ShooterPun2D.pt2
 	{
 		[SerializeField] private Camera _camera; //todo: refactoring!
 		[SerializeField] private GameObject _inputCanvas; //todo: refactoring!
+		[SerializeField] private GameObject _pauseMenuCanvas; //todo: refactoring!
 		private PlayerMovement _playerMovement;
 		private PlayerWeapon _playerWeapon;
 		private PhotonView _photonView;
@@ -28,6 +29,7 @@ namespace ShooterPun2D.pt2
 			{
 				Destroy(_camera);
 				Destroy(_inputCanvas);
+				Destroy(_pauseMenuCanvas);
 			}
 
 			_nickNameText.text = _photonView.Owner.NickName; //todo: refactoring!
@@ -69,6 +71,17 @@ namespace ShooterPun2D.pt2
 
 			if (context.started) 
 				_playerWeapon.PreviousWeapon();
+		}
+
+		public void OnPauseMenu(InputAction.CallbackContext context) 
+		{
+			if (!_photonView.IsMine)
+				return; 
+
+			if (context.started)
+			{
+				_pauseMenuCanvas.GetComponent<PauseMenu>().SwitchPauseMenu();
+			}
 		}
 	}
 }
