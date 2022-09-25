@@ -8,8 +8,6 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private SpriteRenderer _bodyLegs;
 		[SerializeField] private SpriteRenderer _bodyTorso;
 		[SerializeField] private GameObject _canvasOverhead;
-		//[SerializeField] private GameObject _bloodParticle = null;
-		//[SerializeField] private GameObject _chunkParticle = null;
 
 		[SerializeField] private ParticleSystem _blood;
 		[SerializeField] private ParticleSystem _chunk;
@@ -35,11 +33,6 @@ namespace ShooterPun2D.pt2
 
 		private void OnEnable()
 		{
-			//if (!_photonView.IsMine)
-				//return;
-
-			//_playerHealth.OnPlayerAlive += Alive();
-			//_playerHealth.OnPlayerAlive += Alive;
 			_playerHealth.OnPlayerDead += Dying;
 
 			_blood.Stop();
@@ -48,10 +41,6 @@ namespace ShooterPun2D.pt2
 
 		private void OnDisable()
 		{
-			//if (!_photonView.IsMine)
-				//return;
-			
-			//_playerHealth.OnPlayerAlive -= Alive;
 			_playerHealth.OnPlayerDead -= Dying;
 		}
 
@@ -60,17 +49,9 @@ namespace ShooterPun2D.pt2
 			_photonView.RPC("Death", RpcTarget.All);
 		}
 
-		// private void Alive() 
-		// {
-		// 	_photonView.RPC("Alived", RpcTarget.All);
-		// }
- 
 		[PunRPC]
 		private void Death() 
 		{
-			//_bloodParticle.SetActive(true);
-			//_chunkParticle.SetActive(true);
-
 			_blood.Play();
 			_chunk.Play();
 			
@@ -87,29 +68,6 @@ namespace ShooterPun2D.pt2
 			_bodyTorso.enabled = false;
 			return;
 		}
-
-		// [PunRPC]
-		// private void Alived() 
-		// {
-		// 	//_bloodParticle.SetActive(true);
-		// 	//_chunkParticle.SetActive(true);
-
-		// 	_blood.Stop();
-		// 	_chunk.Stop();
-			
-		// 	if (_photonView.IsMine) 
-		// 	{
-		// 		_rigidbody.bodyType = RigidbodyType2D.Dynamic;
-		// 	}
-		// 	_collider.enabled = true;
-		// 	_playerInput.enabled = true;
-		// 	_playerMovement.enabled = true;
-		// 	_playerWeapon.enabled = true;
-		// 	_canvasOverhead.SetActive(true);
-		// 	_bodyLegs.enabled = true;
-		// 	_bodyTorso.enabled = true;
-		// 	return;
-		// }
 	}
 }
 

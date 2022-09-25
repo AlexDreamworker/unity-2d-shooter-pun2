@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 namespace ShooterPun2D.pt2
@@ -20,15 +21,16 @@ namespace ShooterPun2D.pt2
 
 		private void OnTriggerEnter2D(Collider2D other)
 		{
-			PlayerHealth health = other.gameObject.GetComponent<PlayerHealth>();
-			if (health != null)
+			other.gameObject.TryGetComponent(out PlayerHealth health);
+
+			if (other.gameObject.CompareTag("Ground")) 
 			{
-				health.TakeDamage(_damage);
 				Destroy(this.gameObject);
 			}
 
-			else if (other.gameObject.CompareTag("Ground")) 
+			if (health != null)
 			{
+				health.TakeDamage(_damage);
 				Destroy(this.gameObject);
 			}
 		}

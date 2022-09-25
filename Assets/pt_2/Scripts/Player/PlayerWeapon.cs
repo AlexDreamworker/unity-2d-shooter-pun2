@@ -119,7 +119,13 @@ namespace ShooterPun2D.pt2
 
 		//!-------W-E-A-P-O-N-S----L-O-G-I-C------------------------------------
 
-		public void SetWeapon(int index) //* CALL
+		public void SetWeapon(int index) //* CAll
+		{
+			_photonView.RPC("RpcWeaponChange", RpcTarget.All, index);
+		}
+
+		[PunRPC]
+		public void RpcWeaponChange(int index)
 		{
 			_currentWeapon = _weapons[index];
 			_shootPointColor.color = _currentWeapon.Color;

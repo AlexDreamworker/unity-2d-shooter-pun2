@@ -19,6 +19,7 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private GameObject _roomListItemPrefab;
 		[SerializeField] private GameObject _playerListItemPrefab;
 		[SerializeField] private GameObject _startGameButton;
+		[SerializeField] private TMP_InputField _nickNameInputField;
 
 		private void Awake()
 		{
@@ -27,10 +28,22 @@ namespace ShooterPun2D.pt2
 
 		private void Start()
 		{
+			string nickName = PlayerPrefs.GetString("NickName", "Player " + Random.Range(1000, 9999));
+			_nickNameInputField.text = nickName;
+			PhotonNetwork.NickName = nickName;
+
 			PhotonNetwork.AutomaticallySyncScene = true;
+			PhotonNetwork.GameVersion = "1.0";
+
 			MenuManager.Instance.OpenMenu("loading");
 			Debug.Log("Connecting to Master");
-			PhotonNetwork.ConnectUsingSettings();
+			
+			if (!PhotonNetwork.IsConnected)
+				PhotonNetwork.ConnectUsingSettings();
+
+			_roomNameField.text = "Test Room 101";
+
+			//PhotonNetwork.ConnectUsingSettings();
 		}
 
 		public override void OnConnectedToMaster()
@@ -55,8 +68,12 @@ namespace ShooterPun2D.pt2
 			options.BroadcastPropsChangeToAll = true;
 			//options.PublishUserId = true; //? Check this and other options!
 			//options.MaxPlayers = 4; //?
+
+			PhotonNetwork.NickName = _nickNameInputField.text;
+			PlayerPrefs.SetString("NickName", _nickNameInputField.text);
+			PhotonNetwork.CreateRoom(_roomNameField.text, new Photon.Realtime.RoomOptions { MaxPlayers = 4});
 			
-			PhotonNetwork.CreateRoom(_roomNameField.text);
+			//PhotonNetwork.CreateRoom(_roomNameField.text);
 			MenuManager.Instance.OpenMenu("loading");
 		}
 
@@ -91,7 +108,7 @@ namespace ShooterPun2D.pt2
 			MenuManager.Instance.OpenMenu("error");
 		}
 
-		public void StartGame() 
+		public void StartGame() //* CALL
 		{
 			if (PhotonNetwork.IsMasterClient)
 				PhotonNetwork.LoadLevel(1);
@@ -103,10 +120,18 @@ namespace ShooterPun2D.pt2
 			MenuManager.Instance.OpenMenu("loading");
 		}
 
-		public void JoinRoom(RoomInfo info) 
+		public void JoinRoom(RoomInfo info) //* CALL
 		{
+			PhotonNetwork.NickName = _nickNameInputField.text;
+			PlayerPrefs.SetString("NickName", _nickNameInputField.text);
+
 			PhotonNetwork.JoinRoom(info.Name);
 			MenuManager.Instance.OpenMenu("loading");
+		}
+
+		public void Exit() //* CALL
+		{
+			Application.Quit();
 		}
 
 		public override void OnLeftRoom() 
