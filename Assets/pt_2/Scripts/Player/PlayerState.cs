@@ -1,9 +1,10 @@
+using DG.Tweening;
 using Photon.Pun;
 using UnityEngine;
 
 namespace ShooterPun2D.pt2
 {
-	public class PlayerBrain : MonoBehaviour
+	public class PlayerState : MonoBehaviour
 	{
 		[SerializeField] private SpriteRenderer _bodyLegs;
 		[SerializeField] private SpriteRenderer _bodyTorso;
@@ -11,6 +12,8 @@ namespace ShooterPun2D.pt2
 
 		[SerializeField] private ParticleSystem _blood;
 		[SerializeField] private ParticleSystem _chunk;
+
+		[SerializeField] private GameObject _respawnButtonHolder; //todo: refact
 
 		private PhotonView _photonView;
 		private Rigidbody2D _rigidbody;
@@ -46,11 +49,11 @@ namespace ShooterPun2D.pt2
 
 		private void Dying()
 		{
-			_photonView.RPC("Death", RpcTarget.All);
+			_photonView.RPC("RpcDeath", RpcTarget.All);
 		}
 
 		[PunRPC]
-		private void Death() 
+		private void RpcDeath() 
 		{
 			_blood.Play();
 			_chunk.Play();
@@ -63,9 +66,50 @@ namespace ShooterPun2D.pt2
 			_playerInput.enabled = false;
 			_playerMovement.enabled = false;
 			_playerWeapon.enabled = false;
+			_playerWeapon.ShootPointColorActivity(false);
 			_canvasOverhead.SetActive(false);
 			_bodyLegs.enabled = false;
 			_bodyTorso.enabled = false;
+
+			_respawnButtonHolder.SetActive(true);
+			return;
+		}
+
+		public void PlayerRespawn() //* CALL 
+		{
+			_photonView.RPC("RpcRespawn", RpcTarget.All);
+		}
+
+		[PunRPC]
+		private void RpcRespawn() 
+		{
+			_blood.Stop();
+			_chunk.Stop();
+
+			_blood.Clear();
+			_chunk.Clear();
+			
+			Vector3 randomPosition = new Vector3(UnityEngine.Random.Range(-2f, 2f), UnityEngine.Random.Range(-2f, 2f));
+			gameObject.transform.position = randomPosition;
+			
+			if (_photonView.IsMine) 
+			{
+				_rigidbody.bodyType = RigidbodyType2D.Dynamic;
+			}
+			_collider.enabled = true;
+			_playerInput.enabled = true;
+			_playerMovement.enabled = true;
+			_playerWeapon.enabled = true;
+			_playerWeapon.ShootPointColorActivity(true);
+			_canvasOverhead.SetActive(true);
+			_bodyLegs.enabled = true;
+			_bodyTorso.enabled = true;
+
+			_playerWeapon.SetAimAnimation();
+			_playerWeapon.SetWeaponOnStart();
+			_playerHealth.TakeDamage(100);
+
+			_respawnButtonHolder.SetActive(false);
 			return;
 		}
 	}

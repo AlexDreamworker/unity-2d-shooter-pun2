@@ -34,10 +34,9 @@ namespace ShooterPun2D.pt2
 
 		private void Start()
 		{
-			_bodyTorsoAnim.SetFloat("x", 1);
-			_bodyTorsoAnim.SetFloat("y", 0);
-
-			SetWeapon(0);
+			SetAimAnimation();
+			SetWeaponOnStart();
+			//SetWeapon(0);
 
 			if (!_photonView.IsMine) 
 			{
@@ -73,20 +72,46 @@ namespace ShooterPun2D.pt2
 			}			
 		}
 
+		public void SetAimAnimation() //* CALL
+		{
+			_bodyTorsoAnim.SetFloat("x", 1);
+			_bodyTorsoAnim.SetFloat("y", 0);
+		}
+
+		public void SetWeaponOnStart() //* CALL
+		{
+			foreach (var weapon in _weapons) 
+			{
+				if (weapon.Id == 0) 
+				{
+					weapon.IsActive = true;
+					weapon.AmmoCount = 777;
+					SetWeapon(weapon.Id);
+				}
+				else 
+				{
+					weapon.IsActive = false;
+					weapon.AmmoCount = 0;
+				}
+			}
+		}
+
 		private void TryFire() 
 		{
 			CheckAmmunition();
 
 			_currentAmmoCount = _currentWeapon.AmmoCount;
 
-			// if (_currentWeapon.AmmoCount <= 0)
-			// 	return;
-
 			if (Time.time > _shootCooldown) 
 			{
 				_photonView.RPC("RpcShoot", RpcTarget.All, _direction, _bulletForce);
 				_shootCooldown = Time.time + 1 / _fireRate;
 			}
+		}
+
+		public void ShootPointColorActivity(bool isActive) //* CALL
+		{
+			_shootPointColor.enabled = isActive;
 		}
 
 		[PunRPC]
