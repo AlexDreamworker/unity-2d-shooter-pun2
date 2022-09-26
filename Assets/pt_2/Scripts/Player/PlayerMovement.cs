@@ -15,7 +15,6 @@ namespace ShooterPun2D.pt2
 		private PhotonView _photonView;
 
 		private bool _isGrounded;
-		private bool _isJumping;
 
 		private void Awake()
 		{
@@ -46,7 +45,7 @@ namespace ShooterPun2D.pt2
 		{	
 			if (!_photonView.IsMine) 
 				return;
-
+			
 			var xVelocity = _direction.x * _speed;
 			var yVelocity = CalculateYVelocity();
 
@@ -61,21 +60,9 @@ namespace ShooterPun2D.pt2
 		{
 			var yVelocity = _rigidbody.velocity.y;
 			var isJumpPressing = _direction.y > 0;
-			
-			if (_isGrounded) 
-			{
-				_isJumping = false;
-			}
 
 			if (isJumpPressing) 
-			{
-				_isJumping = true;
 				yVelocity = CalculateJumpVelocity(yVelocity);
-			}
-			else if (_rigidbody.velocity.y > 0 && _isJumping) 
-			{
-				yVelocity *= 0.5f;
-			}
 
 			return yVelocity;
 		}
@@ -83,12 +70,12 @@ namespace ShooterPun2D.pt2
 		private float CalculateJumpVelocity(float yVelocity) 
 		{
 			var isFalling = _rigidbody.velocity.y <= 0.001f;
-			if (!isFalling) return yVelocity;
+
+			if (!isFalling) 
+				return yVelocity;
 
 			if (_isGrounded)
-			{
 				yVelocity += _jumpSpeed;
-			}
 
 			return yVelocity;
 		}
