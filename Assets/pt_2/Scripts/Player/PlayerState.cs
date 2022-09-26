@@ -49,7 +49,7 @@ namespace ShooterPun2D.pt2
 
 		private void Dying()
 		{
-			_photonView.RPC("RpcDeath", RpcTarget.All);
+			_photonView.RPC(nameof(RpcDeath), RpcTarget.All);
 		}
 
 		[PunRPC]
@@ -61,6 +61,7 @@ namespace ShooterPun2D.pt2
 			if (_photonView.IsMine) 
 			{
 				_rigidbody.bodyType = RigidbodyType2D.Kinematic;
+				_respawnButtonHolder.SetActive(true);
 			}
 			_collider.enabled = false;
 			_playerInput.enabled = false;
@@ -70,14 +71,12 @@ namespace ShooterPun2D.pt2
 			_canvasOverhead.SetActive(false);
 			_bodyLegs.enabled = false;
 			_bodyTorso.enabled = false;
-
-			_respawnButtonHolder.SetActive(true);
 			return;
 		}
 
 		public void PlayerRespawn() //* CALL 
 		{
-			_photonView.RPC("RpcRespawn", RpcTarget.All);
+			_photonView.RPC(nameof(RpcRespawn), RpcTarget.All);
 		}
 
 		[PunRPC]
@@ -95,6 +94,7 @@ namespace ShooterPun2D.pt2
 			if (_photonView.IsMine) 
 			{
 				_rigidbody.bodyType = RigidbodyType2D.Dynamic;
+				_respawnButtonHolder.SetActive(false);
 			}
 			_collider.enabled = true;
 			_playerInput.enabled = true;
@@ -108,8 +108,6 @@ namespace ShooterPun2D.pt2
 			_playerWeapon.SetAimAnimation();
 			_playerWeapon.SetWeaponOnStart();
 			_playerHealth.TakeDamage(100);
-
-			_respawnButtonHolder.SetActive(false);
 			return;
 		}
 	}

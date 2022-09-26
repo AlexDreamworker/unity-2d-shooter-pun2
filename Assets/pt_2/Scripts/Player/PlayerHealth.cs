@@ -40,12 +40,12 @@ namespace ShooterPun2D.pt2
 		{
 			if (_photonView.IsMine)
 			{
-				_photonView.RPC("Damage", RpcTarget.All, value);
+				_photonView.RPC(nameof(RpcDamage), RpcTarget.All, value);
 			}
 		}
 
         [PunRPC]
-        private void Damage(int value) 
+        private void RpcDamage(int value) 
         {
         	Health += value;
 			OnHealthChanged?.Invoke(Health);

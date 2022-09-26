@@ -10,6 +10,7 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private Camera _camera; //todo: refactoring!
 		[SerializeField] private GameObject _inputCanvas; //todo: refactoring!
 		[SerializeField] private GameObject _pauseMenuCanvas; //todo: refactoring!
+		[SerializeField] private GameObject _scoreboardWidget;
 		private PlayerMovement _playerMovement;
 		private PlayerWeapon _playerWeapon;
 		private PhotonView _photonView;
@@ -82,6 +83,17 @@ namespace ShooterPun2D.pt2
 			{
 				_pauseMenuCanvas.GetComponent<PauseMenu>().SwitchPauseMenu();
 			}
+		}
+
+		public void OnScoreboard(InputAction.CallbackContext context) 
+		{
+			if (!_photonView.IsMine)
+				return;
+			
+			if (context.started)
+				_scoreboardWidget.SetActive(true);
+			if (context.canceled)
+				_scoreboardWidget.SetActive(false);
 		}
 	}
 }

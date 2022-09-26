@@ -49,6 +49,7 @@ MonoBehaviour:
   - RpcWeaponChange
   - RpcDeath
   - RpcRespawn
+  - RpcDamage
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
