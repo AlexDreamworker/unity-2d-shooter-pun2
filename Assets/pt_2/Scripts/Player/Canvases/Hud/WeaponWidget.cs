@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using System.Linq;
 
 namespace ShooterPun2D.pt2
 {
@@ -14,11 +15,17 @@ namespace ShooterPun2D.pt2
 		private void OnEnable()
 		{
 			_target.OnWeaponChanged += UpdateItems;
+			_target.OnWeaponActivated += ActivateItems;
+			_target.OnAmmoEmpted += BlockItems;
+			_target.OnWeaponRefreshed += DefaultItemsState;
 		}
 
 		private void OnDisable()
 		{
 			_target.OnWeaponChanged -= UpdateItems;
+			_target.OnWeaponActivated -= ActivateItems;
+			_target.OnAmmoEmpted -= BlockItems;
+			_target.OnWeaponRefreshed -= DefaultItemsState;
 		}
 
 		private void Update()
@@ -35,11 +42,16 @@ namespace ShooterPun2D.pt2
 			}
 		}
 
-		public void UpdateItems(int index) 
+		private void DefaultItemsState() 
 		{
-			if (_target == null)
-				return;
-			
+			foreach (var item in _items.Where(i => i != _items[0]))
+			{
+				item.transform.GetChild(2).gameObject.SetActive(true);
+			}
+		}
+
+		private void UpdateItems(int index) 
+		{
 			_tempTimer = Time.time + _visablityDelay;
 			
 			foreach (var item in _items)
@@ -47,6 +59,16 @@ namespace ShooterPun2D.pt2
 				item.transform.GetChild(0).gameObject.SetActive(false);
 			}
 			_items[index].transform.GetChild(0).gameObject.SetActive(true);
+		}
+
+		private void ActivateItems(int index) 
+		{
+			_items[index].transform.GetChild(2).gameObject.SetActive(false);
+		}
+
+		private void BlockItems(int index, bool isEmpty)
+		{
+			_items[index].transform.GetChild(1).gameObject.SetActive(isEmpty);
 		}
 	}
 }

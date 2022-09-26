@@ -61,6 +61,7 @@ namespace ShooterPun2D.pt2
 			if (_photonView.IsMine) 
 			{
 				_rigidbody.bodyType = RigidbodyType2D.Kinematic;
+				_rigidbody.velocity = Vector2.zero;
 				_respawnButtonHolder.SetActive(true);
 			}
 			_collider.enabled = false;

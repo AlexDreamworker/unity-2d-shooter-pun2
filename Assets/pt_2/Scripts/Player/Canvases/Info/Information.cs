@@ -41,7 +41,7 @@ namespace ShooterPun2D.pt2
             	_fpsNextPeriod += _fpsMeasurePeriod;
         	}
 			
-			_fpsRateText.text = "FPS: " + _currentFps.ToString("000");
+			_fpsRateText.text = "Fps: " + _currentFps.ToString("000");
 		}
 	}
 }

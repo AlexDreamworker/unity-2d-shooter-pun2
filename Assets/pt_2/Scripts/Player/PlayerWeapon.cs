@@ -9,6 +9,10 @@ namespace ShooterPun2D.pt2
 	{
 		public event Action<int, Color> OnAmmoChanged;
 		public event Action<int> OnWeaponChanged;
+		public event Action<int> OnWeaponActivated;
+		public event Action<int, bool> OnAmmoEmpted;
+		public event Action OnWeaponRefreshed; //todo: rename!
+
 		[SerializeField] private Weapon[] _weapons;
 		private Weapon _currentWeapon;
 
@@ -94,6 +98,8 @@ namespace ShooterPun2D.pt2
 					weapon.AmmoCount = 0;
 				}
 			}
+
+			OnWeaponRefreshed?.Invoke();
 		}
 
 		private void TryFire() 
@@ -163,6 +169,7 @@ namespace ShooterPun2D.pt2
 		{
 			if (_currentWeapon.AmmoCount == 0)
 			{
+				OnAmmoEmpted?.Invoke(_currentWeapon.Id, true);
 				NextWeapon();
 			}
 		}
@@ -171,11 +178,13 @@ namespace ShooterPun2D.pt2
 		{
 			_weapons[index].AmmoCount += value;
 			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
+			OnAmmoEmpted?.Invoke(index, false);
 		}
 
 		public void SetWeaponActivity(int index) //*CALL
 		{
 			_weapons[index].IsActive = true;
+			OnWeaponActivated?.Invoke(index);
 			SetWeapon(index);
 		}
 
