@@ -2154,7 +2154,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 6621252853494989987, guid: 6ba4c1de4cfa9ca408a57bffe86eda3e, type: 3}
+  m_Sprite: {fileID: 6621252853494989987, guid: 47933dd4b5b9ccc4fb5f772a83497908, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -7762,7 +7762,7 @@ MonoBehaviour:
     _type: 1
     _color: {r: 0, g: 0.288064, b: 1, a: 1}
     _projectilePrefab: {fileID: 2074109522506022324, guid: 21807c74dcdfb5c48b65ff45e3a35c9c, type: 3}
-    _isActive: 1
+    _isActive: 0
     _ammoCount: 3
   - _name: Automat
     _type: 2
@@ -7774,7 +7774,7 @@ MonoBehaviour:
     _type: 3
     _color: {r: 1, g: 0.7260653, b: 0, a: 1}
     _projectilePrefab: {fileID: 2074109522506022324, guid: 6a6efeb509f7fe844ab0b389901742f9, type: 3}
-    _isActive: 1
+    _isActive: 0
     _ammoCount: 3
   - _name: Bfg
     _type: 4
@@ -7787,7 +7787,7 @@ MonoBehaviour:
   _shootPointColor: {fileID: 3943240919022651369}
   _aimPoint: {fileID: 4212774503940424586}
   _bulletForce: 30
-  _fireRate: 3
+  _fireRate: 5
 --- !u!114 &3880659836824918887
 MonoBehaviour:
   m_ObjectHideFlags: 0
