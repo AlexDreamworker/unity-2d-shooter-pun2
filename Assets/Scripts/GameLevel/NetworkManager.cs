@@ -9,17 +9,51 @@ namespace ShooterPun2D.pt2
 {
 	public class NetworkManager : MonoBehaviourPunCallbacks
 	{
-		[SerializeField] private GameObject _playerPrefab;
+		[SerializeField] private GameObject[] _playerPrefabs;
 		[SerializeField] private Transform[] _spawnPoints;
+
+		private GameObject _prefabToSpawn;
 
 		private void Start()
 		{
+			if (PhotonNetwork.LocalPlayer.CustomProperties["playerModel"] != null)
+			{
+				_prefabToSpawn = _playerPrefabs[(int)PhotonNetwork.LocalPlayer.CustomProperties["playerModel"]];
+				Debug.Log((int)PhotonNetwork.LocalPlayer.CustomProperties["playerModel"]);
+			}
+			else 
+			{
+				_prefabToSpawn = _playerPrefabs[0];
+				Debug.Log("Properties is NULL");
+			}
+
 			var randomSpawnPoint = _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Length)].position;
-			PhotonNetwork.Instantiate(_playerPrefab.name, randomSpawnPoint, Quaternion.identity);
+			PhotonNetwork.Instantiate(_prefabToSpawn.name, randomSpawnPoint, Quaternion.identity);
 
 			//Регистрация кастомного типа данных с сериализацией / десериализацией
 			//?PhotonPeer.RegisterType(typeof(Vector2Int), 242, SerializeVector2Int, DeserializeVector2Int);
 		}
+
+		// public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable hash) 
+		// {
+		// 	if (_player == targetPlayer) 
+		// 	{
+		// 		UpdatePlayerItem(targetPlayer);
+		// 	}
+		// }
+
+		// private void UpdatePlayerItem(Player player) 
+		// {
+		// 	if (player.CustomProperties.ContainsKey("playerModel")) 
+		// 	{
+		// 		_currentSkin = _skins[(int)player.CustomProperties["playerModel"]];
+		// 		_playerProperties["playerModel"] = (int)player.CustomProperties["playerModel"];
+		// 	}
+		// 	else 
+		// 	{
+		// 		_playerProperties["playerModel"] = 0;
+		// 	}
+		// }
 
 		public void Leave() 
 		{

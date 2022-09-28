@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
@@ -12,6 +13,12 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private Button _joinButton;
 
 		[SerializeField] private TMP_InputField _nickNameInputField;
+
+		//*
+		//[SerializeField] private List<PlayerItem> playerItemList = new List<PlayerItem>();
+		//[SerializeField] private PlayerItem playerItemPrefab;
+		//[SerializeField] private Transform itemParent;
+		//* 
 
 		private void Start()
 		{

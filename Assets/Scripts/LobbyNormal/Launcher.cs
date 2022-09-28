@@ -21,6 +21,8 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private GameObject _startGameButton;
 		[SerializeField] private TMP_InputField _nickNameInputField;
 
+		private ExitGames.Client.Photon.Hashtable _playerProperties = new ExitGames.Client.Photon.Hashtable();
+
 		private void Awake()
 		{
 			Instance = this;
@@ -71,10 +73,15 @@ namespace ShooterPun2D.pt2
 
 			PhotonNetwork.NickName = _nickNameInputField.text;
 			PlayerPrefs.SetString("NickName", _nickNameInputField.text);
-			PhotonNetwork.CreateRoom(_roomNameField.text, new Photon.Realtime.RoomOptions { MaxPlayers = 4});
+			PhotonNetwork.CreateRoom(_roomNameField.text, new RoomOptions { MaxPlayers = 4, BroadcastPropsChangeToAll = true}); //todo: ?????broadcast
 			
 			//PhotonNetwork.CreateRoom(_roomNameField.text);
 			MenuManager.Instance.OpenMenu("loading");
+
+			//*
+			_playerProperties["playerModel"] = PlayerPrefs.GetInt("PlayerModelIndex");
+			PhotonNetwork.SetPlayerCustomProperties(_playerProperties);
+			//*
 		}
 
 		public override void OnJoinedRoom() 
@@ -109,7 +116,7 @@ namespace ShooterPun2D.pt2
 		}
 
 		public void StartGame() //* CALL
-		{
+		{			
 			if (PhotonNetwork.IsMasterClient)
 				PhotonNetwork.LoadLevel(1);
 		}
@@ -127,6 +134,9 @@ namespace ShooterPun2D.pt2
 
 			PhotonNetwork.JoinRoom(info.Name);
 			MenuManager.Instance.OpenMenu("loading");
+
+			_playerProperties["playerModel"] = PlayerPrefs.GetInt("PlayerModelIndex");
+			PhotonNetwork.SetPlayerCustomProperties(_playerProperties);
 		}
 
 		public void Exit() //* CALL
@@ -158,6 +168,12 @@ namespace ShooterPun2D.pt2
 		public override void OnPlayerEnteredRoom(Player newPlayer) 
 		{
 			Instantiate(_playerListItemPrefab, _playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
+		}
+
+		private void Update()
+		{
+			if (PhotonNetwork.LocalPlayer.CustomProperties["playerModel"] != null)
+				Debug.Log("Properties is :" + (int)PhotonNetwork.LocalPlayer.CustomProperties["playerModel"]);
 		}
 	}
 }
