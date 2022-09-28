@@ -44,8 +44,6 @@ namespace ShooterPun2D.pt2
 				PhotonNetwork.ConnectUsingSettings();
 
 			_roomNameField.text = "Test Room 101";
-
-			//PhotonNetwork.ConnectUsingSettings();
 		}
 
 		public override void OnConnectedToMaster()
@@ -170,11 +168,11 @@ namespace ShooterPun2D.pt2
 			Instantiate(_playerListItemPrefab, _playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
 		}
 
-		private void Update()
-		{
-			if (PhotonNetwork.LocalPlayer.CustomProperties["playerModel"] != null)
-				Debug.Log("Properties is :" + (int)PhotonNetwork.LocalPlayer.CustomProperties["playerModel"]);
-		}
+		// private void Update()
+		// {
+		// 	if (PhotonNetwork.LocalPlayer.CustomProperties["playerModel"] != null)
+		// 		Debug.Log("Properties is :" + (int)PhotonNetwork.LocalPlayer.CustomProperties["playerModel"]);
+		// }
 	}
 }
 

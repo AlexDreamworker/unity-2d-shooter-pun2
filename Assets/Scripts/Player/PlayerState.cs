@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ShooterPun2D.pt2
 {
-	public class PlayerState : MonoBehaviour
+	public class PlayerState : MonoBehaviourPun
 	{
 		[SerializeField] private SpriteRenderer _bodyLegs;
 		[SerializeField] private SpriteRenderer _bodyTorso;
@@ -22,6 +22,10 @@ namespace ShooterPun2D.pt2
 		private PlayerMovement _playerMovement;
 		private PlayerWeapon _playerWeapon;
 		private PlayerHealth _playerHealth;
+
+		private ExitGames.Client.Photon.Hashtable _playerProps = new ExitGames.Client.Photon.Hashtable();
+		public int _kills = 0;
+		public int _deaths = 0;
 
 		private void Awake()
 		{
@@ -49,8 +53,49 @@ namespace ShooterPun2D.pt2
 
 		private void Dying()
 		{
+
+			if (_photonView.IsMine) 
+			{
+				//_photonView.RPC(nameof(RpcSetKill), RpcTarget.All);
+				_deaths++;
+				_playerProps["playerDeaths"] = _deaths;
+				PhotonNetwork.SetPlayerCustomProperties(_playerProps);
+			}
+			//* else 
+			//* {
+			//* 	_kills++;
+			//* 	_playerProperties["playerKills"] = _kills;
+			//* 	PhotonNetwork.SetPlayerCustomProperties(_playerProperties);
+			//* }
+
 			_photonView.RPC(nameof(RpcDeath), RpcTarget.All);
 		}
+
+		// [PunRPC]
+		// private void RpcSetKill() 
+		// {
+		// 	_kills++;
+		// 	_playerProperties["playerKills"] = _kills;
+		// 	PhotonNetwork.SetPlayerCustomProperties(_playerProperties);
+		// }
+
+		// [PunRPC]
+		// private void RpcSetDeath() 
+		// {
+		// 	_deaths++;
+		// 	_playerProperties["playerDeaths"] = _deaths;
+		// 	PhotonNetwork.SetPlayerCustomProperties(_playerProperties);
+		// }
+
+		//*
+		// private void Update()
+		// {
+		// 	if (PhotonNetwork.LocalPlayer.CustomProperties["playerKills"] != null)
+		// 		Debug.Log("kills: " + PhotonNetwork.LocalPlayer.CustomProperties["playerKills"].ToString());
+			
+		// 	if (PhotonNetwork.LocalPlayer.CustomProperties["playerDeaths"] != null)
+		// 		Debug.Log("deaths: " + PhotonNetwork.LocalPlayer.CustomProperties["playerDeaths"].ToString());
+		// }
 
 		[PunRPC]
 		private void RpcDeath() 
