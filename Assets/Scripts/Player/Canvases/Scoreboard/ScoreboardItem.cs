@@ -2,18 +2,14 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
-//using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace ShooterPun2D.pt2
 {
 	public class ScoreboardItem : MonoBehaviourPunCallbacks
 	{
 		[SerializeField] private TMP_Text _playerNameText;
-		[SerializeField] private TMP_Text _killsText;
-		[SerializeField] private TMP_Text _deathsText;
-
-		//private int _kills;
-		//private int _deaths;
+		[SerializeField] private TMP_Text _fragsText;
 
 		private Player _player;
 		
@@ -21,58 +17,29 @@ namespace ShooterPun2D.pt2
 		{
 			_player = player;
 			_playerNameText.text = player.NickName;
-			UpdateStats(_player);
+			UpdateFrags();
 		}
 
-		public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps) 
+		private void UpdateFrags() 
 		{
-			if (targetPlayer == _player)
+			if (_player.CustomProperties.TryGetValue("Frags", out object frags))
 			{
-				if (/*changedProps.ContainsKey("playerKills") ||*/ changedProps.ContainsKey("playerDeaths"))
-					UpdateStats(targetPlayer);
+				_fragsText.text = frags.ToString();
 			}
 		}
 
-		private void UpdateStats(Player player) 
+		public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps) 
 		{
-			//int kills = 0;
-			//Sint deaths = 0;
+			if (targetPlayer == PhotonNetwork.LocalPlayer) 
+			{
+				if (changedProps.ContainsKey("Frags"))
+				{
+					UpdateFrags();
+				}
+			}
+		}
 
-			// if (player.CustomProperties.ContainsKey("playerKills"))
-			// {
-			// 	kills = (int)player.CustomProperties["playerKills"];
-			// 	_killsText.text = kills.ToString();
-			// 	Debug.Log("KILLS: " + kills);
-			// 	//_killsText.text = player.CustomProperties["playerKills"].ToString();
-			// 	//Debug.Log("KILL PROPS: " + player.CustomProperties["playerKills"].ToString());
-			// }
-			// else 
-			// {
-			// 	_killsText.text = kills.ToString();
-			// 	Debug.Log("PlayerKills is NULL");
-			// }
-
-			// if (player.CustomProperties.ContainsKey("playerDeaths"))
-			// {
-			// 	//deaths = (int)player.CustomProperties["playerDeaths"];
-			// 	_deathsText.text = player.CustomProperties["playerDeaths"].ToString();
-			// 	//Debug.Log("DEATHS: " + deaths);
-			// 	//_deathsText.text = player.Cus1tomProperties["playerDeaths"].ToString();
-			// 	Debug.Log("DEATH PROPS: " + player.CustomProperties["playerDeaths"].ToString());
-			// } 
-			// else 
-			// {
-			// 	//_deathsText.text = deaths.ToString();
-			// 	Debug.Log("PlayerDeaths is NULL");
-			// }
-
-			//!----------------------------------------
-			//if (player.CustomProperties.TryGetValue("playerDeaths", out object deaths))
-			//{
-			//	_deathsText.text = deaths.ToString();
-			//}
-			//_deathsText.text = player.CustomProperties["playerDeaths"].ToString();
-		}	
+		
 	}
 }
 

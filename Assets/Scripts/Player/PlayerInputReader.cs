@@ -34,6 +34,7 @@ namespace ShooterPun2D.pt2
 			}
 
 			_nickNameText.text = _photonView.Owner.NickName; //todo: refactoring!
+			_scoreboardWidget.transform.localScale = Vector3.zero;
 		}
 
 		public void OnMovement(InputAction.CallbackContext context) 
@@ -91,9 +92,9 @@ namespace ShooterPun2D.pt2
 				return;
 			
 			if (context.started)
-				_scoreboardWidget.SetActive(true);
+				_scoreboardWidget.transform.localScale = Vector3.one;
 			if (context.canceled)
-				_scoreboardWidget.SetActive(false);
+				_scoreboardWidget.transform.localScale = Vector3.zero;
 		}
 	}
 }

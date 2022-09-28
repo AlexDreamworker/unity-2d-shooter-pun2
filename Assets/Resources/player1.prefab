@@ -7465,7 +7465,7 @@ GameObject:
   - component: {fileID: 5183032315513407570}
   - component: {fileID: 3880659836824918887}
   - component: {fileID: 1790305073171341953}
-  - component: {fileID: 4042110641146401761}
+  - component: {fileID: 3588290532860439703}
   m_Layer: 10
   m_Name: player1
   m_TagString: Player
@@ -7820,9 +7820,7 @@ MonoBehaviour:
   _blood: {fileID: 7462774446816401580}
   _chunk: {fileID: 6982596858135807295}
   _respawnButtonHolder: {fileID: 7116615971939228632}
-  _kills: 0
-  _deaths: 0
---- !u!114 &4042110641146401761
+--- !u!114 &3588290532860439703
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7831,9 +7829,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8274303792058633020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81086dccdc4da3a4c89b3d7f337b4b05, type: 3}
+  m_Script: {fileID: 11500000, guid: b5a457dad323c574e8a8592f575ee547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _frags: 0
 --- !u!1 &8274303792368562269
 GameObject:
   m_ObjectHideFlags: 0
@@ -8617,7 +8616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1407714848262939758
 RectTransform:
   m_ObjectHideFlags: 0

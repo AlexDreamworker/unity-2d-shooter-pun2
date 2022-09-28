@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using Photon.Pun;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private ParticleSystem _blood;
 		[SerializeField] private ParticleSystem _chunk;
 
-		[SerializeField] private GameObject _respawnButtonHolder; //todo: refact
+		[SerializeField] private GameObject _respawnButtonHolder = null; //todo: refact
 
 		private PhotonView _photonView;
 		private Rigidbody2D _rigidbody;
@@ -22,10 +23,11 @@ namespace ShooterPun2D.pt2
 		private PlayerMovement _playerMovement;
 		private PlayerWeapon _playerWeapon;
 		private PlayerHealth _playerHealth;
+		private PlayerInfo _playerInfo;
 
-		private ExitGames.Client.Photon.Hashtable _playerProps = new ExitGames.Client.Photon.Hashtable();
-		public int _kills = 0;
-		public int _deaths = 0;
+		//private ExitGames.Client.Photon.Hashtable _playerProps = new ExitGames.Client.Photon.Hashtable();
+		//private int _kills = 0;
+		//public int _deaths = 0;
 
 		private void Awake()
 		{
@@ -36,6 +38,7 @@ namespace ShooterPun2D.pt2
 			_playerMovement = GetComponent<PlayerMovement>();
 			_playerWeapon = GetComponent<PlayerWeapon>();
 			_playerHealth = GetComponent<PlayerHealth>();
+			_playerInfo = GetComponent<PlayerInfo>();
 		}
 
 		private void OnEnable()
@@ -55,47 +58,12 @@ namespace ShooterPun2D.pt2
 		{
 
 			if (_photonView.IsMine) 
-			{
-				//_photonView.RPC(nameof(RpcSetKill), RpcTarget.All);
-				_deaths++;
-				_playerProps["playerDeaths"] = _deaths;
-				PhotonNetwork.SetPlayerCustomProperties(_playerProps);
-			}
-			//* else 
-			//* {
-			//* 	_kills++;
-			//* 	_playerProperties["playerKills"] = _kills;
-			//* 	PhotonNetwork.SetPlayerCustomProperties(_playerProperties);
-			//* }
+				_playerInfo.SetFrags(false);
+			else  
+				_playerInfo.SetFrags(true);
 
 			_photonView.RPC(nameof(RpcDeath), RpcTarget.All);
 		}
-
-		// [PunRPC]
-		// private void RpcSetKill() 
-		// {
-		// 	_kills++;
-		// 	_playerProperties["playerKills"] = _kills;
-		// 	PhotonNetwork.SetPlayerCustomProperties(_playerProperties);
-		// }
-
-		// [PunRPC]
-		// private void RpcSetDeath() 
-		// {
-		// 	_deaths++;
-		// 	_playerProperties["playerDeaths"] = _deaths;
-		// 	PhotonNetwork.SetPlayerCustomProperties(_playerProperties);
-		// }
-
-		//*
-		// private void Update()
-		// {
-		// 	if (PhotonNetwork.LocalPlayer.CustomProperties["playerKills"] != null)
-		// 		Debug.Log("kills: " + PhotonNetwork.LocalPlayer.CustomProperties["playerKills"].ToString());
-			
-		// 	if (PhotonNetwork.LocalPlayer.CustomProperties["playerDeaths"] != null)
-		// 		Debug.Log("deaths: " + PhotonNetwork.LocalPlayer.CustomProperties["playerDeaths"].ToString());
-		// }
 
 		[PunRPC]
 		private void RpcDeath() 

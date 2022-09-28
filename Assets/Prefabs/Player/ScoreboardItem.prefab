@@ -92,8 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerNameText: {fileID: 5570990169797428984}
-  _killsText: {fileID: 6445238877790697637}
-  _deathsText: {fileID: 1337908150734000758}
+  _fragsText: {fileID: 1337908150734000758}
 --- !u!1 &3630709836681193586
 GameObject:
   m_ObjectHideFlags: 0
