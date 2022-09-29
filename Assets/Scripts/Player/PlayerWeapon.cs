@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 namespace ShooterPun2D.pt2
@@ -124,6 +125,7 @@ namespace ShooterPun2D.pt2
 		private void RpcShoot(Vector2 dir, float force) 
 		{
 			GameObject bullet = Instantiate(_currentWeapon.ProjectilePrefab, _shootPoint.position, Quaternion.identity);
+			bullet.GetComponent<PistolProjectile>().SetPlayer(_photonView);
 			bullet.GetComponent<PistolProjectile>().SetVelocity(dir, force);
 
 			_currentAmmoCount -= 1;

@@ -57,10 +57,9 @@ namespace ShooterPun2D.pt2
 		private void Dying()
 		{
 
-			if (_photonView.IsMine) 
-				_playerInfo.SetFrags(false);
-			else  
-				_playerInfo.SetFrags(true);
+			if (!_photonView.IsMine)
+				_playerInfo.SetFrags();
+				
 
 			_photonView.RPC(nameof(RpcDeath), RpcTarget.All);
 		}
