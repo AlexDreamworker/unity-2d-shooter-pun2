@@ -1,5 +1,3 @@
-using System;
-using DG.Tweening;
 using Photon.Pun;
 using UnityEngine;
 
@@ -24,10 +22,6 @@ namespace ShooterPun2D.pt2
 		private PlayerWeapon _playerWeapon;
 		private PlayerHealth _playerHealth;
 		private PlayerInfo _playerInfo;
-
-		//private ExitGames.Client.Photon.Hashtable _playerProps = new ExitGames.Client.Photon.Hashtable();
-		//private int _kills = 0;
-		//public int _deaths = 0;
 
 		private void Awake()
 		{
@@ -60,7 +54,6 @@ namespace ShooterPun2D.pt2
 			if (!_photonView.IsMine)
 				_playerInfo.SetFrags();
 				
-
 			_photonView.RPC(nameof(RpcDeath), RpcTarget.All);
 		}
 

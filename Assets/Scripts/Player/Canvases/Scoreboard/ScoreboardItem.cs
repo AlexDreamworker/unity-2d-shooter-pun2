@@ -11,6 +11,7 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private TMP_Text _playerNameText;
 		[SerializeField] private TMP_Text _fragsText;
 
+		public int _frags;
 		private Player _player;
 		
 		public void Initialize(Player player)
@@ -24,22 +25,23 @@ namespace ShooterPun2D.pt2
 		{
 			if (_player.CustomProperties.TryGetValue("Frags", out object frags))
 			{
-				_fragsText.text = frags.ToString();
+				if ((int)frags > _frags)
+					_frags = (int)frags;
+
+				_fragsText.text = _frags.ToString();
 			}
 		}
 
 		public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps) 
 		{
-			if (targetPlayer == PhotonNetwork.LocalPlayer) 
+			if (targetPlayer == _player) 
 			{
 				if (changedProps.ContainsKey("Frags"))
 				{
 					UpdateFrags();
 				}
 			}
-		}
-
-		
+		}		
 	}
 }
 

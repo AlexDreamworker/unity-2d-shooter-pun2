@@ -7,7 +7,6 @@ namespace ShooterPun2D
 	public class PlayerInfo : MonoBehaviour
 	{
 		public int _frags;
-		//public int Frags => _frags;
 
 		private PhotonView _photonView;
 
@@ -19,11 +18,6 @@ namespace ShooterPun2D
 		public void SetFrags() 
 		{
 			_frags++;
-			//if (isEnemyKill)
-				//_frags++;
-			//else 
-				//_frags--;
-
 			_photonView.RPC(nameof(RpcSetFrags), RpcTarget.All); //!!! ???? or ALL
 		}
 
