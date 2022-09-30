@@ -11,7 +11,7 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private TMP_Text _playerNameText;
 		[SerializeField] private TMP_Text _fragsText;
 
-		public int _frags;
+		private int _frags;
 		private Player _player;
 		
 		public void Initialize(Player player)

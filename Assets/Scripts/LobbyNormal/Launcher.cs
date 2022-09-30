@@ -71,7 +71,7 @@ namespace ShooterPun2D.pt2
 
 			PhotonNetwork.NickName = _nickNameInputField.text;
 			PlayerPrefs.SetString("NickName", _nickNameInputField.text);
-			PhotonNetwork.CreateRoom(_roomNameField.text, new RoomOptions { MaxPlayers = 4, BroadcastPropsChangeToAll = true}); //todo: ?????broadcast
+			PhotonNetwork.CreateRoom(_roomNameField.text, new RoomOptions { MaxPlayers = 8, BroadcastPropsChangeToAll = true}); //todo: ?????broadcast
 			
 			//PhotonNetwork.CreateRoom(_roomNameField.text);
 			MenuManager.Instance.OpenMenu("loading");
