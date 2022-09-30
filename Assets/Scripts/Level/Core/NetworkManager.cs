@@ -70,12 +70,12 @@ namespace ShooterPun2D.pt2
 			SceneManager.LoadScene(0);
 		}
 
-		public override void OnPlayerEnteredRoom(Player newPlayer) 
+		public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) 
 		{ 
 			Debug.LogFormat("Player {0} entered room", newPlayer.NickName);
 		}
 
-		public override void OnPlayerLeftRoom(Player otherPlayer) 
+		public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) 
 		{
 			Debug.LogFormat("Player {0} entered room", otherPlayer.NickName);
 		}	

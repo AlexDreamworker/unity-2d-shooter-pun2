@@ -11,7 +11,7 @@ namespace ShooterPun2D.pt2
 
 		[SerializeField] private int _currentHealth = 100;
 		private int _maxHealth = 100;
-		private PhotonView _photonView;
+		private PlayerBrain _playerBrain;
 
 		public int Health 
 		{
@@ -28,7 +28,7 @@ namespace ShooterPun2D.pt2
 
 		private void Awake()
 		{
-			_photonView = GetComponent<PhotonView>();
+			_playerBrain = GetComponent<PlayerBrain>();
 		}
 
 		private void Start()
@@ -36,12 +36,12 @@ namespace ShooterPun2D.pt2
 			OnHealthChanged?.Invoke(Health);
 		}
 
-		public void TakeDamage(int value) //* CALL
+		public void TakeDamage(int value) //* CALL //todo: Change Name!
 		{
-			if (!_photonView.IsMine)
+			if (!_playerBrain.PhotonView.IsMine)
 				return;
 
-			_photonView.RPC(nameof(RpcDamage), RpcTarget.All, value);
+			_playerBrain.PhotonView.RPC(nameof(RpcDamage), RpcTarget.All, value);
 		}
 
         [PunRPC]

@@ -10,16 +10,16 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private TMP_Text _text;
 		[SerializeField] private GameObject[] _itemSkins;
 		private GameObject _currentSkin;
-		private Player _player;
+		private Photon.Realtime.Player _player;
 
-		public void SetUp(Player player) 
+		public void SetUp(Photon.Realtime.Player player) 
 		{
 			_player = player;
 			_text.text = _player.NickName;
 			UpdateItemSkin(player);
 		}
 
-		public override void OnPlayerLeftRoom(Player otherPlayer) 
+		public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) 
 		{
 			if (_player == otherPlayer)
 				Destroy(gameObject);
@@ -30,7 +30,7 @@ namespace ShooterPun2D.pt2
 			Destroy(gameObject);
 		}
 
-		public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps) 
+		public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps) 
 		{
 			if (changedProps.ContainsKey("playerModel") && _player == targetPlayer) 
 			{
@@ -38,7 +38,7 @@ namespace ShooterPun2D.pt2
 			}
 		}
 
-		private void UpdateItemSkin(Player player) 
+		private void UpdateItemSkin(Photon.Realtime.Player player) 
 		{
 			if (player.CustomProperties.ContainsKey("playerModel"))
 			{

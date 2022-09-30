@@ -87,7 +87,7 @@ namespace ShooterPun2D.pt2
 			MenuManager.Instance.OpenMenu("room");
 			_roomNameText.text = PhotonNetwork.CurrentRoom.Name;
 
-			Player[] players = PhotonNetwork.PlayerList;
+            Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
 
 			foreach (Transform item in _playerListContent)
 			{
@@ -102,7 +102,7 @@ namespace ShooterPun2D.pt2
 			_startGameButton.SetActive(PhotonNetwork.IsMasterClient);
 		}
 
-		public override void OnMasterClientSwitched(Player newMasterClient) 
+		public override void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient) 
 		{
 			_startGameButton.SetActive(PhotonNetwork.IsMasterClient);
 		}
@@ -163,7 +163,7 @@ namespace ShooterPun2D.pt2
 			}
 		}
 
-		public override void OnPlayerEnteredRoom(Player newPlayer) 
+		public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) 
 		{
 			Instantiate(_playerListItemPrefab, _playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
 		}

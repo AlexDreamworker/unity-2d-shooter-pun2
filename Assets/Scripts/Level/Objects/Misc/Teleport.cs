@@ -8,7 +8,7 @@ namespace ShooterPun2D.pt2
 
 		private void OnTriggerEnter2D(Collider2D other)
 		{
-			var target = other.gameObject.TryGetComponent(out PlayerMovement player);
+			var target = other.gameObject.TryGetComponent(out PlayerControls player);
 			if (target) 
 			{
 				player.transform.position = _destinationPoint.position;

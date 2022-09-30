@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine;
 
 namespace ShooterPun2D.pt2
 {
-	public class PlayerWeapon : MonoBehaviour, IPunObservable
+	public class PlayerWeapon : MonoBehaviour //!---214
 	{
 		public event Action<int, Color> OnAmmoChanged;
 		public event Action<int> OnWeaponChanged;
@@ -15,72 +14,25 @@ namespace ShooterPun2D.pt2
 		public event Action OnWeaponRefreshed; //todo: rename!
 
 		[SerializeField] private Weapon[] _weapons;
+		[SerializeField] private Transform _shootPoint;
+		[SerializeField] private float _bulletForce = 1000f; //?
+		[SerializeField] private float _fireRate; //?
+
 		private Weapon _currentWeapon;
+		private int _currentAmmoCount;
+		private float _shootCooldown;
+		private PlayerBrain _playerBrain;
 
 		public Weapon[] Weapons => _weapons;
 
-		private int _currentAmmoCount;
-		
-		[SerializeField] private Animator _bodyTorsoAnim;
-		[SerializeField] private Transform _shootPoint;
-		[SerializeField] private SpriteRenderer _shootPointColor;
-		[SerializeField] private GameObject _aimPoint;
-		//[SerializeField] private GameObject _pistolProjectile;
-		[SerializeField] private float _bulletForce = 1000f;
-		[SerializeField] private float _fireRate;
-		private float _shootCooldown;
-		private Vector2 _direction;
-		private PhotonView _photonView;
-
 		private void Awake()
 		{
-			_photonView = GetComponent<PhotonView>();
+			_playerBrain = GetComponent<PlayerBrain>();
 		}
 
 		private void Start()
 		{
-			SetAimAnimation();
 			SetWeaponOnStart();
-			//SetWeapon(0);
-
-			if (!_photonView.IsMine) 
-			{
-				_aimPoint.SetActive(false);
-			}
-		}
-
-		private void Update()
-		{
-			if (!_photonView.IsMine)
-				return;
-
-			if (_direction.x != 0 || _direction.y != 0)
-			{
-				TryFire();
-			}		
-		}
-
-		private void FixedUpdate()
-		{			
-			UpdateAim();	
-		}
-
-		private void UpdateAim() 
-		{
-			var xVelocity = _direction.x;
-			var yVelocity = _direction.y;
-
-			if (xVelocity != 0 || yVelocity != 0) 
-			{
-				_bodyTorsoAnim.SetFloat("x", xVelocity);
-				_bodyTorsoAnim.SetFloat("y", yVelocity);
-			}			
-		}
-
-		public void SetAimAnimation() //* CALL
-		{
-			_bodyTorsoAnim.SetFloat("x", 1);
-			_bodyTorsoAnim.SetFloat("y", 0);
 		}
 
 		public void SetWeaponOnStart() //* CALL
@@ -103,7 +55,7 @@ namespace ShooterPun2D.pt2
 			OnWeaponRefreshed?.Invoke();
 		}
 
-		private void TryFire() 
+		public void TryFire(Vector2 direction)
 		{
 			CheckAmmunition();
 
@@ -111,57 +63,33 @@ namespace ShooterPun2D.pt2
 
 			if (Time.time > _shootCooldown) 
 			{
-				_photonView.RPC("RpcShoot", RpcTarget.All, _direction, _bulletForce);
+				_playerBrain.PhotonView.RPC(nameof(RpcShoot), RpcTarget.All, direction, _bulletForce);
 				_shootCooldown = Time.time + 1 / _fireRate;
 			}
-		}
-
-		public void ShootPointColorActivity(bool isActive) //* CALL
-		{
-			_shootPointColor.enabled = isActive;
 		}
 
 		[PunRPC]
 		private void RpcShoot(Vector2 dir, float force) 
 		{
 			GameObject bullet = Instantiate(_currentWeapon.ProjectilePrefab, _shootPoint.position, Quaternion.identity);
-			bullet.GetComponent<PistolProjectile>().SetPlayer(_photonView);
+			bullet.GetComponent<PistolProjectile>().SetPlayer(_playerBrain.PhotonView);
 			bullet.GetComponent<PistolProjectile>().SetVelocity(dir, force);
 
 			_currentAmmoCount -= 1;
 			_currentWeapon.AmmoCount = _currentAmmoCount;
 			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
-		}	
-
-		public void SetDirection(Vector2 direction) 
-		{
-			_direction = direction;
 		}
-
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        {
-			if (stream.IsWriting)
-			{
-				stream.SendNext(_direction);
-			}
-			else 
-			{
-				_direction = (Vector2)stream.ReceiveNext();
-			}
-        }
-
-		//!-------W-E-A-P-O-N-S----L-O-G-I-C------------------------------------
 
 		public void SetWeapon(int index) //* CAll
 		{
-			_photonView.RPC("RpcWeaponChange", RpcTarget.All, index);
+			_playerBrain.PhotonView.RPC(nameof(RpcWeaponChange), RpcTarget.All, index);
 		}
 
 		[PunRPC]
 		public void RpcWeaponChange(int index)
 		{
 			_currentWeapon = _weapons[index];
-			_shootPointColor.color = _currentWeapon.Color;
+			_playerBrain.Graphics.SetShootPointColor(_currentWeapon.Color);
 
 			OnWeaponChanged?.Invoke(_currentWeapon.Id);
 			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);

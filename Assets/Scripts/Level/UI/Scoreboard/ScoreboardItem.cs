@@ -12,9 +12,9 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private TMP_Text _fragsText;
 
 		private int _frags;
-		private Player _player;
+		private Photon.Realtime.Player _player;
 		
-		public void Initialize(Player player)
+		public void Initialize(Photon.Realtime.Player player)
 		{
 			_player = player;
 			_playerNameText.text = player.NickName;
@@ -32,7 +32,7 @@ namespace ShooterPun2D.pt2
 			}
 		}
 
-		public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps) 
+		public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, Hashtable changedProps) 
 		{
 			if (targetPlayer == _player) 
 			{
