@@ -7,7 +7,6 @@ namespace ShooterPun2D.pt2
 {
 	public class PlayerInputReader : MonoBehaviour
 	{
-		[SerializeField] private Camera _camera; //todo: refactoring!
 		[SerializeField] private GameObject _inputCanvas; //todo: refactoring!
 		[SerializeField] private GameObject _pauseMenuCanvas; //todo: refactoring!
 		[SerializeField] private GameObject _scoreboardWidget;
@@ -28,7 +27,6 @@ namespace ShooterPun2D.pt2
 		{
 			if (!_photonView.IsMine) 
 			{
-				Destroy(_camera);
 				Destroy(_inputCanvas);
 				Destroy(_pauseMenuCanvas);
 			}
