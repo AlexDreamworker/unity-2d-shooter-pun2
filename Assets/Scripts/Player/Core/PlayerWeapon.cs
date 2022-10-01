@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
 using Photon.Pun;
+using TMPro;
 using UnityEngine;
 
 namespace ShooterPun2D.pt2
 {
-	public class PlayerWeapon : MonoBehaviour //!---214
+	public class PlayerWeapon : MonoBehaviour, IPunObservable
 	{
 		public event Action<int, Color> OnAmmoChanged;
 		public event Action<int> OnWeaponChanged;
@@ -13,17 +14,20 @@ namespace ShooterPun2D.pt2
 		public event Action<int, bool> OnAmmoEmpted;
 		public event Action OnWeaponRefreshed; //todo: rename!
 
-		[SerializeField] private Weapon[] _weapons;
 		[SerializeField] private Transform _shootPoint;
-		[SerializeField] private float _bulletForce = 1000f; //?
-		[SerializeField] private float _fireRate; //?
+		[SerializeField] private float _bulletForce = 1000f; 
+		[SerializeField] private float _fireRate; 
+		[SerializeField] private Weapon[] _weapons;
 
-		private Weapon _currentWeapon;
+		public Weapon _currentWeapon; // !!!
+		private int _currentWeaponIndex; // ???
 		private int _currentAmmoCount;
 		private float _shootCooldown;
 		private PlayerBrain _playerBrain;
 
 		public Weapon[] Weapons => _weapons;
+
+		public TMP_Text _testText; // !!!
 
 		private void Awake()
 		{
@@ -32,14 +36,30 @@ namespace ShooterPun2D.pt2
 
 		private void Start()
 		{
-			SetWeaponOnStart();
+			//if (_playerBrain.PhotonView.IsMine)
+				SetWeaponOnStart();
+
+			//if (_playerBrain.PhotonView.IsMine)
+				//_currentWeaponIndex = 0;
+			//else 
+				//return;
+			//SetWeapon(0);
+		}
+
+		private void Update()
+		{
+			_testText.text = _currentWeaponIndex.ToString();
+			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
 
 		public void SetWeaponOnStart() //* CALL
 		{
+			//Debug.Log("ID: " + _playerBrain.PhotonView.ViewID);
+			//_currentWeaponIndex = 0; // ???
+
 			foreach (var weapon in _weapons) 
 			{
-				if (weapon.Id == 0) 
+				if (weapon.Id == _currentWeaponIndex) // ???
 				{
 					weapon.IsActive = true;
 					weapon.AmmoCount = 777;
@@ -52,9 +72,11 @@ namespace ShooterPun2D.pt2
 				}
 			}
 
+			//SetWeapon(_currentWeaponIndex); // ???
 			OnWeaponRefreshed?.Invoke();
 		}
-
+		
+		//*------------SHOOT---------------------------------------------------
 		public void TryFire(Vector2 direction)
 		{
 			CheckAmmunition();
@@ -80,21 +102,27 @@ namespace ShooterPun2D.pt2
 			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
 		}
 
+		//*------------SET-WEAPON---------------------------------------------
 		public void SetWeapon(int index) //* CAll
 		{
-			_playerBrain.PhotonView.RPC(nameof(RpcWeaponChange), RpcTarget.All, index);
+			_currentWeaponIndex = index; // ???
+
+			_playerBrain.PhotonView.RPC(nameof(RpcWeaponChange), RpcTarget.All, index /*_currentWeaponIndex*/); // ???
 		}
 
 		[PunRPC]
 		public void RpcWeaponChange(int index)
 		{
+			//_currentWeaponIndex = index; // ???
+
 			_currentWeapon = _weapons[index];
 			_playerBrain.Graphics.SetShootPointColor(_currentWeapon.Color);
 
 			OnWeaponChanged?.Invoke(_currentWeapon.Id);
 			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
 		}
-		
+
+		//*------------AMMUNITION---------------------------------------------
 		public void CheckAmmunition()
 		{
 			if (_currentWeapon.AmmoCount == 0)
@@ -111,12 +139,15 @@ namespace ShooterPun2D.pt2
 			OnAmmoEmpted?.Invoke(index, false);
 		}
 
+		//*------------WEAPON-ACTIVITY-CALLBACK--------------------------------
 		public void SetWeaponActivity(int index) //*CALL
 		{
 			_weapons[index].IsActive = true;
 			OnWeaponActivated?.Invoke(index);
 			SetWeapon(index);
 		}
+
+		//*------------CALLBACKS---------------------------------------------
 
 		public void NextWeapon() //* CALL
 		{
@@ -145,6 +176,19 @@ namespace ShooterPun2D.pt2
 			var lastActiveId = _weapons.Where(w => w.IsActive).Last().Id;
 			SetWeapon(lastActiveId);
 		}
+
+		//*------------SERIALIZATOR---------------------------------------------
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) // ???
+        {
+            if (stream.IsWriting)
+			{
+				stream.SendNext(_currentWeaponIndex);
+			}
+			else 
+			{
+				_currentWeaponIndex = (int)stream.ReceiveNext();
+			}
+        }
     }
 }
 

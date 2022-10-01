@@ -12,7 +12,7 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private TMP_Text _fragsText;
 
 		private int _frags;
-		private Photon.Realtime.Player _player;
+		private Player _player;
 		
 		public void Initialize(Photon.Realtime.Player player)
 		{

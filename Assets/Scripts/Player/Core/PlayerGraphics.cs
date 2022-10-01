@@ -60,6 +60,17 @@ namespace ShooterPun2D.pt2
 		{
 			_rendererShootPoint.color = color;
 		}
+
+		public void PlayerSpritesActivity(bool activity) 
+		{
+			_rendererBodyLegs.enabled = activity;
+			_rendererBodyTorso.enabled = activity;
+			_rendererShootPoint.enabled = activity;
+			_aimPoint.SetActive(activity);
+
+			if (!_playerBrain.PhotonView.IsMine)
+				_aimPoint.SetActive(false);
+		}
 	}
 }
 

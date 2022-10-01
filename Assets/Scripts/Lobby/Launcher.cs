@@ -13,7 +13,6 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private TMP_InputField _nickNameInputField;
 		[Header("Create Room Menu")]
 		[SerializeField] private TMP_InputField _roomNameField;
-		[SerializeField] private RoomModel _roomModel;
 		[Header("Room Menu")]
 		[SerializeField] private TMP_Text _roomNameText;
 		[SerializeField] private Transform _playerListContent;

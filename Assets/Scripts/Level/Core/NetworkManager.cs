@@ -19,9 +19,10 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private GameObject _canvas;
 		[SerializeField] private GameObject _pauseMenu;
 		[SerializeField] private GameObject _scoreboardMenu;
+		//[SerializeField] private GameObject _respawnButton;
 
 		private GameObject _prefabToSpawn;
-		private List<PlayerBrain> _playerBrains = new List<PlayerBrain>();
+		private List<GameObject> _playerObjects = new List<GameObject>();
 		private GameObject _playerLocal;
 
 		public static NetworkManager Instance;
@@ -46,16 +47,16 @@ namespace ShooterPun2D.pt2
 			_playerCamera.LookAt = player.transform;
 			_playerLocal = player;
 
-			if (_playerLocal != null)
+			if (_playerLocal != null) 
 				_canvas.SetActive(true);
 
 			//Регистрация кастомного типа данных с сериализацией / десериализацией
 			//?PhotonPeer.RegisterType(typeof(Vector2Int), 242, SerializeVector2Int, DeserializeVector2Int);
 		}
 
-		public void AddPlayer(PlayerBrain player) 
+		public void AddPlayer(GameObject player) 
 		{
-			_playerBrains.Add(player);
+			_playerObjects.Add(player);
 		}
 
 		public void Leave()

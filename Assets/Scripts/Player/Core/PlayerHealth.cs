@@ -21,6 +21,8 @@ namespace ShooterPun2D.pt2
 				_currentHealth = Mathf.Clamp(value, 0, _maxHealth);
 				if (_currentHealth <= 0) 
 				{
+					//!-----------------------------
+					//_playerBrain.PlayerIsDead();
 					OnPlayerDead?.Invoke();
 				}
 			}
@@ -50,6 +52,17 @@ namespace ShooterPun2D.pt2
         	Health += value;
 			OnHealthChanged?.Invoke(Health);
         }
+
+		// private void PlayerIsDead() 
+		// {
+		// 	_playerBrain.PhotonView.RPC(nameof(RpcDeath), RpcTarget.All);
+		// }
+
+		// [PunRPC]
+		// private void RpcDeath() 
+		// {
+		// 	_playerBrain.BrainDead();
+		// }
     }
 }
 

@@ -5690,7 +5690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2079011573925218057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5823,7 +5823,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4980852618737803456}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7149412229736363568}
+        m_TargetAssemblyTypeName: ShooterPun2D.pt2.Respawn, Assembly-CSharp
+        m_MethodName: RespawnButtonCallback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &2153378927055980285
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10119,6 +10131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2975992236017384017}
+  - component: {fileID: 7149412229736363568}
   m_Layer: 10
   m_Name: Respawn
   m_TagString: Untagged
@@ -10126,6 +10139,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7149412229736363568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7149412229736363567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a695753c8da41742ad1858717d9d27a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 1888882142287899744}
 --- !u!114 &7159594300252133709
 MonoBehaviour:
   m_ObjectHideFlags: 0
