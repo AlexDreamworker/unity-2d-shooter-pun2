@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ShooterPun2D.pt2
@@ -16,7 +14,7 @@ namespace ShooterPun2D.pt2
 
 		private PlayerBrain _playerBrain;
 
-		private static readonly int IsRunningKey = Animator.StringToHash("is-runnung");
+		private static readonly int IsRunningKey = Animator.StringToHash("is-running");
 		private static readonly int IsGroundKey = Animator.StringToHash("is-ground");
 		private static readonly int VerticalVelocityKey = Animator.StringToHash("vertical-velocity");
 		private static readonly int xValueKey = Animator.StringToHash("x");

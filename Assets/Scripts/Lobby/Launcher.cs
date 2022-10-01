@@ -9,18 +9,23 @@ namespace ShooterPun2D.pt2
 {
 	public class Launcher : MonoBehaviourPunCallbacks
 	{
-		public static Launcher Instance;
-
+		[Header("Title Menu")]
+		[SerializeField] private TMP_InputField _nickNameInputField;
+		[Header("Create Room Menu")]
 		[SerializeField] private TMP_InputField _roomNameField;
-		[SerializeField] private TMP_Text _errorText;
+		[SerializeField] private RoomModel _roomModel;
+		[Header("Room Menu")]
 		[SerializeField] private TMP_Text _roomNameText;
-		[SerializeField] private Transform _roomListContent;
 		[SerializeField] private Transform _playerListContent;
-		[SerializeField] private GameObject _roomListItemPrefab;
 		[SerializeField] private GameObject _playerListItemPrefab;
 		[SerializeField] private GameObject _startGameButton;
-		[SerializeField] private TMP_InputField _nickNameInputField;
+		[Header("Error Menu")]
+		[SerializeField] private TMP_Text _errorText;
+		[Header("Find Room Menu")]
+		[SerializeField] private Transform _roomListContent;
+		[SerializeField] private GameObject _roomListItemPrefab;
 
+		public static Launcher Instance;
 		private ExitGames.Client.Photon.Hashtable _playerProperties = new ExitGames.Client.Photon.Hashtable();
 
 		private void Awake()
@@ -116,7 +121,7 @@ namespace ShooterPun2D.pt2
 		public void StartGame() //* CALL
 		{			
 			if (PhotonNetwork.IsMasterClient)
-				PhotonNetwork.LoadLevel(1);
+				PhotonNetwork.LoadLevel(PlayerPrefs.GetInt("RoomModelIndex", 1));
 		}
 
 		public void LeaveRoom() //* CALL

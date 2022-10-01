@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ShooterPun2D
 {
-	public class PlayerModel : MonoBehaviour
+	public class PlayerModel : MonoBehaviour //! 60
 	{
 		[SerializeField] private GameObject[] _skins;
 		private GameObject _currentSkin;
@@ -13,23 +13,27 @@ namespace ShooterPun2D
 
 		private void Start()
 		{
-			_currentSkin = _skins[0];
-			_currentSkinIndex = 0;
+			_currentSkinIndex = PlayerPrefs.GetInt("PlayerModelIndex", 0);
 			UpdateSkin();
 		}
 
+
 		public void NextSkin() //* CALL
 		{
-			_currentSkin = _skins[1];
-			_currentSkinIndex = 1;
+			if (_currentSkinIndex < _skins.Length - 1)
+				_currentSkinIndex++;
+			else 
+				_currentSkinIndex = 0;
 
 			UpdateSkin();
 		}
 
 		public void PreviousSkin() //* CALL
 		{
-			_currentSkin = _skins[0];
-			_currentSkinIndex = 0;
+			if (_currentSkinIndex > 0)
+				_currentSkinIndex--;
+			else 
+				_currentSkinIndex = _skins.Length - 1;
 			
 			UpdateSkin();
 		}
@@ -41,6 +45,7 @@ namespace ShooterPun2D
 				skin.SetActive(false);
 			}
 
+			_currentSkin = _skins[_currentSkinIndex];
 			_currentSkin.SetActive(true);
 			
 			PlayerPrefs.SetInt("PlayerModelIndex", _currentSkinIndex);

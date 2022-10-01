@@ -77,7 +77,7 @@ namespace ShooterPun2D.pt2
 
 		public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) 
 		{
-			Debug.LogFormat("Player {0} entered room", otherPlayer.NickName);
+			Debug.LogFormat("Player {0} left room", otherPlayer.NickName);
 		}	
 
 		//?----CUSTOM---TYPE---SERIALIZE-/-DESERIALIZE------------------------------------------------------
