@@ -1383,7 +1383,6 @@ GameObject:
   - component: {fileID: 6496594169066203543}
   - component: {fileID: 3540635903453298131}
   - component: {fileID: 871552334175936439}
-  - component: {fileID: 1790305073171341953}
   - component: {fileID: 3588290532860439703}
   m_Layer: 10
   m_Name: player1
@@ -1635,7 +1634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233b4d1172bfea84196ee2a8b02d1ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvasOverHead: {fileID: 2415739517030491153}
+  _canvasOverhead: {fileID: 2415739517030491153}
 --- !u!114 &918210607612159655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1723,6 +1722,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentHealth: 100
+  _deathChunkParticle: {fileID: 2275828673797964968, guid: ca9c5e8bb74cff1438a33b902e533a07, type: 3}
+  _deathBloodParticle: {fileID: 9095535609083330105, guid: 6a05f85b42756b24ea56020c93d182d8, type: 3}
 --- !u!114 &6496594169066203543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1804,18 +1805,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1790305073171341953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8274303792058633020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3290b085a445bb24dba4a0893e5c279a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3588290532860439703
 MonoBehaviour:
   m_ObjectHideFlags: 0

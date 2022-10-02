@@ -19,7 +19,6 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private GameObject _canvas;
 		[SerializeField] private GameObject _pauseMenu;
 		[SerializeField] private GameObject _scoreboardMenu;
-		//[SerializeField] private GameObject _respawnButton;
 
 		private GameObject _prefabToSpawn;
 		private List<GameObject> _playerObjects = new List<GameObject>();
@@ -40,9 +39,8 @@ namespace ShooterPun2D.pt2
 		private void Start()
 		{
 			_prefabToSpawn = _playerPrefabs[(int)PhotonNetwork.LocalPlayer.CustomProperties["playerModel"]];
-			var randomSpawnPoint = _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Length)].position;
 
-			var player = PhotonNetwork.Instantiate(_prefabToSpawn.name, randomSpawnPoint, Quaternion.identity);
+			var player = PhotonNetwork.Instantiate(_prefabToSpawn.name, GetSpawnPoint(), Quaternion.identity);
 			_playerCamera.Follow = player.transform;
 			_playerCamera.LookAt = player.transform;
 			_playerLocal = player;
@@ -52,6 +50,12 @@ namespace ShooterPun2D.pt2
 
 			//Регистрация кастомного типа данных с сериализацией / десериализацией
 			//?PhotonPeer.RegisterType(typeof(Vector2Int), 242, SerializeVector2Int, DeserializeVector2Int);
+		}
+
+		public Vector3 GetSpawnPoint() 
+		{
+			var result = _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Length)].position;
+			return result;
 		}
 
 		public void AddPlayer(GameObject player) 

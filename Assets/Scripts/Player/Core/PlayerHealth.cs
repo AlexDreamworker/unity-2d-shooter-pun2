@@ -9,7 +9,13 @@ namespace ShooterPun2D.pt2
 		public event Action<int> OnHealthChanged;
 		public event Action OnPlayerDead;
 
+		[Header("Preferences")]
 		[SerializeField] private int _currentHealth = 100;
+		[Space]
+
+		[Header("Prefabs")]
+		[SerializeField] private GameObject _deathChunkParticle = null;
+		[SerializeField] private GameObject _deathBloodParticle = null;
 		private int _maxHealth = 100;
 		private PlayerBrain _playerBrain;
 
@@ -21,9 +27,8 @@ namespace ShooterPun2D.pt2
 				_currentHealth = Mathf.Clamp(value, 0, _maxHealth);
 				if (_currentHealth <= 0) 
 				{
-					//!-----------------------------
-					//_playerBrain.PlayerIsDead();
 					OnPlayerDead?.Invoke();
+					ChangePlayerState(false);
 				}
 			}
 		}
@@ -53,16 +58,39 @@ namespace ShooterPun2D.pt2
 			OnHealthChanged?.Invoke(Health);
         }
 
-		// private void PlayerIsDead() 
-		// {
-		// 	_playerBrain.PhotonView.RPC(nameof(RpcDeath), RpcTarget.All);
-		// }
+		public void ChangePlayerState(bool isAlive) 
+		{
+			_playerBrain.PhotonView.RPC(nameof(RpcChangePlayerState), RpcTarget.All, isAlive);
+		}
 
-		// [PunRPC]
-		// private void RpcDeath() 
-		// {
-		// 	_playerBrain.BrainDead();
-		// }
+		[PunRPC]
+		private void RpcChangePlayerState(bool isAlive) 
+		{
+			if (!isAlive) 
+			{
+				if (_playerBrain.PhotonView.IsMine) 
+				{
+					_playerBrain.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+					_playerBrain.Rigidbody.velocity = Vector2.zero;
+				}
+
+				Instantiate(_deathChunkParticle, gameObject.transform.position, Quaternion.identity);
+				Instantiate(_deathBloodParticle, gameObject.transform.position, Quaternion.identity);
+				_playerBrain.ComponentsActivity(false);
+			}		
+			else
+			{
+				if (_playerBrain.PhotonView.IsMine) 
+				{	
+					_playerBrain.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+				}
+
+				gameObject.transform.position = _playerBrain.Global.GetSpawnPoint();
+				_playerBrain.ComponentsActivity(true);
+				_playerBrain.Weapon.RefreshWeapon();
+				TakeDamage(100);
+			}
+		}
     }
 }
 

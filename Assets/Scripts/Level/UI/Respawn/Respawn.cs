@@ -26,13 +26,12 @@ namespace ShooterPun2D.pt2
 			if (_target == null)
 				return;
 			
-			_target.GetComponent<PlayerBrain>().PlayerIsDead();
 			_button.transform.localScale = Vector3.one;
 		}	
 
-		public void RespawnButtonCallback() 
+		public void RespawnButtonCallback() //* Callback from button
 		{
-			_target.GetComponent<PlayerBrain>().PlayerRespawn();
+			_target.ChangePlayerState(true);
 			_button.transform.localScale = Vector3.zero;
 		}
 	}

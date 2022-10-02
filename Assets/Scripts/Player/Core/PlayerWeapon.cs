@@ -19,15 +19,13 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private float _fireRate; 
 		[SerializeField] private Weapon[] _weapons;
 
-		private Weapon _currentWeapon; // !!!
-		private int _currentWeaponIndex; // ???
+		private Weapon _currentWeapon; 
+		private int _currentWeaponIndex; 
 		private int _currentAmmoCount;
 		private float _shootCooldown;
 		private PlayerBrain _playerBrain;
 
 		public Weapon[] Weapons => _weapons;
-
-		//!public TMP_Text _testText; // !!!
 		
 		private void Awake()
 		{
@@ -36,47 +34,38 @@ namespace ShooterPun2D.pt2
 
 		private void Start()
 		{
+			RefreshWeapon();
+		}
+
+		private void Update()
+		{
+			_currentWeapon = _weapons[_currentWeaponIndex];
+		}
+
+		public void RefreshWeapon() 
+		{
 			if (_playerBrain.PhotonView.IsMine) 
 			{
 				_currentWeaponIndex = 0;
+
+				foreach (var weapon in _weapons) 
+				{
+					if (weapon.Id == 0) // ???
+					{
+						weapon.IsActive = true;
+						weapon.AmmoCount = 777; 
+					}
+					else 
+					{
+						weapon.IsActive = false;
+					}
+				}	
+
 				OnWeaponRefreshed?.Invoke();
 			}
 
 			SetWeapon(_currentWeaponIndex);
 		}
-
-		private void Update()
-		{
-			//!_testText.text = _currentWeaponIndex.ToString();
-			_currentWeapon = _weapons[_currentWeaponIndex];
-			//SetWeapon(_currentWeaponIndex);
-		}
-
-		//public void SetWeaponOnStart() //* CALL
-		//{
-			//Debug.Log("ID: " + _playerBrain.PhotonView.ViewID);
-			//_currentWeaponIndex = 0; // ???
-
-			// foreach (var weapon in _weapons) 
-			// {
-			// 	if (weapon.Id == 0) // ???
-			// 	{
-			// 		weapon.IsActive = true;
-			// 		//weapon.AmmoCount = 777; //*
-			// 		SetWeapon(weapon.Id);
-			// 	}
-			// 	else 
-			// 	{
-			// 		weapon.IsActive = false;
-			// 		//weapon.AmmoCount = 0; //*
-			// 	}
-			// }
-
-			//SetWeapon(0);
-
-			//SetWeapon(_currentWeaponIndex); // ???
-			//OnWeaponRefreshed?.Invoke();
-		//}
 		
 		//*------------SHOOT---------------------------------------------------
 		public void TryFire(Vector2 direction)
@@ -115,8 +104,6 @@ namespace ShooterPun2D.pt2
 		[PunRPC]
 		public void RpcWeaponChange(int index)
 		{
-			//_currentWeaponIndex = index; // ???
-
 			_currentWeapon = _weapons[index];
 			_playerBrain.Graphics.SetShootPointColor(_currentWeapon.Color);
 
@@ -180,7 +167,7 @@ namespace ShooterPun2D.pt2
 		}
 
 		//*------------SERIALIZATOR---------------------------------------------
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) // ???
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
 			{
