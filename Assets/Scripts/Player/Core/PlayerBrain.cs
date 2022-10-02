@@ -114,7 +114,7 @@ namespace ShooterPun2D.pt2
 			//_bodyTorso.enabled = true;
 
 			//?_playerWeapon.SetAimAnimation();
-			Weapon.SetWeaponOnStart();
+			//*Weapon.SetWeaponOnStart();
 			Health.TakeDamage(100);
 			return;
 		}

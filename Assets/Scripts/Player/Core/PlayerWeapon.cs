@@ -19,7 +19,7 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private float _fireRate; 
 		[SerializeField] private Weapon[] _weapons;
 
-		public Weapon _currentWeapon; // !!!
+		private Weapon _currentWeapon; // !!!
 		private int _currentWeaponIndex; // ???
 		private int _currentAmmoCount;
 		private float _shootCooldown;
@@ -27,8 +27,8 @@ namespace ShooterPun2D.pt2
 
 		public Weapon[] Weapons => _weapons;
 
-		public TMP_Text _testText; // !!!
-
+		//!public TMP_Text _testText; // !!!
+		
 		private void Awake()
 		{
 			_playerBrain = GetComponent<PlayerBrain>();
@@ -36,45 +36,47 @@ namespace ShooterPun2D.pt2
 
 		private void Start()
 		{
-			//if (_playerBrain.PhotonView.IsMine)
-				SetWeaponOnStart();
+			if (_playerBrain.PhotonView.IsMine) 
+			{
+				_currentWeaponIndex = 0;
+				OnWeaponRefreshed?.Invoke();
+			}
 
-			//if (_playerBrain.PhotonView.IsMine)
-				//_currentWeaponIndex = 0;
-			//else 
-				//return;
-			//SetWeapon(0);
+			SetWeapon(_currentWeaponIndex);
 		}
 
 		private void Update()
 		{
-			_testText.text = _currentWeaponIndex.ToString();
+			//!_testText.text = _currentWeaponIndex.ToString();
 			_currentWeapon = _weapons[_currentWeaponIndex];
+			//SetWeapon(_currentWeaponIndex);
 		}
 
-		public void SetWeaponOnStart() //* CALL
-		{
+		//public void SetWeaponOnStart() //* CALL
+		//{
 			//Debug.Log("ID: " + _playerBrain.PhotonView.ViewID);
 			//_currentWeaponIndex = 0; // ???
 
-			foreach (var weapon in _weapons) 
-			{
-				if (weapon.Id == _currentWeaponIndex) // ???
-				{
-					weapon.IsActive = true;
-					weapon.AmmoCount = 777;
-					SetWeapon(weapon.Id);
-				}
-				else 
-				{
-					weapon.IsActive = false;
-					weapon.AmmoCount = 0;
-				}
-			}
+			// foreach (var weapon in _weapons) 
+			// {
+			// 	if (weapon.Id == 0) // ???
+			// 	{
+			// 		weapon.IsActive = true;
+			// 		//weapon.AmmoCount = 777; //*
+			// 		SetWeapon(weapon.Id);
+			// 	}
+			// 	else 
+			// 	{
+			// 		weapon.IsActive = false;
+			// 		//weapon.AmmoCount = 0; //*
+			// 	}
+			// }
+
+			//SetWeapon(0);
 
 			//SetWeapon(_currentWeaponIndex); // ???
-			OnWeaponRefreshed?.Invoke();
-		}
+			//OnWeaponRefreshed?.Invoke();
+		//}
 		
 		//*------------SHOOT---------------------------------------------------
 		public void TryFire(Vector2 direction)
