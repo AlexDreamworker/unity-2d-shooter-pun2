@@ -9,7 +9,7 @@ namespace ShooterPun2D.pt2
 			PlayerHealth health = other.gameObject.GetComponent<PlayerHealth>();
 			if (health) 
 			{
-				health.TakeDamage(_amount); //todo: Name refactor!
+				health.TakeHealth(_amount); //todo: Name refactor!
 				base.OnTriggerEnter2D(other);
 			}					
 		}

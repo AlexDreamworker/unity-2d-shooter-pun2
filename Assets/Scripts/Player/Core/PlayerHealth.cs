@@ -1,5 +1,6 @@
 using System;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 namespace ShooterPun2D.pt2
@@ -43,20 +44,43 @@ namespace ShooterPun2D.pt2
 			OnHealthChanged?.Invoke(Health);
 		}
 
-		public void TakeDamage(int value) //* CALL //todo: Change Name!
+		//!-----------------------------------------------------------------------
+		public void TakeDamage(int value, Player sender) //* CALL //todo: Change Name!
 		{
 			if (!_playerBrain.PhotonView.IsMine)
 				return;
 
-			_playerBrain.PhotonView.RPC(nameof(RpcDamage), RpcTarget.All, value);
+			_playerBrain.PhotonView.RPC(nameof(RpcDamage), RpcTarget.All, value, sender);
 		}
 
         [PunRPC]
-        private void RpcDamage(int value) 
+        private void RpcDamage(int value, Player sender) 
+        {
+        	Health += value;
+			OnHealthChanged?.Invoke(Health);
+
+				if (_currentHealth <= 0) 
+				{
+					//_playerBrain.Info.SetFrags(info.Sender);
+					_playerBrain.Info.SetFrags(sender);
+				}
+        }
+
+		public void TakeHealth(int value) 
+		{
+			if (!_playerBrain.PhotonView.IsMine)
+				return;
+
+			_playerBrain.PhotonView.RPC(nameof(RpcTakeHealth), RpcTarget.All, value);
+		}
+
+		[PunRPC]
+        private void RpcTakeHealth(int value) 
         {
         	Health += value;
 			OnHealthChanged?.Invoke(Health);
         }
+		//!-----------------------------------------------------------------------
 
 		public void ChangePlayerState(bool isAlive) 
 		{
@@ -71,7 +95,7 @@ namespace ShooterPun2D.pt2
 				if (_playerBrain.PhotonView.IsMine) 
 				{
 					_playerBrain.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
-					_playerBrain.Rigidbody.velocity = Vector2.zero;
+					_playerBrain.Rigidbody.velocity = Vector2.zero;		
 				}
 
 				Instantiate(_deathChunkParticle, gameObject.transform.position, Quaternion.identity);
@@ -88,7 +112,7 @@ namespace ShooterPun2D.pt2
 				gameObject.transform.position = _playerBrain.Global.GetSpawnPoint();
 				_playerBrain.ComponentsActivity(true);
 				_playerBrain.Weapon.RefreshWeapon();
-				TakeDamage(100);
+				TakeHealth(100);
 			}
 		}
     }

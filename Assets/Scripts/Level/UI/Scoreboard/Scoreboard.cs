@@ -10,7 +10,7 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private Transform _container;
 		[SerializeField] private GameObject _scoreboardItemPrefab;
 
-		Dictionary<Photon.Realtime.Player, ScoreboardItem> _scoreboardItems = new Dictionary<Photon.Realtime.Player, ScoreboardItem>();
+		Dictionary<Player, ScoreboardItem> _scoreboardItems = new Dictionary<Player, ScoreboardItem>();
 
 		private void Start()
 		{
@@ -20,17 +20,17 @@ namespace ShooterPun2D.pt2
 			}
 		}
 
-		public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) 
+		public override void OnPlayerEnteredRoom(Player newPlayer) 
 		{
 			AddScoreboardItem(newPlayer);
 		}
 
-		public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) 
+		public override void OnPlayerLeftRoom(Player otherPlayer) 
 		{
 			RemoveScoreboardItem(otherPlayer);
 		}
 
-		private void AddScoreboardItem(Photon.Realtime.Player player) 
+		private void AddScoreboardItem(Player player) 
 		{
 			var itemObject = Instantiate(_scoreboardItemPrefab, _container);
 			var item = itemObject.GetComponent<ScoreboardItem>();
@@ -38,7 +38,7 @@ namespace ShooterPun2D.pt2
 			_scoreboardItems[player] = item;
 		}
 
-		private void RemoveScoreboardItem(Photon.Realtime.Player player) 
+		private void RemoveScoreboardItem(Player player) 
 		{
 			Destroy(_scoreboardItems[player].gameObject);
 			_scoreboardItems.Remove(player);

@@ -11,6 +11,7 @@ namespace ShooterPun2D.pt2
 		public PlayerHealth Health { get; private set; }
 		public PlayerGraphics Graphics { get; private set; }
 		public PlayerAudio Audio { get; private set; }
+		public PlayerInfo Info { get; private set; }
 		public PhotonView PhotonView { get; private set; }
 		public Rigidbody2D Rigidbody { get; private set; }
 		public Collider2D Collider { get; private set; }
@@ -28,6 +29,7 @@ namespace ShooterPun2D.pt2
 			Health = GetComponent<PlayerHealth>();
 			Graphics = GetComponent<PlayerGraphics>();
 			Audio = GetComponent<PlayerAudio>();
+			Info = GetComponent<PlayerInfo>();
 			PhotonView = GetComponent<PhotonView>();
 			Rigidbody = GetComponent<Rigidbody2D>();
 			Collider = GetComponent<Collider2D>();

@@ -82,10 +82,10 @@ namespace ShooterPun2D.pt2
 		}
 
 		[PunRPC]
-		private void RpcShoot(Vector2 dir, float force) 
+		private void RpcShoot(Vector2 dir, float force, PhotonMessageInfo info) 
 		{
 			GameObject bullet = Instantiate(_currentWeapon.ProjectilePrefab, _shootPoint.position, Quaternion.identity);
-			bullet.GetComponent<PistolProjectile>().SetPlayer(_playerBrain.PhotonView);
+			bullet.GetComponent<PistolProjectile>().SetPlayer(_playerBrain.PhotonView, info.Sender);
 			bullet.GetComponent<PistolProjectile>().SetVelocity(dir, force);
 
 			_currentAmmoCount -= 1;

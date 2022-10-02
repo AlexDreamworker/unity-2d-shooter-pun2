@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 namespace ShooterPun2D.pt2
@@ -9,11 +10,13 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private ParticleSystem _sparksParticle;
 		private Rigidbody2D _rigidbody;
 
-		private PhotonView _player;
+		private PhotonView _playerPhotonView;
+		private Player _sender;
 
-		public void SetPlayer(PhotonView player)
+		public void SetPlayer(PhotonView playerPhotonId, Player sender)
 		{
-			_player = player;
+			_playerPhotonView = playerPhotonId;
+			_sender = sender;
 		}
 		
 		private void Awake()
@@ -39,10 +42,10 @@ namespace ShooterPun2D.pt2
 
 			if (health != null)
 			{
-				if (_player.ViewID == photonView.ViewID) 
+				if (_playerPhotonView.ViewID == photonView.ViewID) 
 					return;
 				else 
-					health.TakeDamage(_damage);
+					health.TakeDamage(_damage, _sender); //!
 
 				Destroy(this.gameObject);
 			}

@@ -25,7 +25,6 @@ namespace ShooterPun2D.pt2
 		private GameObject _playerLocal;
 
 		public static NetworkManager Instance;
-
 		public GameObject PlayerLocal => _playerLocal;
 		public GameObject PauseMenu => _pauseMenu;
 		public GameObject ScoreboardMenu => _scoreboardMenu;
