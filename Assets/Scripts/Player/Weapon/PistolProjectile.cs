@@ -10,13 +10,13 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private ParticleSystem _sparksParticle;
 		private Rigidbody2D _rigidbody;
 
-		private PhotonView _playerPhotonView;
-		private Player _sender;
+		private PhotonView _shooterPhotonView;
+		private Player _shooter;
 
-		public void SetPlayer(PhotonView playerPhotonId, Player sender)
+		public void SetPlayer(PhotonView photonView, Player sender)
 		{
-			_playerPhotonView = playerPhotonId;
-			_sender = sender;
+			_shooterPhotonView = photonView;
+			_shooter = sender;
 		}
 		
 		private void Awake()
@@ -42,10 +42,10 @@ namespace ShooterPun2D.pt2
 
 			if (health != null)
 			{
-				if (_playerPhotonView.ViewID == photonView.ViewID) 
+				if (_shooterPhotonView.ViewID == photonView.ViewID) 
 					return;
 				else 
-					health.TakeDamage(_damage, _sender); //!
+					health.TakeDamage(_damage, _shooter);
 
 				Destroy(this.gameObject);
 			}

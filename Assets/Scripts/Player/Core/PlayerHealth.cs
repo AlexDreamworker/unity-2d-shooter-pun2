@@ -20,7 +20,7 @@ namespace ShooterPun2D.pt2
 		private int _maxHealth = 100;
 		private PlayerBrain _playerBrain;
 
-		public int Health 
+		public int Health //???
 		{
 			get => _currentHealth;
 			set 
@@ -45,24 +45,23 @@ namespace ShooterPun2D.pt2
 		}
 
 		//!-----------------------------------------------------------------------
-		public void TakeDamage(int value, Player sender) //* CALL //todo: Change Name!
+		public void TakeDamage(int value, Player shooter)
 		{
 			if (!_playerBrain.PhotonView.IsMine)
 				return;
 
-			_playerBrain.PhotonView.RPC(nameof(RpcDamage), RpcTarget.All, value, sender);
+			_playerBrain.PhotonView.RPC(nameof(RpcDamage), RpcTarget.All, value, shooter);
 		}
 
         [PunRPC]
-        private void RpcDamage(int value, Player sender) 
+        private void RpcDamage(int value, Player shooter)
         {
         	Health += value;
 			OnHealthChanged?.Invoke(Health);
 
 				if (_currentHealth <= 0) 
 				{
-					//_playerBrain.Info.SetFrags(info.Sender);
-					_playerBrain.Info.SetFrags(sender);
+					_playerBrain.Info.SetFrags(shooter);
 				}
         }
 

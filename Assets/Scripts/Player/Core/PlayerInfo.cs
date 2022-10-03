@@ -8,8 +8,12 @@ namespace ShooterPun2D
 	public class PlayerInfo : MonoBehaviour
 	{
 		public int _frags;
-
 		private PhotonView _photonView;
+
+		public int Frags => _frags;
+		public PhotonView PhotonView => _photonView;
+
+		private Player _player;
 
 		private void Awake()
 		{
@@ -26,8 +30,7 @@ namespace ShooterPun2D
 		private void RpcSetFrags(Player player) 
 		{
 			Hashtable hash = new Hashtable();
-			hash.Add("Frags", _frags);
-			//?PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+			hash.Add("Frags", Frags);
 			player.SetCustomProperties(hash);
 		}
 	}

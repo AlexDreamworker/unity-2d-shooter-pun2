@@ -11,10 +11,12 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private TMP_Text _playerNameText;
 		[SerializeField] private TMP_Text _fragsText;
 
-		private int _frags;
 		private Player _player;
+		private int _fragsCount;
+
+		public int FragsCount => _fragsCount;
 		
-		public void Initialize(Photon.Realtime.Player player)
+		public void Initialize(Player player)
 		{
 			_player = player;
 			_playerNameText.text = player.NickName;
@@ -23,16 +25,16 @@ namespace ShooterPun2D.pt2
 
 		private void UpdateFrags() 
 		{
-			if (_player.CustomProperties.TryGetValue("Frags", out object frags))
+			if (_player.CustomProperties.TryGetValue("Frags", out object fragsProperty))
 			{
-				if ((int)frags > _frags)
-					_frags = (int)frags;
+				if ((int)fragsProperty > _fragsCount)
+					_fragsCount = (int)fragsProperty;
 
-				_fragsText.text = _frags.ToString();
+				_fragsText.text = _fragsCount.ToString();
 			}
 		}
 
-		public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, Hashtable changedProps) 
+		public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps) 
 		{
 			if (targetPlayer == _player) 
 			{

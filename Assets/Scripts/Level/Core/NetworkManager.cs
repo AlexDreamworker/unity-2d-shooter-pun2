@@ -6,6 +6,7 @@ using System;
 using ExitGames.Client.Photon;
 using Cinemachine;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ShooterPun2D.pt2
 {
@@ -21,8 +22,9 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private GameObject _scoreboardMenu;
 
 		private GameObject _prefabToSpawn;
-		private List<GameObject> _playerObjects = new List<GameObject>();
 		private GameObject _playerLocal;
+
+		private List<PlayerInfo> _players = new List<PlayerInfo>(); //!
 
 		public static NetworkManager Instance;
 		public GameObject PlayerLocal => _playerLocal;
@@ -47,8 +49,8 @@ namespace ShooterPun2D.pt2
 			if (_playerLocal != null) 
 				_canvas.SetActive(true);
 
-			//Регистрация кастомного типа данных с сериализацией / десериализацией
-			//?PhotonPeer.RegisterType(typeof(Vector2Int), 242, SerializeVector2Int, DeserializeVector2Int);
+			//*Регистрация кастомного типа данных с сериализацией / десериализацией
+			//*PhotonPeer.RegisterType(typeof(Vector2Int), 242, SerializeVector2Int, DeserializeVector2Int);
 		}
 
 		public Vector3 GetSpawnPoint() 
@@ -57,9 +59,9 @@ namespace ShooterPun2D.pt2
 			return result;
 		}
 
-		public void AddPlayer(GameObject player) 
+		public void AddPlayer(PlayerInfo info) 
 		{
-			_playerObjects.Add(player);
+			_players.Add(info);
 		}
 
 		public void Leave()
@@ -82,30 +84,30 @@ namespace ShooterPun2D.pt2
 		public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) 
 		{
 			Debug.LogFormat("Player {0} left room", otherPlayer.NickName);
-		}	
+		}
 
-		//?----CUSTOM---TYPE---SERIALIZE-/-DESERIALIZE------------------------------------------------------
-		// public static object DeserializeVector2Int(byte[] data) 
-		// {
-		// 	Vector2Int result = new Vector2Int();
+        //*----CUSTOM---TYPE---SERIALIZE-/-DESERIALIZE------------------------------------------------------
+        // public static object DeserializeVector2Int(byte[] data) 
+        // {
+        // 	Vector2Int result = new Vector2Int();
 
-		// 	result.x = BitConverter.ToInt32(data, 0);
-		// 	result.y = BitConverter.ToInt32(data, 4);
-			
-		// 	return result;
-		// }	
+        // 	result.x = BitConverter.ToInt32(data, 0);
+        // 	result.y = BitConverter.ToInt32(data, 4);
 
-		// public static byte[] SerializeVector2Int(object obj) 
-		// {
-		// 	Vector2Int vector = (Vector2Int)obj;
-		// 	byte[] result = new byte[8];
+        // 	return result;
+        // }	
 
-		// 	BitConverter.GetBytes(vector.x).CopyTo(result, 0);
-		// 	BitConverter.GetBytes(vector.y).CopyTo(result, 4);
+        // public static byte[] SerializeVector2Int(object obj) 
+        // {
+        // 	Vector2Int vector = (Vector2Int)obj;
+        // 	byte[] result = new byte[8];
 
-		// 	return result;
-		// }
-		//?----CUSTOM---TYPE---SERIALIZE-/-DESERIALIZE------------------------------------------------------
-	}
+        // 	BitConverter.GetBytes(vector.x).CopyTo(result, 0);
+        // 	BitConverter.GetBytes(vector.y).CopyTo(result, 4);
+
+        // 	return result;
+        // }
+        //*----CUSTOM---TYPE---SERIALIZE-/-DESERIALIZE------------------------------------------------------
+    }
 }
 

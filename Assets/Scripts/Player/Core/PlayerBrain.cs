@@ -40,7 +40,8 @@ namespace ShooterPun2D.pt2
 		private void Start()
 		{
 			Global = FindObjectOfType<NetworkManager>();
-			Global.AddPlayer(this.gameObject);
+			//Global.AddPlayer(this.gameObject); //!
+			Global.AddPlayer(Info);
 
 			if (!PhotonView.IsMine) 
 			{
