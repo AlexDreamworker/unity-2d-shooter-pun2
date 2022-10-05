@@ -1,6 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
@@ -15,7 +12,7 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private GameObject _scoreboardItemPrefab;
 
 		Dictionary<Player, ScoreboardItem> _scoreboardItems = new Dictionary<Player, ScoreboardItem>();
-		List<GameObject> _itemsGO = new List<GameObject>(); //todo: rename
+		List<GameObject> _itemsGameObjects = new List<GameObject>();
 
 		private void Start()
 		{
@@ -27,14 +24,21 @@ namespace ShooterPun2D.pt2
 
 		private void Update()
 		{
-			var sortedItemsGO = _itemsGO.OrderByDescending(i => i.GetComponent<ScoreboardItem>().FragsCount).ToArray();
+			SortingScoreboardByFrags();
+		}
 
-			for (var i = 0; i < sortedItemsGO.Length; i++)
+		private void SortingScoreboardByFrags() 
+		{
+			var sortedItems = _itemsGameObjects
+				.OrderByDescending(i => i.GetComponent<ScoreboardItem>().FragsCount)
+				.ToArray();
+
+			for (var i = 0; i < sortedItems.Length; i++)
 			{
 				var child = _container.transform.GetChild(i);
-				var ix = sortedItemsGO[i].transform.GetSiblingIndex(); //todo: rename
+				var sortedIndex = sortedItems[i].transform.GetSiblingIndex();
 
-				child.SetSiblingIndex(ix);
+				child.SetSiblingIndex(sortedIndex);
 			}
 		}
 
@@ -55,13 +59,13 @@ namespace ShooterPun2D.pt2
 			item.Initialize(player);
 			_scoreboardItems[player] = item;
 
-			_itemsGO.Add(itemObject);// !!!
+			_itemsGameObjects.Add(itemObject);
 		}
 
 		private void RemoveScoreboardItem(Player player) 
 		{
-			var itemGO = _scoreboardItems[player].gameObject;// !!!
-			_itemsGO.Remove(itemGO);// !!!
+			var itemGO = _scoreboardItems[player].gameObject;
+			_itemsGameObjects.Remove(itemGO);
 
 			Destroy(_scoreboardItems[player].gameObject);
 			_scoreboardItems.Remove(player);

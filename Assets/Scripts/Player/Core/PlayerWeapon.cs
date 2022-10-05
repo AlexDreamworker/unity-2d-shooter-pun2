@@ -97,8 +97,7 @@ namespace ShooterPun2D.pt2
 		public void SetWeapon(int index) //* CAll
 		{
 			_currentWeaponIndex = index; // ???
-
-			_playerBrain.PhotonView.RPC(nameof(RpcWeaponChange), RpcTarget.All, index /*_currentWeaponIndex*/); // ???
+			_playerBrain.PhotonView.RPC(nameof(RpcWeaponChange), RpcTarget.All, index);
 		}
 
 		[PunRPC]

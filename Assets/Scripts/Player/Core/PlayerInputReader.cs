@@ -42,10 +42,53 @@ namespace ShooterPun2D.pt2
 			if (!_playerBrain.PhotonView.IsMine)
 				return;
 			
-			var direction = context.ReadValue<Vector2>();
-			var roundDirection = Vector2Int.RoundToInt(direction);
+			var direction = context.ReadValue<Vector2>().normalized;
+			direction.Normalize();
+			//* --- OLD RESULT: ---
+			//*
+			//*var roundDirection = Vector2Int.RoundToInt(direction);
+			//*_playerBrain.Controls.SetDirectionAim(roundDirection);
 
-			_playerBrain.Controls.SetDirectionAim(roundDirection);
+			//!---------------------------------------------------------------------------------
+			var xClamp = direction.x;
+			var yClamp = direction.y;
+			
+			//? ---X---
+			if (xClamp > 0.55f)
+				xClamp = 1f;
+
+			if (xClamp < 0.55f && xClamp > 0.25f)
+				xClamp = 0.5f;
+				
+			if (xClamp < 0.25f && xClamp > -0.25f)
+				xClamp = 0;
+				
+			if (xClamp < -0.25f && xClamp > -0.55f)
+				xClamp = -0.5f;
+
+			if (xClamp < -0.55f)
+				xClamp = -1f;
+
+			//? ---Y---
+			if (yClamp > 0.55f)
+				yClamp = 1f;
+
+			if (yClamp < 0.55f && yClamp > 0.25f)
+				yClamp = 0.5f;
+				
+			if (yClamp < 0.25f && yClamp > -0.25f)
+				yClamp = 0;
+				
+			if (yClamp < -0.25f && yClamp > -0.55f)
+				yClamp = -0.5f;
+
+			if (yClamp < -0.55f)
+				yClamp = -1f;
+
+
+			var clampDirection = new Vector2(xClamp, yClamp);
+			_playerBrain.Controls.SetDirectionAim(clampDirection);
+			//!---------------------------------------------------------------------------------
 		}
 
 		public void OnNextWeapon(InputAction.CallbackContext context) 

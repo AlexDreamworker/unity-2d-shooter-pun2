@@ -24,7 +24,7 @@ namespace ShooterPun2D.pt2
 		private GameObject _prefabToSpawn;
 		private GameObject _playerLocal;
 
-		private List<PlayerInfo> _players = new List<PlayerInfo>(); //!
+		private List<PlayerData> _players = new List<PlayerData>(); //!
 
 		public static NetworkManager Instance;
 		public GameObject PlayerLocal => _playerLocal;
@@ -59,7 +59,7 @@ namespace ShooterPun2D.pt2
 			return result;
 		}
 
-		public void AddPlayer(PlayerInfo info) 
+		public void AddPlayer(PlayerData info) 
 		{
 			_players.Add(info);
 		}

@@ -5,7 +5,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace ShooterPun2D
 {
-	public class PlayerInfo : MonoBehaviour
+	public class PlayerData : MonoBehaviour
 	{
 		public int _frags;
 		private PhotonView _photonView;
@@ -23,7 +23,7 @@ namespace ShooterPun2D
 		public void SetFrags(Player player) 
 		{
 			_frags++;
-			_photonView.RPC(nameof(RpcSetFrags), RpcTarget.All, player); //!!! ???? or ALL
+			_photonView.RPC(nameof(RpcSetFrags), RpcTarget.All, player);
 		}
 
 		[PunRPC]

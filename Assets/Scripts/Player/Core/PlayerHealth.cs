@@ -61,7 +61,7 @@ namespace ShooterPun2D.pt2
 
 				if (_currentHealth <= 0) 
 				{
-					_playerBrain.Info.SetFrags(shooter);
+					_playerBrain.Data.SetFrags(shooter);
 				}
         }
 
