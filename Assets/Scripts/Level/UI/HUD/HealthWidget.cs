@@ -27,7 +27,7 @@ namespace ShooterPun2D.pt2
 				return;
 			
 			_render.text = value.ToString();
-			_textBg.text = value.ToString(); //todo: refactoring design
+			_textBg.text = value.ToString(); //TODO: refactoring design
 
 			var result = value / 100f;
 

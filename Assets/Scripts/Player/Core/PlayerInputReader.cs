@@ -6,12 +6,12 @@ namespace ShooterPun2D.pt2
 {
 	public class PlayerInputReader : MonoBehaviour
 	{
-		private GameObject _pauseMenuCanvas; //todo: refactoring!
+		private GameObject _pauseMenuCanvas; //TODO: refactoring
 		private GameObject _scoreboardWidget;
 
 		private PlayerBrain _playerBrain;
 
-		[SerializeField] private TMP_Text _nickNameText; //todo: refactoring!
+		[SerializeField] private TMP_Text _nickNameText; //TODO: refactoring
 
 		private void Awake()
 		{
@@ -20,7 +20,7 @@ namespace ShooterPun2D.pt2
 
 		private void Start()
 		{
-			_nickNameText.text = _playerBrain.PhotonView.Owner.NickName; //todo: refactoring!
+			_nickNameText.text = _playerBrain.PhotonView.Owner.NickName; //TODO: refactoring
 
 			_pauseMenuCanvas = NetworkManager.Instance.PauseMenu;
 			_scoreboardWidget = NetworkManager.Instance.ScoreboardMenu;
@@ -49,6 +49,7 @@ namespace ShooterPun2D.pt2
 			//*var roundDirection = Vector2Int.RoundToInt(direction);
 			//*_playerBrain.Controls.SetDirectionAim(roundDirection);
 
+			//TODO: refactoring!!!!
 			//!---------------------------------------------------------------------------------
 			var xClamp = direction.x;
 			var yClamp = direction.y;

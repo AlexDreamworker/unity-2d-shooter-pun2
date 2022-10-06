@@ -28,7 +28,7 @@ namespace ShooterPun2D.pt2
 			if (_target == null)
 				return;
 			
-			_textBg.text = value.ToString(); //todo: refactoring design
+			_textBg.text = value.ToString(); //TODO: refactoring design
 			_render.text = value.ToString();
 			_iconRender.color = color;
 		}	

@@ -6,7 +6,13 @@ namespace ShooterPun2D.pt2
 	public class HealthBarWidget : MonoBehaviour
 	{
 		[SerializeField] private PlayerHealth _target;
-		[SerializeField] private Image _render;
+		[SerializeField] private Image _healthBar;
+		[SerializeField] private Image _damageBar;
+		[SerializeField] private Gradient _gradient;
+
+		private const float DAMAGE_HEALTH_SHRINK_TIMER_MAX = 0.5f;
+		private float _damageHealthShrinkTimer;
+		private float _floatValue;
 
 		private void OnEnable()
 		{
@@ -18,23 +24,34 @@ namespace ShooterPun2D.pt2
 			_target.OnHealthChanged -= UpdateValue;
 		}
 
+		//TODO: clean this code
+		private void Update()
+		{
+			_damageHealthShrinkTimer -= Time.deltaTime;
+
+			if (_damageHealthShrinkTimer < 0)
+			{
+				if (_healthBar.fillAmount < _damageBar.fillAmount) 
+				{
+					var shrinkSpeed = 1f;
+					_damageBar.fillAmount -= shrinkSpeed * Time.deltaTime;
+				}
+
+				if (_healthBar.fillAmount > _damageBar.fillAmount)
+					_damageBar.fillAmount = _healthBar.fillAmount;
+			}
+		}
+
 		public void UpdateValue(int value)
 		{
 			if (_target == null)
 				return;
 			
-			var result = value / 100f;
+			_damageHealthShrinkTimer = DAMAGE_HEALTH_SHRINK_TIMER_MAX;
 
-			_render.fillAmount = result;
-
-			if (result > 0.7f)
-			{
-				_render.color = new Color(1 - result, result, 0);
-			}
-			else
-			{
-				_render.color = new Color(1, result, 0);
-			}
+			_floatValue = value / 100f;
+			_healthBar.fillAmount = _floatValue;
+			_healthBar.color = _gradient.Evaluate(_floatValue);		
 		}
 	}
 }

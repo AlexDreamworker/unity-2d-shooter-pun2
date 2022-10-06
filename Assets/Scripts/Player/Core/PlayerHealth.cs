@@ -44,6 +44,7 @@ namespace ShooterPun2D.pt2
 			OnHealthChanged?.Invoke(Health);
 		}
 
+		//TODO: Refact this
 		//!-----------------------------------------------------------------------
 		public void TakeDamage(int value, Player shooter)
 		{

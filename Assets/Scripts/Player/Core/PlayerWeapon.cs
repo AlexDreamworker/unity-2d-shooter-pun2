@@ -42,7 +42,7 @@ namespace ShooterPun2D.pt2
 			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
 
-		public void RefreshWeapon() 
+		public void RefreshWeapon() //TODO: cleanup!
 		{
 			if (_playerBrain.PhotonView.IsMine) 
 			{
@@ -153,7 +153,7 @@ namespace ShooterPun2D.pt2
 
 		public void PreviousWeapon() //* CALL 
 		{	
-			foreach (var weapon in _weapons.Where(w => w.IsActive).Reverse()) //! where is bug?
+			foreach (var weapon in _weapons.Where(w => w.IsActive).Reverse()) //TODO: there is a bug???
 			{
 				if (weapon.Id < _currentWeapon.Id && weapon.AmmoCount != 0)
 				{

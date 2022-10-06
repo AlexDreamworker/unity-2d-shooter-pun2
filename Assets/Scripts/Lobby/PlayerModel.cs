@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ShooterPun2D
 {
-	public class PlayerModel : MonoBehaviour //! 60
+	public class PlayerModel : MonoBehaviour 
 	{
 		[SerializeField] private GameObject[] _skins;
 		private GameObject _currentSkin;

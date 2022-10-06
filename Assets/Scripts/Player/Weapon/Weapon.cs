@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ShooterPun2D.pt2
 {
 	[Serializable]
-	public class Weapon
+	public class Weapon //TODO: Add Fire rate and other
 	{
 		[SerializeField] private string _name;
 		[SerializeField] private WeaponType _type;
