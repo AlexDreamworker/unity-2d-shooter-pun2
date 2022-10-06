@@ -2600,7 +2600,7 @@ MonoBehaviour:
   _playerPrefabs:
   - {fileID: 8274303792058633020, guid: a99beaa489f0dd3408843b613b4f4d9b, type: 3}
   - {fileID: 8274303792058633020, guid: b3c375b93af618f4a876cf2eafe4cdd7, type: 3}
-  - {fileID: 8274303792058633020, guid: a4dd98a4369c68a4eb38ba1d44d40807, type: 3}
+  - {fileID: 8274303792058633020, guid: efd386fe32cb58b4989425027c67d28c, type: 3}
   _spawnPoints:
   - {fileID: 0}
   - {fileID: 0}
