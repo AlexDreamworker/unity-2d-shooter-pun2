@@ -51,45 +51,67 @@ namespace ShooterPun2D.pt2
 
 			//TODO: refactoring!!!!
 			//!---------------------------------------------------------------------------------
-			var xClamp = direction.x;
-			var yClamp = direction.y;
+			//var xClamp = direction.x;
+			//var yClamp = direction.y;
 			
 			//? ---X---
-			if (xClamp > 0.55f)
-				xClamp = 1f;
+			// if (xClamp > 0.55f)
+			// 	xClamp = 1f;
 
-			if (xClamp < 0.55f && xClamp > 0.25f)
-				xClamp = 0.5f;
+			// if (xClamp < 0.55f && xClamp > 0.25f)
+			// 	xClamp = 0.5f;
 				
-			if (xClamp < 0.25f && xClamp > -0.25f)
-				xClamp = 0;
+			// if (xClamp < 0.25f && xClamp > -0.25f)
+			// 	xClamp = 0;
 				
-			if (xClamp < -0.25f && xClamp > -0.55f)
-				xClamp = -0.5f;
+			// if (xClamp < -0.25f && xClamp > -0.55f)
+			// 	xClamp = -0.5f;
 
-			if (xClamp < -0.55f)
-				xClamp = -1f;
+			// if (xClamp < -0.55f)
+			// 	xClamp = -1f;
 
 			//? ---Y---
-			if (yClamp > 0.55f)
-				yClamp = 1f;
+			// if (yClamp > 0.55f)
+			// 	yClamp = 1f;
 
-			if (yClamp < 0.55f && yClamp > 0.25f)
-				yClamp = 0.5f;
+			// if (yClamp < 0.55f && yClamp > 0.25f)
+			// 	yClamp = 0.5f;
 				
-			if (yClamp < 0.25f && yClamp > -0.25f)
-				yClamp = 0;
+			// if (yClamp < 0.25f && yClamp > -0.25f)
+			// 	yClamp = 0;
 				
-			if (yClamp < -0.25f && yClamp > -0.55f)
-				yClamp = -0.5f;
+			// if (yClamp < -0.25f && yClamp > -0.55f)
+			// 	yClamp = -0.5f;
 
-			if (yClamp < -0.55f)
-				yClamp = -1f;
+			// if (yClamp < -0.55f)
+			// 	yClamp = -1f;
 
+			var xClamp = ClampingFloatDirection(direction.x);
+			var yClamp = ClampingFloatDirection(direction.y);
 
 			var clampDirection = new Vector2(xClamp, yClamp);
 			_playerBrain.Controls.SetDirectionAim(clampDirection);
 			//!---------------------------------------------------------------------------------
+		}
+
+		private float ClampingFloatDirection(float value) 
+		{
+			if (value > 0.55f)
+				return 1f;
+
+			if (value < 0.55f && value > 0.25f)
+				return 0.5f;
+				
+			if (value < 0.25f && value > -0.25f)
+				return 0;
+				
+			if (value < -0.25f && value > -0.55f)
+				return -0.5f;
+
+			if (value < -0.55f)
+				return -1f;
+			
+			return 0;
 		}
 
 		public void OnNextWeapon(InputAction.CallbackContext context) 
