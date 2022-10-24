@@ -27,12 +27,9 @@ namespace ShooterPun2D.pt2
 		public static Launcher Instance;
 		private ExitGames.Client.Photon.Hashtable _playerProperties = new ExitGames.Client.Photon.Hashtable();
 
-		private void Awake()
-		{
-			Instance = this;
-		}
+		void Awake() => Instance = this;
 
-		private void Start()
+		void Start()
 		{
 			string nickName = PlayerPrefs.GetString("NickName", "Player " + Random.Range(1000, 9999));
 			_nickNameInputField.text = nickName;
@@ -70,20 +67,15 @@ namespace ShooterPun2D.pt2
 
 			RoomOptions options = new RoomOptions();
 			options.BroadcastPropsChangeToAll = true;
-			//options.PublishUserId = true; //? Check this and other options!
-			//options.MaxPlayers = 4; //?
 
 			PhotonNetwork.NickName = _nickNameInputField.text;
 			PlayerPrefs.SetString("NickName", _nickNameInputField.text);
 			PhotonNetwork.CreateRoom(_roomNameField.text, new RoomOptions { MaxPlayers = 8, BroadcastPropsChangeToAll = true}); //todo: ?????broadcast
 			
-			//PhotonNetwork.CreateRoom(_roomNameField.text);
 			MenuManager.Instance.OpenMenu("loading");
 
-			//*
 			_playerProperties["playerModel"] = PlayerPrefs.GetInt("PlayerModelIndex");
 			PhotonNetwork.SetPlayerCustomProperties(_playerProperties);
-			//*
 		}
 
 		public override void OnJoinedRoom() 
@@ -94,14 +86,10 @@ namespace ShooterPun2D.pt2
             Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
 
 			foreach (Transform item in _playerListContent)
-			{
 				Destroy(item.gameObject);
-			}
 			
 			for (var i = 0; i < players.Count(); i++)
-			{
 				Instantiate(_playerListItemPrefab, _playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
-			}
 
 			_startGameButton.SetActive(PhotonNetwork.IsMasterClient);
 		}
@@ -141,7 +129,7 @@ namespace ShooterPun2D.pt2
 			PhotonNetwork.SetPlayerCustomProperties(_playerProperties);
 		}
 
-		public void Exit() //* CALL
+		public void Exit()
 		{
 			Application.Quit();
 		}
@@ -154,9 +142,7 @@ namespace ShooterPun2D.pt2
 		public override void OnRoomListUpdate(List<RoomInfo> roomList) 
 		{
 			foreach (Transform item in _roomListContent)
-			{
 				Destroy(item.gameObject);
-			}
 
 			for (int i = 0; i < roomList.Count; i++)
 			{
@@ -171,12 +157,6 @@ namespace ShooterPun2D.pt2
 		{
 			Instantiate(_playerListItemPrefab, _playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
 		}
-
-		// private void Update()
-		// {
-		// 	if (PhotonNetwork.LocalPlayer.CustomProperties["playerModel"] != null)
-		// 		Debug.Log("Properties is :" + (int)PhotonNetwork.LocalPlayer.CustomProperties["playerModel"]);
-		// }
 	}
 }
 

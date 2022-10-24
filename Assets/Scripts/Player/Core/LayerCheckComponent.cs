@@ -9,17 +9,17 @@ namespace ShooterPun2D.pt2
 
 		public bool IsTouchingLayer;
 
-		private void Awake()
+		void Awake()
 		{
 			_collider = GetComponent<Collider2D>();
 		}
 
-		private void OnTriggerEnter2D(Collider2D other)
+		void OnTriggerEnter2D(Collider2D other)
 		{
 			IsTouchingLayer = _collider.IsTouchingLayers(_groundLayer);
 		}
 
-		private void OnTriggerExit2D(Collider2D other)
+		void OnTriggerExit2D(Collider2D other)
 		{
 			IsTouchingLayer = _collider.IsTouchingLayers(_groundLayer);
 		}

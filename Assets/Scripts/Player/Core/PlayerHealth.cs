@@ -17,10 +17,11 @@ namespace ShooterPun2D.pt2
 		[Header("Prefabs")]
 		[SerializeField] private GameObject _deathChunkParticle = null;
 		[SerializeField] private GameObject _deathBloodParticle = null;
+
 		private int _maxHealth = 100;
 		private PlayerBrain _playerBrain;
 
-		public int Health //???
+		public int Health
 		{
 			get => _currentHealth;
 			set 
@@ -34,18 +35,16 @@ namespace ShooterPun2D.pt2
 			}
 		}
 
-		private void Awake()
+		void Awake()
 		{
 			_playerBrain = GetComponent<PlayerBrain>();
 		}
 
-		private void Start()
+		void Start()
 		{
 			OnHealthChanged?.Invoke(Health);
 		}
 
-		//TODO: Refact this
-		//!-----------------------------------------------------------------------
 		public void TakeDamage(int value, Player shooter)
 		{
 			if (!_playerBrain.PhotonView.IsMine)
@@ -55,15 +54,13 @@ namespace ShooterPun2D.pt2
 		}
 
         [PunRPC]
-        private void RpcDamage(int value, Player shooter)
+        void RpcDamage(int value, Player shooter)
         {
         	Health += value;
 			OnHealthChanged?.Invoke(Health);
 
-				if (_currentHealth <= 0) 
-				{
-					_playerBrain.Data.SetFrags(shooter);
-				}
+			if (_currentHealth <= 0) 
+				_playerBrain.Data.SetFrags(shooter);
         }
 
 		public void TakeHealth(int value) 
@@ -75,12 +72,11 @@ namespace ShooterPun2D.pt2
 		}
 
 		[PunRPC]
-        private void RpcTakeHealth(int value) 
+        void RpcTakeHealth(int value) 
         {
         	Health += value;
 			OnHealthChanged?.Invoke(Health);
         }
-		//!-----------------------------------------------------------------------
 
 		public void ChangePlayerState(bool isAlive) 
 		{
@@ -88,7 +84,7 @@ namespace ShooterPun2D.pt2
 		}
 
 		[PunRPC]
-		private void RpcChangePlayerState(bool isAlive) 
+		void RpcChangePlayerState(bool isAlive) 
 		{
 			if (!isAlive) 
 			{
@@ -105,9 +101,7 @@ namespace ShooterPun2D.pt2
 			else
 			{
 				if (_playerBrain.PhotonView.IsMine) 
-				{	
 					_playerBrain.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-				}
 
 				gameObject.transform.position = _playerBrain.Global.GetSpawnPoint();
 				_playerBrain.ComponentsActivity(true);

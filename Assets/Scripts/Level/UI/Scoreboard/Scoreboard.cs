@@ -14,20 +14,18 @@ namespace ShooterPun2D.pt2
 		Dictionary<Player, ScoreboardItem> _scoreboardItems = new Dictionary<Player, ScoreboardItem>();
 		List<GameObject> _itemsGameObjects = new List<GameObject>();
 
-		private void Start()
+		void Start()
 		{
 			foreach (var player in PhotonNetwork.PlayerList)
-			{
 				AddScoreboardItem(player);
-			}
 		}
 
-		private void Update()
+		void Update()
 		{
 			SortingScoreboardByFrags();
 		}
 
-		private void SortingScoreboardByFrags() 
+		void SortingScoreboardByFrags() 
 		{
 			var sortedItems = _itemsGameObjects
 				.OrderByDescending(i => i.GetComponent<ScoreboardItem>().FragsCount)
@@ -52,7 +50,7 @@ namespace ShooterPun2D.pt2
 			RemoveScoreboardItem(otherPlayer);
 		}
 
-		private void AddScoreboardItem(Player player) 
+		void AddScoreboardItem(Player player) 
 		{
 			var itemObject = Instantiate(_scoreboardItemPrefab, _container);
 			var item = itemObject.GetComponent<ScoreboardItem>();
@@ -62,7 +60,7 @@ namespace ShooterPun2D.pt2
 			_itemsGameObjects.Add(itemObject);
 		}
 
-		private void RemoveScoreboardItem(Player player) 
+		void RemoveScoreboardItem(Player player) 
 		{
 			var itemGO = _scoreboardItems[player].gameObject;
 			_itemsGameObjects.Remove(itemGO);

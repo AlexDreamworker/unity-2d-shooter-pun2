@@ -9,7 +9,7 @@ namespace ShooterPun2D.pt2
 		[SerializeField] private GameObject _menuHolder;
 		private bool _isOpen = false;
 
-		private void Start()
+		void Start()
 		{
 			_menuHolder.SetActive(_isOpen);
 		}
@@ -17,17 +17,13 @@ namespace ShooterPun2D.pt2
 		public void SwitchPauseMenu()
 		{
 			_isOpen = !_isOpen;
-
 			_menuHolder.SetActive(_isOpen);
 		}
 
-		//* Call from button
 		public void Exit() => Application.Quit(); 
 
-		//* Call from button
 		public void Leave() => PhotonNetwork.LeaveRoom(); 
 
-		//* Call from button
 		public override void OnLeftRoom() => SceneManager.LoadScene(0); 
 	}
 }

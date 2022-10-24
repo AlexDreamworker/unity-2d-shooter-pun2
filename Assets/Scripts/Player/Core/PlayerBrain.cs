@@ -21,7 +21,7 @@ namespace ShooterPun2D.pt2
 
 		public NetworkManager Global { get; private set; }
 
-		private void Awake()
+		void Awake()
 		{
 			Input = GetComponent<PlayerInputReader>();
 			Controls = GetComponent<PlayerControls>();
@@ -37,15 +37,13 @@ namespace ShooterPun2D.pt2
 			Global = null;
 		}
 
-		private void Start()
+		void Start()
 		{
 			Global = FindObjectOfType<NetworkManager>();
 			Global.AddPlayer(Data);
 
 			if (!PhotonView.IsMine) 
-			{
 				Destroy(Rigidbody);
-			}
 		}
 
 		public void ComponentsActivity(bool isActive) 

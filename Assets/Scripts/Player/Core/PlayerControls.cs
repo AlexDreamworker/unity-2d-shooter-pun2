@@ -16,12 +16,12 @@ namespace ShooterPun2D.pt2
 
 		private PlayerBrain _playerBrain;
 
-		private void Awake()
+		void Awake()
 		{
 			_playerBrain = GetComponent<PlayerBrain>();
 		}
 
-		private void Update()
+		void Update()
 		{
 			_isGrounded = IsGrounded();
 			_playerBrain.Graphics.UpdateSpriteDirectionLegs(_moveDirection.x);
@@ -33,7 +33,7 @@ namespace ShooterPun2D.pt2
 				_playerBrain.Weapon.TryFire(_aimDirection);
 		}
 
-		private void FixedUpdate()
+		void FixedUpdate()
 		{			
 			UpdateMovement();
 			UpdateAim();
@@ -49,7 +49,7 @@ namespace ShooterPun2D.pt2
 			_aimDirection = direction;
 		}
 
-		private void UpdateMovement() 
+		void UpdateMovement() 
 		{	
 			if (!_playerBrain.PhotonView.IsMine) 
 				return;
@@ -58,10 +58,15 @@ namespace ShooterPun2D.pt2
 			var yVelocity = CalculateYVelocity();
 
 			_playerBrain.Rigidbody.velocity = new Vector2(xVelocity, yVelocity);
-			_playerBrain.Graphics.SetAnimatorValueLegs(_moveDirection.x != 0, _isGrounded, _playerBrain.Rigidbody.velocity.y);
+			
+			_playerBrain.Graphics.SetAnimatorValueLegs(
+				_moveDirection.x != 0, 
+				_isGrounded, 
+				_playerBrain.Rigidbody.velocity.y
+				);
 		}
 
-		private void UpdateAim() 
+		void UpdateAim() 
 		{
 			var xVelocity = _aimDirection.x;
 			var yVelocity = _aimDirection.y;
@@ -70,7 +75,7 @@ namespace ShooterPun2D.pt2
 				_playerBrain.Graphics.SetAnimatorValueTorso(xVelocity, yVelocity);		
 		}
 
-		private float CalculateYVelocity()
+		float CalculateYVelocity()
 		{
 			var yVelocity = _playerBrain.Rigidbody.velocity.y;
 			var isJumpPressing = _moveDirection.y > 0;
@@ -81,7 +86,7 @@ namespace ShooterPun2D.pt2
 			return yVelocity;
 		}
 
-		private float CalculateJumpVelocity(float yVelocity) 
+		float CalculateJumpVelocity(float yVelocity) 
 		{
 			var isFalling = _playerBrain.Rigidbody.velocity.y <= 0.001f;
 
@@ -94,7 +99,7 @@ namespace ShooterPun2D.pt2
 			return yVelocity;
 		}
 
-		private bool IsGrounded() 
+		bool IsGrounded() 
 		{
 			return _groundCheck.IsTouchingLayer;
 		}			

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ShooterPun2D
@@ -13,14 +11,13 @@ namespace ShooterPun2D
 
 		public int CurrentRoomIndex => _currentRoomIndex;
 
-		private void Start()
+		void Start()
 		{
 			_currentRoomIndex = 0;
-			//_currentRoomIndex = PlayerPrefs.GetInt("PlayerModelIndex", 0);
 			UpdateRoom();
 		}
 
-		public void NextRoom() //* CALL
+		public void NextRoom()
 		{
 			if (_currentRoomIndex < _rooms.Length - 1)
 				_currentRoomIndex++;
@@ -30,7 +27,7 @@ namespace ShooterPun2D
 			UpdateRoom();
 		}
 
-		public void PreviousRoom() //* CALL
+		public void PreviousRoom()
 		{
 			if (_currentRoomIndex > 0)
 				_currentRoomIndex--;
@@ -40,12 +37,10 @@ namespace ShooterPun2D
 			UpdateRoom();
 		}
 
-		private void UpdateRoom() 
+		void UpdateRoom() 
 		{
 			foreach (var room in _rooms)
-			{
 				room.SetActive(false);
-			}
 
 			_currentRoom = _rooms[_currentRoomIndex];
 			_currentRoom.SetActive(true);

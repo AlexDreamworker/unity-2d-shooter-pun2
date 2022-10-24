@@ -1,5 +1,3 @@
-using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine;
 
 namespace ShooterPun2D
@@ -10,15 +8,16 @@ namespace ShooterPun2D
 		private GameObject _currentSkin;
 
 		private int _currentSkinIndex;
+		private readonly string _prefsPlayerModelIndex = "PlayerModelIndex";
 
-		private void Start()
+		void Start()
 		{
-			_currentSkinIndex = PlayerPrefs.GetInt("PlayerModelIndex", 0);
+			_currentSkinIndex = PlayerPrefs.GetInt(_prefsPlayerModelIndex, 0);
 			UpdateSkin();
 		}
 
 
-		public void NextSkin() //* CALL
+		public void NextSkin()
 		{
 			if (_currentSkinIndex < _skins.Length - 1)
 				_currentSkinIndex++;
@@ -28,7 +27,7 @@ namespace ShooterPun2D
 			UpdateSkin();
 		}
 
-		public void PreviousSkin() //* CALL
+		public void PreviousSkin()
 		{
 			if (_currentSkinIndex > 0)
 				_currentSkinIndex--;
@@ -38,17 +37,15 @@ namespace ShooterPun2D
 			UpdateSkin();
 		}
 
-		private void UpdateSkin() 
+		void UpdateSkin() 
 		{
 			foreach (var skin in _skins)
-			{
 				skin.SetActive(false);
-			}
 
 			_currentSkin = _skins[_currentSkinIndex];
 			_currentSkin.SetActive(true);
 			
-			PlayerPrefs.SetInt("PlayerModelIndex", _currentSkinIndex);
+			PlayerPrefs.SetInt(_prefsPlayerModelIndex, _currentSkinIndex);
 		}
 	}
 }

@@ -1,7 +1,6 @@
 using System.IO;
 using UnityEngine;
 using Photon.Pun;
-using UnityEngine.InputSystem;
 
 namespace ShooterPun2D.pt2
 {
@@ -9,20 +8,24 @@ namespace ShooterPun2D.pt2
 	{
 		private PhotonView _photonView;
 
-		private void Awake()
+		void Awake()
 		{
 			_photonView = GetComponent<PhotonView>();
 		}
 
-		private void Start()
+		void Start()
 		{
 			if (_photonView.IsMine)
 				CreateController();
 		}
 
-		private void CreateController() 
+		void CreateController() 
 		{
-			PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), Vector3.zero, Quaternion.identity);
+			PhotonNetwork.Instantiate(
+				Path.Combine("PhotonPrefabs", "Player"), 
+				Vector3.zero, 
+				Quaternion.identity
+				);
 		}
 	}
 }

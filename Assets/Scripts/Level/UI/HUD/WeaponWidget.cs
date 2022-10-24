@@ -12,7 +12,7 @@ namespace ShooterPun2D.pt2
 		private PlayerWeapon _target;
 		private float _tempTimer;
 
-		private void OnEnable()
+		void OnEnable()
 		{
 			_target = NetworkManager.Instance.PlayerLocal.GetComponent<PlayerWeapon>();
 
@@ -22,7 +22,7 @@ namespace ShooterPun2D.pt2
 			_target.OnWeaponRefreshed += DefaultItemsState;
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
 			_target.OnWeaponChanged -= UpdateItems;
 			_target.OnWeaponActivated -= ActivateItems;
@@ -30,7 +30,7 @@ namespace ShooterPun2D.pt2
 			_target.OnWeaponRefreshed -= DefaultItemsState;
 		}
 
-		private void Update()
+		void Update()
 		{
 			if (Time.time > _tempTimer)
 			{
@@ -44,7 +44,7 @@ namespace ShooterPun2D.pt2
 			}
 		}
 
-		private void DefaultItemsState() 
+		void DefaultItemsState() 
 		{
 			foreach (var item in _items.Where(i => i != _items[0]))
 			{
@@ -52,23 +52,22 @@ namespace ShooterPun2D.pt2
 			}
 		}
 
-		private void UpdateItems(int index) 
+		void UpdateItems(int index) 
 		{
 			_tempTimer = Time.time + _visablityDelay;
 			
 			foreach (var item in _items)
-			{
 				item.transform.GetChild(0).gameObject.SetActive(false);
-			}
+				
 			_items[index].transform.GetChild(0).gameObject.SetActive(true);
 		}
 
-		private void ActivateItems(int index) 
+		void ActivateItems(int index) 
 		{
 			_items[index].transform.GetChild(2).gameObject.SetActive(false);
 		}
 
-		private void BlockItems(int index, bool isEmpty)
+		void BlockItems(int index, bool isEmpty)
 		{
 			_items[index].transform.GetChild(1).gameObject.SetActive(isEmpty);
 		}

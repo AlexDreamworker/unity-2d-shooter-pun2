@@ -8,7 +8,7 @@ namespace ShooterPun2D.pt2
 		
 		private PlayerHealth _target;
 
-		private void OnEnable()
+		void OnEnable()
 		{
 			_button.transform.localScale = Vector3.zero;
 
@@ -16,12 +16,12 @@ namespace ShooterPun2D.pt2
 			_target.OnPlayerDead += PlayerDead;
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
 			_target.OnPlayerDead -= PlayerDead;
 		}	
 
-		private void PlayerDead()
+		void PlayerDead()
 		{
 			if (_target == null)
 				return;
@@ -29,7 +29,7 @@ namespace ShooterPun2D.pt2
 			_button.transform.localScale = Vector3.one;
 		}	
 
-		public void RespawnButtonCallback() //* Callback from button
+		void RespawnButtonCallback()
 		{
 			_target.ChangePlayerState(true);
 			_button.transform.localScale = Vector3.zero;

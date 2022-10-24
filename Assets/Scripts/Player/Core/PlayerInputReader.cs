@@ -6,21 +6,21 @@ namespace ShooterPun2D.pt2
 {
 	public class PlayerInputReader : MonoBehaviour
 	{
-		private GameObject _pauseMenuCanvas; //TODO: refactoring
+		private GameObject _pauseMenuCanvas;
 		private GameObject _scoreboardWidget;
 
 		private PlayerBrain _playerBrain;
 
-		[SerializeField] private TMP_Text _nickNameText; //TODO: refactoring
+		[SerializeField] private TMP_Text _nickNameText;
 
-		private void Awake()
+		void Awake()
 		{
 			_playerBrain = GetComponent<PlayerBrain>();
 		}
 
-		private void Start()
+		void Start()
 		{
-			_nickNameText.text = _playerBrain.PhotonView.Owner.NickName; //TODO: refactoring
+			_nickNameText.text = _playerBrain.PhotonView.Owner.NickName;
 
 			_pauseMenuCanvas = NetworkManager.Instance.PauseMenu;
 			_scoreboardWidget = NetworkManager.Instance.ScoreboardMenu;
@@ -44,57 +44,15 @@ namespace ShooterPun2D.pt2
 			
 			var direction = context.ReadValue<Vector2>().normalized;
 			direction.Normalize();
-			//* --- OLD RESULT: ---
-			//*
-			//*var roundDirection = Vector2Int.RoundToInt(direction);
-			//*_playerBrain.Controls.SetDirectionAim(roundDirection);
-
-			//TODO: refactoring!!!!
-			//!---------------------------------------------------------------------------------
-			//var xClamp = direction.x;
-			//var yClamp = direction.y;
-			
-			//? ---X---
-			// if (xClamp > 0.55f)
-			// 	xClamp = 1f;
-
-			// if (xClamp < 0.55f && xClamp > 0.25f)
-			// 	xClamp = 0.5f;
-				
-			// if (xClamp < 0.25f && xClamp > -0.25f)
-			// 	xClamp = 0;
-				
-			// if (xClamp < -0.25f && xClamp > -0.55f)
-			// 	xClamp = -0.5f;
-
-			// if (xClamp < -0.55f)
-			// 	xClamp = -1f;
-
-			//? ---Y---
-			// if (yClamp > 0.55f)
-			// 	yClamp = 1f;
-
-			// if (yClamp < 0.55f && yClamp > 0.25f)
-			// 	yClamp = 0.5f;
-				
-			// if (yClamp < 0.25f && yClamp > -0.25f)
-			// 	yClamp = 0;
-				
-			// if (yClamp < -0.25f && yClamp > -0.55f)
-			// 	yClamp = -0.5f;
-
-			// if (yClamp < -0.55f)
-			// 	yClamp = -1f;
 
 			var xClamp = ClampingFloatDirection(direction.x);
 			var yClamp = ClampingFloatDirection(direction.y);
 
 			var clampDirection = new Vector2(xClamp, yClamp);
 			_playerBrain.Controls.SetDirectionAim(clampDirection);
-			//!---------------------------------------------------------------------------------
 		}
 
-		private float ClampingFloatDirection(float value) 
+		float ClampingFloatDirection(float value) 
 		{
 			if (value > 0.55f)
 				return 1f;

@@ -17,7 +17,7 @@ namespace ShooterPun2D.pt2
 
 		private readonly string RespawnRoutine = "Respawn";
 
-		private void Awake()
+		void Awake()
 		{
 			_sprite = GetComponent<SpriteRenderer>();
 			_collider = GetComponent<Collider2D>();	
@@ -29,13 +29,13 @@ namespace ShooterPun2D.pt2
 			StartCoroutine(RespawnRoutine);
 		}
 
-		private void ScaleAnimation()
+		void ScaleAnimation()
 		{
 			transform.localScale = Vector3.zero;
 			transform.DOScale(_originalScale, 1f);
 		}
 
-		private IEnumerator Respawn() 
+		IEnumerator Respawn() 
 		{
 			_sprite.enabled = false;
 			_collider.enabled = false;

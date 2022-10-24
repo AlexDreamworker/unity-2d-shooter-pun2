@@ -9,7 +9,7 @@ namespace ShooterPun2D.pt2
 	{
 		public static RoomManager Instance;
 
-		private void Awake()
+		void Awake()
 		{
 			if (Instance)
 			{
@@ -33,12 +33,14 @@ namespace ShooterPun2D.pt2
 			SceneManager.sceneLoaded -= OnSceneLoaded;
 		}
 
-		private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) 
+		void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) 
 		{
-			if (scene.buildIndex != 0) 
-			{
-				PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
-			}
+			if (scene.buildIndex != 0)
+				PhotonNetwork.Instantiate(
+					Path.Combine("PhotonPrefabs", "PlayerManager"), 
+					Vector3.zero, 
+					Quaternion.identity
+					);
 		}
 	}
 }

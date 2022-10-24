@@ -20,19 +20,17 @@ namespace ShooterPun2D.pt2
 		private static readonly int xValueKey = Animator.StringToHash("x");
 		private static readonly int yValueKey = Animator.StringToHash("y");
 
-		private void Awake()
+		void Awake()
 		{
 			_playerBrain = GetComponent<PlayerBrain>();	
 		}
 
-		private void Start()
+		void Start()
 		{
 			SetAnimatorValueTorso(1, 0);
 
 			if (!_playerBrain.PhotonView.IsMine) 
-			{
 				_aimPoint.SetActive(false);
-			}
 		}
 
 		public void SetAnimatorValueLegs(bool isRunning, bool isGrounded, float verticalVelocity) 

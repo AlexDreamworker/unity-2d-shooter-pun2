@@ -4,15 +4,12 @@ using UnityEngine;
 namespace ShooterPun2D.pt2
 {
 	[Serializable]
-	public class Weapon //TODO: Add Fire rate and other
+	public class Weapon
 	{
 		[SerializeField] private string _name;
 		[SerializeField] private WeaponType _type;
-		[SerializeField] private Color _color; //? For testing HUD
-		//[SerializeField] private Transform _shootPoint;
+		[SerializeField] private Color _color; 
 		[SerializeField] private GameObject _projectilePrefab;
-		//[SerializeField] private float _projectileSpeed;
-		//[SerializeField] private float _fireRate;
 		[SerializeField] private bool _isActive;
 		[SerializeField] private int _ammoCount;
 
@@ -20,11 +17,8 @@ namespace ShooterPun2D.pt2
 		private int _id;
 
 		public WeaponType Type => _type;
-		public Color Color => _color; //? For testing HUD
-		//public Transform ShootPoint => _shootPoint;
+		public Color Color => _color;
 		public GameObject ProjectilePrefab => _projectilePrefab;
-		//public float ProjectileSpeed => _projectileSpeed;
-		//public float FireRate => _fireRate;
 
 		public int Id 
 		{

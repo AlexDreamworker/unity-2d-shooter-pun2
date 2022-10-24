@@ -13,23 +13,23 @@ namespace ShooterPun2D.pt2
 		private PhotonView _shooterPhotonView;
 		private Player _shooter;
 
+		void Awake()
+		{
+			_rigidbody = GetComponent<Rigidbody2D>();
+		}
+
 		public void SetPlayer(PhotonView photonView, Player sender)
 		{
 			_shooterPhotonView = photonView;
 			_shooter = sender;
-		}
-		
-		private void Awake()
-		{
-			_rigidbody = GetComponent<Rigidbody2D>();
-		}
+		}		
 
 		public void SetVelocity(Vector2 direction, float force) 
 		{
 			_rigidbody.velocity = direction * force;
 		}
 
-		private void OnTriggerEnter2D(Collider2D other)
+		void OnTriggerEnter2D(Collider2D other)
 		{
 			other.gameObject.TryGetComponent(out PlayerHealth health);
 			other.gameObject.TryGetComponent(out PhotonView photonView);

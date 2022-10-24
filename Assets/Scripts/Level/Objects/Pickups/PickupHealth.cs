@@ -7,9 +7,10 @@ namespace ShooterPun2D.pt2
 		protected override void OnTriggerEnter2D(Collider2D other)
 		{
 			PlayerHealth health = other.gameObject.GetComponent<PlayerHealth>();
+
 			if (health) 
 			{
-				health.TakeHealth(_amount); //TODO: Name refactor!
+				health.TakeHealth(_amount);
 				base.OnTriggerEnter2D(other);
 			}					
 		}

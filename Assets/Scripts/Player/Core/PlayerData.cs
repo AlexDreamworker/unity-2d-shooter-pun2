@@ -15,7 +15,7 @@ namespace ShooterPun2D
 
 		private Player _player;
 
-		private void Awake()
+		void Awake()
 		{
 			_photonView = GetComponent<PhotonView>();
 		}
@@ -27,7 +27,7 @@ namespace ShooterPun2D
 		}
 
 		[PunRPC]
-		private void RpcSetFrags(Player player) 
+		void RpcSetFrags(Player player) 
 		{
 			Hashtable hash = new Hashtable();
 			hash.Add("Frags", Frags);

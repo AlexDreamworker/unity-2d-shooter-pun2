@@ -14,18 +14,17 @@ namespace ShooterPun2D.pt2
 		private float _damageHealthShrinkTimer;
 		private float _floatValue;
 
-		private void OnEnable()
+		void OnEnable()
 		{
 			_target.OnHealthChanged += UpdateValue;
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
 			_target.OnHealthChanged -= UpdateValue;
 		}
 
-		//TODO: clean this code
-		private void Update()
+		void Update()
 		{
 			_damageHealthShrinkTimer -= Time.deltaTime;
 

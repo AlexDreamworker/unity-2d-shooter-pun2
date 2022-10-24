@@ -1,12 +1,8 @@
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Photon.Realtime;
-using System;
-using ExitGames.Client.Photon;
 using Cinemachine;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ShooterPun2D.pt2
 {
@@ -24,20 +20,21 @@ namespace ShooterPun2D.pt2
 		private GameObject _prefabToSpawn;
 		private GameObject _playerLocal;
 
-		private List<PlayerData> _players = new List<PlayerData>(); //!
+		private List<PlayerData> _players = new List<PlayerData>();
 
 		public static NetworkManager Instance;
+
 		public GameObject PlayerLocal => _playerLocal;
 		public GameObject PauseMenu => _pauseMenu;
 		public GameObject ScoreboardMenu => _scoreboardMenu;
 
-		private void Awake()
+		void Awake()
 		{
 			Instance = this;
 			_canvas.SetActive(false);
 		}
 
-		private void Start()
+		void Start()
 		{
 			_prefabToSpawn = _playerPrefabs[(int)PhotonNetwork.LocalPlayer.CustomProperties["playerModel"]];
 
@@ -48,9 +45,6 @@ namespace ShooterPun2D.pt2
 
 			if (_playerLocal != null) 
 				_canvas.SetActive(true);
-
-			//*Регистрация кастомного типа данных с сериализацией / десериализацией
-			//*PhotonPeer.RegisterType(typeof(Vector2Int), 242, SerializeVector2Int, DeserializeVector2Int);
 		}
 
 		public Vector3 GetSpawnPoint() 
@@ -64,17 +58,9 @@ namespace ShooterPun2D.pt2
 			_players.Add(info);
 		}
 
-		public void Leave()
-		{
-			// Вызов для выхода из комнаты
-			PhotonNetwork.LeaveRoom();
-		}
+		public void Leave() => PhotonNetwork.LeaveRoom();
 
-		public override void OnLeftRoom() 
-		{
-			// Когда мы покидаем комнату
-			SceneManager.LoadScene(0);
-		}
+		public override void OnLeftRoom() => SceneManager.LoadScene(0);
 
 		public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) 
 		{ 
@@ -85,29 +71,6 @@ namespace ShooterPun2D.pt2
 		{
 			Debug.LogFormat("Player {0} left room", otherPlayer.NickName);
 		}
-
-        //*----CUSTOM---TYPE---SERIALIZE-/-DESERIALIZE------------------------------------------------------
-        // public static object DeserializeVector2Int(byte[] data) 
-        // {
-        // 	Vector2Int result = new Vector2Int();
-
-        // 	result.x = BitConverter.ToInt32(data, 0);
-        // 	result.y = BitConverter.ToInt32(data, 4);
-
-        // 	return result;
-        // }	
-
-        // public static byte[] SerializeVector2Int(object obj) 
-        // {
-        // 	Vector2Int vector = (Vector2Int)obj;
-        // 	byte[] result = new byte[8];
-
-        // 	BitConverter.GetBytes(vector.x).CopyTo(result, 0);
-        // 	BitConverter.GetBytes(vector.y).CopyTo(result, 4);
-
-        // 	return result;
-        // }
-        //*----CUSTOM---TYPE---SERIALIZE-/-DESERIALIZE------------------------------------------------------
     }
 }
 

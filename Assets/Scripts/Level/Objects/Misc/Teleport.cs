@@ -6,13 +6,12 @@ namespace ShooterPun2D.pt2
 	{
 		[SerializeField] private Transform _destinationPoint;
 
-		private void OnTriggerEnter2D(Collider2D other)
+		void OnTriggerEnter2D(Collider2D other)
 		{
 			var target = other.gameObject.TryGetComponent(out PlayerControls player);
+			
 			if (target) 
-			{
 				player.transform.position = _destinationPoint.position;
-			}
 		}
 	}
 }

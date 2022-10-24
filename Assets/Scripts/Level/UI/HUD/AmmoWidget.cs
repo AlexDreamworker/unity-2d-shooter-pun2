@@ -12,13 +12,13 @@ namespace ShooterPun2D.pt2
 		
 		private PlayerWeapon _target;
 
-		private void OnEnable()
+		void OnEnable()
 		{
 			_target = NetworkManager.Instance.PlayerLocal.GetComponent<PlayerWeapon>();
 			_target.OnAmmoChanged += UpdateValue;
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
 			_target.OnAmmoChanged -= UpdateValue;
 		}	

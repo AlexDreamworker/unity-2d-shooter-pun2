@@ -1,5 +1,4 @@
 using Photon.Pun;
-using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 
@@ -33,18 +32,14 @@ namespace ShooterPun2D.pt2
 		public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps) 
 		{
 			if (changedProps.ContainsKey("playerModel") && _player == targetPlayer) 
-			{
 				UpdateItemSkin(targetPlayer);
-			}
 		}
 
-		private void UpdateItemSkin(Photon.Realtime.Player player) 
+		void UpdateItemSkin(Photon.Realtime.Player player) 
 		{
 			if (player.CustomProperties.ContainsKey("playerModel"))
-			{
 				_currentSkin = _itemSkins[(int)player.CustomProperties["playerModel"]];
 				_currentSkin.SetActive(true);
-			}
 		}
 	}
 }

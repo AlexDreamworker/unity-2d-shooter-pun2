@@ -23,7 +23,7 @@ namespace ShooterPun2D.pt2
 			UpdateFrags();
 		}
 
-		private void UpdateFrags() 
+		void UpdateFrags() 
 		{
 			if (_player.CustomProperties.TryGetValue("Frags", out object fragsProperty))
 			{

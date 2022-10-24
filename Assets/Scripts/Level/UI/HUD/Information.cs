@@ -14,23 +14,23 @@ namespace ShooterPun2D.pt2
     	private float _fpsNextPeriod = 0;
     	private int _currentFps;
 
-		private void Start()
+		void Start()
 		{
 			_fpsNextPeriod = Time.realtimeSinceStartup + _fpsMeasurePeriod;
 		}
 
-		private void Update()
+		void Update()
 		{
 			CalculatePingRate(); 
 			CalculateFpsRate();
 		}
 
-		private void CalculatePingRate() 
+		void CalculatePingRate() 
 		{
 			_pingRateText.text = "Ping: " + PhotonNetwork.GetPing();
 		}
 
-		private void CalculateFpsRate() 
+		void CalculateFpsRate() 
 		{
 			_fpsAccumulator++;
 

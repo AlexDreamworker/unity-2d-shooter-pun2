@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Photon.Pun;
-using TMPro;
 using UnityEngine;
 
 namespace ShooterPun2D.pt2
@@ -12,7 +11,7 @@ namespace ShooterPun2D.pt2
 		public event Action<int> OnWeaponChanged;
 		public event Action<int> OnWeaponActivated;
 		public event Action<int, bool> OnAmmoEmpted;
-		public event Action OnWeaponRefreshed; //todo: rename!
+		public event Action OnWeaponRefreshed;
 
 		[SerializeField] private Transform _shootPoint;
 		[SerializeField] private float _bulletForce = 1000f; 
@@ -27,22 +26,118 @@ namespace ShooterPun2D.pt2
 
 		public Weapon[] Weapons => _weapons;
 		
-		private void Awake()
+		void Awake()
 		{
 			_playerBrain = GetComponent<PlayerBrain>();
 		}
 
-		private void Start()
-		{
-			RefreshWeapon();
-		}
+		void Start() => RefreshWeapon();
 
-		private void Update()
+		void Update()
 		{
 			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
 
-		public void RefreshWeapon() //TODO: cleanup!
+		#region SHOOT
+		public void TryFire(Vector2 direction)
+		{
+			CheckAmmunition();
+
+			_currentAmmoCount = _currentWeapon.AmmoCount;
+
+			if (Time.time > _shootCooldown) 
+			{
+				_playerBrain.PhotonView.RPC(nameof(RpcShoot), RpcTarget.All, direction, _bulletForce);
+				_shootCooldown = Time.time + 1 / _fireRate;
+			}
+		}
+
+		[PunRPC]
+		void RpcShoot(Vector2 dir, float force, PhotonMessageInfo info) 
+		{
+			GameObject bullet = Instantiate(_currentWeapon.ProjectilePrefab, _shootPoint.position, Quaternion.identity);
+			bullet.GetComponent<PistolProjectile>().SetPlayer(_playerBrain.PhotonView, info.Sender);
+			bullet.GetComponent<PistolProjectile>().SetVelocity(dir, force);
+
+			_currentAmmoCount -= 1;
+			_currentWeapon.AmmoCount = _currentAmmoCount;
+			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
+		}
+		#endregion
+
+		#region SET WEAPON
+		public void SetWeapon(int index)
+		{
+			_currentWeaponIndex = index;
+			_playerBrain.PhotonView.RPC(nameof(RpcWeaponChange), RpcTarget.All, index);
+		}
+
+		[PunRPC]
+		public void RpcWeaponChange(int index)
+		{
+			_currentWeapon = _weapons[index];
+			_playerBrain.Graphics.SetShootPointColor(_currentWeapon.Color);
+
+			OnWeaponChanged?.Invoke(_currentWeapon.Id);
+			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
+		}
+		#endregion
+
+		#region AMMUNITION
+		public void CheckAmmunition()
+		{
+			if (_currentWeapon.AmmoCount == 0)
+			{
+				OnAmmoEmpted?.Invoke(_currentWeapon.Id, true);
+				NextWeapon();
+			}
+		}
+
+		public void SetAmmunition(int index, int value)
+		{
+			_weapons[index].AmmoCount += value;
+			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
+			OnAmmoEmpted?.Invoke(index, false);
+		}
+		#endregion
+		
+		#region CALLBACKS
+		public void NextWeapon()
+		{
+			foreach (var weapon in _weapons.Where(w => w.IsActive)) 
+			{
+				if (weapon.Id > _currentWeapon.Id && weapon.AmmoCount != 0) 
+				{
+					SetWeapon(weapon.Id);
+					return;
+				}
+			}	
+			var firstActiveId = _weapons.Where(w => w.IsActive).First().Id;
+			SetWeapon(firstActiveId);
+		}
+
+		public void PreviousWeapon()
+		{	
+			foreach (var weapon in _weapons.Where(w => w.IsActive).Reverse())
+			{
+				if (weapon.Id < _currentWeapon.Id && weapon.AmmoCount != 0)
+				{
+					SetWeapon(weapon.Id);
+					return;
+				}
+			}
+			var lastActiveId = _weapons.Where(w => w.IsActive).Last().Id;
+			SetWeapon(lastActiveId);
+		}
+
+		public void SetWeaponActivity(int index)
+		{
+			_weapons[index].IsActive = true;
+			OnWeaponActivated?.Invoke(index);
+			SetWeapon(index);
+		}
+
+		public void RefreshWeapon()
 		{
 			if (_playerBrain.PhotonView.IsMine) 
 			{
@@ -50,7 +145,7 @@ namespace ShooterPun2D.pt2
 
 				foreach (var weapon in _weapons) 
 				{
-					if (weapon.Id == 0) // ???
+					if (weapon.Id == 0)
 					{
 						weapon.IsActive = true;
 						weapon.AmmoCount = 777; 
@@ -66,117 +161,17 @@ namespace ShooterPun2D.pt2
 
 			SetWeapon(_currentWeaponIndex);
 		}
-		
-		//*------------SHOOT---------------------------------------------------
-		public void TryFire(Vector2 direction)
-		{
-			CheckAmmunition();
+		#endregion
 
-			_currentAmmoCount = _currentWeapon.AmmoCount;
-
-			if (Time.time > _shootCooldown) 
-			{
-				_playerBrain.PhotonView.RPC(nameof(RpcShoot), RpcTarget.All, direction, _bulletForce);
-				_shootCooldown = Time.time + 1 / _fireRate;
-			}
-		}
-
-		[PunRPC]
-		private void RpcShoot(Vector2 dir, float force, PhotonMessageInfo info) 
-		{
-			GameObject bullet = Instantiate(_currentWeapon.ProjectilePrefab, _shootPoint.position, Quaternion.identity);
-			bullet.GetComponent<PistolProjectile>().SetPlayer(_playerBrain.PhotonView, info.Sender);
-			bullet.GetComponent<PistolProjectile>().SetVelocity(dir, force);
-
-			_currentAmmoCount -= 1;
-			_currentWeapon.AmmoCount = _currentAmmoCount;
-			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
-		}
-
-		//*------------SET-WEAPON---------------------------------------------
-		public void SetWeapon(int index) //* CAll
-		{
-			_currentWeaponIndex = index; // ???
-			_playerBrain.PhotonView.RPC(nameof(RpcWeaponChange), RpcTarget.All, index);
-		}
-
-		[PunRPC]
-		public void RpcWeaponChange(int index)
-		{
-			_currentWeapon = _weapons[index];
-			_playerBrain.Graphics.SetShootPointColor(_currentWeapon.Color);
-
-			OnWeaponChanged?.Invoke(_currentWeapon.Id);
-			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
-		}
-
-		//*------------AMMUNITION---------------------------------------------
-		public void CheckAmmunition()
-		{
-			if (_currentWeapon.AmmoCount == 0)
-			{
-				OnAmmoEmpted?.Invoke(_currentWeapon.Id, true);
-				NextWeapon();
-			}
-		}
-
-		public void SetAmmunition(int index, int value) //*CALL
-		{
-			_weapons[index].AmmoCount += value;
-			OnAmmoChanged?.Invoke(_currentWeapon.AmmoCount, _currentWeapon.Color);
-			OnAmmoEmpted?.Invoke(index, false);
-		}
-
-		//*------------WEAPON-ACTIVITY-CALLBACK--------------------------------
-		public void SetWeaponActivity(int index) //*CALL
-		{
-			_weapons[index].IsActive = true;
-			OnWeaponActivated?.Invoke(index);
-			SetWeapon(index);
-		}
-
-		//*------------CALLBACKS---------------------------------------------
-
-		public void NextWeapon() //* CALL
-		{
-			foreach (var weapon in _weapons.Where(w => w.IsActive)) 
-			{
-				if (weapon.Id > _currentWeapon.Id && weapon.AmmoCount != 0) 
-				{
-					SetWeapon(weapon.Id);
-					return;
-				}
-			}	
-			var firstActiveId = _weapons.Where(w => w.IsActive).First().Id;
-			SetWeapon(firstActiveId);
-		}
-
-		public void PreviousWeapon() //* CALL 
-		{	
-			foreach (var weapon in _weapons.Where(w => w.IsActive).Reverse()) //TODO: there is a bug???
-			{
-				if (weapon.Id < _currentWeapon.Id && weapon.AmmoCount != 0)
-				{
-					SetWeapon(weapon.Id);
-					return;
-				}
-			}
-			var lastActiveId = _weapons.Where(w => w.IsActive).Last().Id;
-			SetWeapon(lastActiveId);
-		}
-
-		//*------------SERIALIZATOR---------------------------------------------
+		#region  SERIALIZATOR
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
-			{
 				stream.SendNext(_currentWeaponIndex);
-			}
 			else 
-			{
 				_currentWeaponIndex = (int)stream.ReceiveNext();
-			}
         }
+		#endregion
     }
 }
 
